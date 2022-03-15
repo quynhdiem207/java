@@ -253,9 +253,9 @@ Ví dụ:
 "This is a " + "two-line string" // actually a string-valued constant expression, formed from two string literals
 ```
 
-Một string literal là một reference tới một instance của class String.  
+Một *string literal* là một reference tới một instance của class String.  
 
-Hơn nữa, một string literal luôn tham chiếu tới cùng instance của class String.
+Hơn nữa, một *string literal* luôn tham chiếu tới cùng instance của class String.
 
 ```java
 // package testPackage
