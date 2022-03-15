@@ -160,7 +160,7 @@ class Test {
 ```
 
 
-## 1.4. Widening and Narrowing Primitive Conversion
+## 1.4, Widening and Narrowing Primitive Conversion
 
 Chuyển đổi byte -> char kết hợp cả *Widening and Narrowing Primitive Conversion*. Đầu tiên, byte được convert thành int thông qua *Widening Primitive Conversion*, sau đó kết quả int được convert thành char thông qua *Narrowing Primitive Conversion*.  
 
@@ -232,7 +232,7 @@ Không giống như *Widening Reference Conversion*, các types không cần ph�
 Một *Narrowing Reference Conversion* có thể yêu cầu kiểm tra tại runtime để xác thực value của type S có phải là một value hợp lệ của type T, một *ClassCastException* sẽ được ném ra nếu kiểm tra fail.  
 
 
-### *1.6.1, Allowed Narrowing Reference Conversion*
+### *1.6.1, Allowed Narrowing Reference Conversion*  
 
 Một *Narrowing Reference Conversion* tồn tại từ reference type S sang reference type T, nếu thỏa mãn tất cả các điều kiện sau:  
 
@@ -254,7 +254,7 @@ Một *Narrowing Reference Conversion* tồn tại từ reference type S sang re
     + T là một intersection type T1 & ... & Tn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang Ti.  
 
 
-### *1.6.2, Checked and Unchecked Narrowing Reference Conversions*
+### *1.6.2, Checked and Unchecked Narrowing Reference Conversions*  
 
 Một *Narrowing Reference Conversion* có thể là *Checked* or *Unchecked*. Các thuật ngữ này đề cập đến JVM có thể validate type của conversion hay không.  
 
@@ -269,7 +269,7 @@ Các *Unchecked Narrowing Reference Conversion* là:
 - *Narrowing reference conversion* từ type S sang một *intersection type* T1 & ... & Tn là unchecked nếu tồn tại Ti (1 ≤ i ≤ n) sao cho S không phải subtype của Ti và một *narrowing reference conversion* từ S sang Ti là unchecked.  
 
 
-### *1.6.3, Narrowing Reference Conversions at Run Time*
+### *1.6.3, Narrowing Reference Conversions at Run Time*  
 
 Tất cả các *checked narrowing reference conversions* đều yêu cầu kiểm tra xác thực tại runtime. 
 
