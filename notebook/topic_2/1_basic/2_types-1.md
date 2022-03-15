@@ -80,13 +80,13 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
 - Các integer operator không biểu thị *overflow* hay *underflow* theo bất cứ cách nào.  
     ```java
     public static void main(String[] args) {
-		System.out.println(Integer.MAX_VALUE); // 2147483647
-		System.out.println(Integer.MIN_VALUE); // -2147483648
+        System.out.println(Integer.MAX_VALUE); // 2147483647
+        System.out.println(Integer.MIN_VALUE); // -2147483648
 
         long a = Integer.MAX_VALUE * 2; // -2 -> Tràn bộ nhớ
         long b = Integer.MAX_VALUE + 2; // -2147483647 -> Tràn bộ nhớ
 
-		long c = Integer.MIN_VALUE * 2; // 0 -> Tràn bộ nhớ
+        long c = Integer.MIN_VALUE * 2; // 0 -> Tràn bộ nhớ
         long d = Integer.MIN_VALUE - 2; // 2147483646 -> Tràn bộ nhớ
     }
     ```
@@ -114,7 +114,7 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
     ```java
     public static void main(String[] args) {
         float a = 1e2f;  // 100
-		double b = 1e-3; // 0.001
+        double b = 1e-3; // 0.001
 
         System.out.format("%f %f", a, b); // 100.000000 0.001000
     }
@@ -125,7 +125,7 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
     ```java
     public static void main(String[] args) {
         float a = Float.NaN; // NaN
-		float b = a * 5; 	 // NaN
+        float b = a * 5; 	 // NaN
 
         System.out.format("%f %f", a, b); // NaN NaN
     }
@@ -174,8 +174,8 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
 - Khi chuyển đổi Floating-Point Values thành Integer, sẽ sử dụng "làm tròn về 0", tức là loại bỏ phần thập phân:  
     ```java
     public static void main(String[] args) {
-		float a = 4.7f;  // 4.7
-		int b = (int) a; // 4
+        float a = 4.7f;  // 4.7
+        int b = (int) a; // 4
 
         System.out.format("%f %d", a, b); // 4.700000 4
 	}
@@ -184,11 +184,11 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
 - Các phép toán Floating-Point mà *underflow* sẽ tạo ra *giá trị không chuẩn hóa* or *số 0 có dấu*.  
     ```java
     public static void main(String[] args) {
-		System.out.println(Float.MAX_VALUE); // 3.4028235E38
-		System.out.println(Float.MIN_VALUE); // 1.4E-45
-		
-		double a = Float.MAX_VALUE * 2; // Infinity
-		double b = Float.MIN_VALUE / 2; // 0.0
+        System.out.println(Float.MAX_VALUE); // 3.4028235E38
+        System.out.println(Float.MIN_VALUE); // 1.4E-45
+        
+        double a = Float.MAX_VALUE * 2; // Infinity
+        double b = Float.MIN_VALUE / 2; // 0.0
 	}
     ```  
 - Các exceptions:  
