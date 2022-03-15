@@ -45,7 +45,7 @@ Java copiler nhận dạng các Unicode Escapes trong inputs của nó, dịch c
 public class Test {
     public static void main(String[] args) {
         String a1 = "hello\u0567";
-		System.out.println(a1);     // hello?
+        System.out.println(a1);     // hello?
     }
 }
 ```  
@@ -316,8 +316,8 @@ public class Test {
     public static void main(String[] args) {
         String a1 = "hello\054\0Mai";
         String a2 = "hello,\tMai";
-		System.out.println(a1); // hello, Mai
-		System.out.println(a2); // hello,   Mai
+        System.out.println(a1); // hello, Mai
+        System.out.println(a2); // hello,   Mai
     }
 }
 ```  

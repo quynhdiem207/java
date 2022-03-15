@@ -7,14 +7,19 @@
  */
 package edu;
 
+import java.util.Calendar;
+
 import edu.mngt.EmployeeManager;
 import edu.mngt.Management;
 import edu.mngt.PersonManager;
+import edu.model.Adult;
+import edu.model.Child;
 import edu.model.Colleague;
 import edu.model.Employee;
 import edu.model.Manager;
 import edu.model.Member;
 import edu.model.Person;
+import edu.model.Singer;
 import edu.model.Student;
 
 public class Fresher {
@@ -113,5 +118,14 @@ public class Fresher {
 		String a1 = "hello\054\tMai";
 		String a2 = "hello,\tMai";
 		System.out.println(a2);
+		
+		Singer singer = new Singer("Huy", Calendar.getInstance().getTime());
+		System.out.println(singer.birdthday);
+		singer.run();
+		singer.work();
+		singer.talk();
+		
+		Singer.footCount = 4;
+		System.out.println(Child.footCount);
 	}
 }

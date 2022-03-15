@@ -99,13 +99,117 @@ Các Class Modifiers bao gồm:
 
 Sẽ xảy ra compile-time error nếu trong class declaration có một modifier keyword xuất hiện nhiều hơn một lần, or có nhiều hơn một trong các modifiers: public, protected, private.  
 
+
 #### *1.1.1, abstract Classes*
 
 *Abstract Class* là một class không hoàn chỉnh, hoặc được coi là không hoàn chỉnh.  
 
 Nếu cố gắng tạo instance của abstract class bằng cách sử dụng *class instance creation expression*, thì sẽ xảy ra compile-time error.  
 
-Subclass của abstract class mà bản thân nó không phải abstract thì có thể được khởi tạo, dẫn đến việc thực thi một constructor cho abstract class, và do đó sẽ thực thi field initializers cho instance variables của class đó.
+Subclass của abstract class mà bản thân nó không phải abstract thì có thể được khởi tạo, dẫn đến việc thực thi một constructor cho abstract class, và do đó sẽ thực thi field initializers cho instance variables của class đó.  
+
+Một *normal class* có thể có các *abstract methods* là các methods được khai báo nhưng chưa được triển khai, chỉ khi nó là *abstract class*. Sẽ xảy ra compile time error nếu một normal class không phải abstract mà có abstract method.  
+
+Một class C có *abstract method* nếu thỏa mãn ít nhất một trong 2 điều kiện sau:  
+
+- Bất cứ member method nào của C dù được khai báo hay được kế thừa là abstract,  
+- Bất cứ superclass nào của C có abstract method được khai báo với package access, và không tồn tại method nào ghi đè abstract method từ C or từ superclass của C.  
+
+```java
+// Child.java
+package edu.model;
+
+import java.util.Date;
+
+public abstract class Child {
+	public String name;
+	public Date birdthday;
+	public static int footCount = 2;
+	
+	public Child() {}
+	public Child(String name, Date birthday) {
+		this.name = name;
+		this.birdthday = birthday;
+	}
+	
+	public abstract void talk();
+	
+	public void run() {
+		System.out.println(name + " is running...");
+	}
+}
+
+// Adult.java
+package edu.model;
+
+import java.util.Date;
+
+public abstract class Adult extends Child {
+	public Adult() {}
+	public Adult(String name, Date birthday) {
+		super(name, birthday);
+	}
+	
+	public void work() {
+		System.out.println(name + " is working...");
+	}
+}
+
+// Singer.java
+package edu.model;
+
+import java.util.Date;
+
+public class Singer extends Adult {
+	public Singer() {}
+	public Singer(String name, Date birthday) {
+		super(name, birthday);
+	}
+
+	@Override
+	public void talk() {
+		System.out.println(name + " is talking...");
+	}
+
+}
+
+// Test.java
+package edu.model;
+
+import java.util.Calendar;
+
+public class Test {
+	public static void main(String[] args) {
+        Singer singer = new Singer("Huy", Calendar.getInstance().getTime());
+		singer.run();  // Huy is running...
+		singer.work(); // Huy is working...
+		singer.talk(); // Huy is talking...
+
+        Singer.footCount = 4;
+		System.out.println(Child.footCount);  // 4
+		System.out.println(singer.birdthday); // Tue Mar 15 22:17:15 ICT 2022
+    }
+}
+```
+
 
 #### *1.1.2, final Classes*
+
+Một class có thể được khai báo là *final* nếu nó hoàn chỉnh, & không có mong muốn nó có subclass.  
+
+Một final class không có bất cứ subclass nào, nên sẽ xảy ra compile time error nếu tên của final class xuất hiện trong mệnh đề *extend* của class declaration khác.  
+
+Sẽ xảy ra compile time error nếu một class được khai báo cả *final* & *abstract*, bởi vì việc triển khai của class như vậy có thể không bao giờ được hoàn thành.  
+
+Các methods của *final class* không bao giờ bị override, vì nó không có bất kỳ subclass nào.  
+
+
 #### *1.1.3, strictfp Classes*
+
+Tác dụng của *strictfp modifier* là làm cho tất cả các *float or double expression* trong class declaration (bao gồm trong variable initializers, instance initializers, static initializers, & constructors) phải là FP-strict một cách tường minh.
+
+Điều này ngụ ý rằng tất cả các methods được khai báo trong class và tất cả các nested type được khai báo trong class, đều là strictfp một cách tường minh.
+
+
+### 1.2, Generic Classes and Type Parameters
+

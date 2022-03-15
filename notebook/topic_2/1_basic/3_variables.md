@@ -263,8 +263,8 @@ public class Student {
 
     public static void main(String[] args) {
         int score = 5;
-		System.out.println(score);      // 5
-		System.out.println(this.score); // 0
+        System.out.println(score);      // 5
+        System.out.println(this.score); // 0
     }
 }
 ```
