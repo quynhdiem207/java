@@ -3,6 +3,7 @@
 Chương này đề cập đến:  
 
 - Unicode  
+- Unicode Escapes
 - Comments  
 - Identifiers  
 - Keywords  
@@ -102,16 +103,18 @@ Naming Conventions (Quy ước đặt tên):
 
 Các keywords trong Java không thể sử dụng làm identifier bao gồm:  
 
-> abstract   continue   for          new         switch  
-> assert     default    if           package     synchronized  
-> boolean    do         goto         private     this  
-> break      double     implements   protected   throw  
-> byte       else       import       public      throws  
-> case       enum       instanceof   return      transient  
-> catch      extends    int          short       try  
-> char       final      interface    static      void  
-> class      finally    long         strictfp    volatile  
-> const      float      native       super       while  
+```text
+abstract   continue   for          new         switch  
+assert     default    if           package     synchronized  
+boolean    do         goto         private     this  
+break      double     implements   protected   throw  
+byte       else       import       public      throws  
+case       enum       instanceof   return      transient  
+catch      extends    int          short       try  
+char       final      interface    static      void  
+class      finally    long         strictfp    volatile  
+const      float      native       super       while  
+```
 
 
 ## 6. Literals  
@@ -137,20 +140,28 @@ Một *integer literal* nếu có hậu tố là ký tự *L* or *l* sẽ có ty
 Ký tự underscore (_) được cho phép làm dấu ngăn cách giữa các chữ số biểu thị số nguyên.  
 
 - decimal: Có thể là ký tự 0 duy nhất đại diện số nguyên 0, hoặc bắt đầu bằng chữ số từ 1-9 & theo sau bởi các chữ số từ 0-9 đại diện cho số nguyên:  
-    > int:   0    2     -30     2_147_483_648  
-    > long:  0l   2L    -30l    2_147_483_648L  
+    ```text
+    int:   0    2     -30     2_147_483_648  
+    long:  0l   2L    -30l    2_147_483_648L  
+    ```  
 
 - hexadecimal: Bắt đầu bằng các ký tự 0X hoặc 0x, theo sau bởi các ký tự thập lục phân đại diện cho số nguyên:  
-    > int:   0x0     0x1_0000     -0xC0B0  
-    > long:  0x0l    0x1_0000L    -0xC0B0L  
+    ```text
+    int:   0x0     0x1_0000     -0xC0B0  
+    long:  0x0l    0x1_0000L    -0xC0B0L  
+    ```  
 
 - octal: Bắt đầu bằng ký tự 0 theo, sau bởi các ký tự bát phân đại diện cho số nguyên:  
-    > int:   0     -0777     01_2321_2342  
-    > long:  0l    -0777L    01_2321_2342L  
+    ```text  
+    int:   0     -0777     01_2321_2342  
+    long:  0l    -0777L    01_2321_2342L  
+    ```  
 
 - binary: Bắt đầu bằng các ký tự 0B hoặc 0b, theo sau bởi các ký tự nhị phân đại diện cho số nguyên:  
-    > int:   0B0     0b1001_1001  
-    > long:  0B0l    0b1001_1001L  
+    ```text
+    int:   0B0     0b1001_1001  
+    long:  0B0l    0b1001_1001L  
+    ```  
 
 
 #### *6.2, Floating-Point literals*  
@@ -195,10 +206,14 @@ Các constant đã định nghĩa đại diện cho các giá trị Not-a-Number
 *Ví dụ*:  
 
 - float literals:  
-    > 1e1f    2.f    .3f    0f    3.14f    6.022137e+23f    0x1a2.c5P2f  
+    ```text
+    1e1f    2.f    .3f    0f    3.14f    6.022137e+23f    0x1a2.c5P2f  
+    ```
 
 - double literals:  
-    > 1e1    2.    .3    0.0    3.14    1e-9d    1e137    0x1a2.c5P2  
+    ```text
+    1e1    2.    .3    0.0    3.14    1e-9d    1e137    0x1a2.c5P2  
+    ```  
 
 
 #### *6.3, Boolean Literals*
@@ -218,7 +233,9 @@ Một *character literal* luôn có type char.
 
 Ví dụ:  
 
-> 'a'   '%'   '\t'   '\\'   '\"'   '\u03a9'   '\177'  
+```text
+'a'   '%'   '\t'   '\\'   '\"'   '\u03a9'   '\177'  
+```  
 
 
 #### *6.5, String Literals*
@@ -317,7 +334,9 @@ null literal luôn có type null.
 
 Các *separators* bao gồm: 
 
-> (   )   {   }   [   ]   ;   ,   .   ...   @   ::  
+```text
+(   )   {   }   [   ]   ;   ,   .   ...   @   ::  
+```
 
 
 ## 8. Operators  
