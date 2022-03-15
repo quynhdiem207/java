@@ -175,11 +175,11 @@ Chuyển đổi byte -> char kết hợp cả *Widening and Narrowing Primitive 
 
 ```java
 public interface PersonManager {
-	public void report();
+    public void report();
 }
 
 public interface StudentManager extends PersonManager {
-	public void fee();
+    public void fee();
 }
 
 public class Person {
@@ -192,18 +192,18 @@ public class Student extends Person implements StudentManager {
     private String name;
 
     @Override
-	public void report() {
-		System.out.println("report...");
-	}
+    public void report() {
+        System.out.println("report...");
+    }
 	
 	@Override
-	public void fee() {
-		System.out.println("fee...");
-	}
+    public void fee() {
+        System.out.println("fee...");
+    }
 	
 	public void study() {
-		System.out.println("studying...");
-	}
+        System.out.println("studying...");
+    }
 }
 
 public class Example {
@@ -240,18 +240,18 @@ Một *Narrowing Reference Conversion* tồn tại từ reference type S sang re
 - Nếu tồn tại một parameterized type (type tham số hóa) X là supertype của T, và một parameterized type Y là supertype của S, sao cho the erasures của X & Y là giống nhau, thì X & Y không khác biệt.  
     vd: Không tồn tại narrowing reference conversion từ ArrayList<String> sang ArrayList<Object> or ngược lại, vì các type parameters String & Object khác biệt. Tương tự, không tồn tại narrowing reference conversion từ ArrayList<String> sang List<Object> & ngược lại.  
 - Đáp ứng một trong các trường hợp sau:  
-    1. S & T là class types, và thỏa mãn |S| <: |T| or |T| <: |S|,  
-    2. S & T là interface types,  
-    3. S là class type, T là interface type, và S không phải final class,  
-    4. S là class type, T là interface type, và S là final class mà implement interface T,  
-    5. S là interface type, T là class type, và T không phải final class,  
-    6. S là interface type, T là class type, và T là final class mà implement interface S,  
-    7. S là class type Object or interface type java.io.Serializable or Cloneable (interfaces duy nhất được implemented bởi arrays), and T is an array type.  
-    8. S là array type SC[], tức là một array of components của type SC; T là array type TC[], tức là một array of components của type TC; và một narrowing reference conversion tồn tại từ SC sang TC.  
-    9. S là type variable, và một narrowing reference conversion tồn tại từ ràng buộc trên (the upper bound) của S sang T.  
-    10. T là type variable, và có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang ràng buộc trên (the upper bound) của T.  
-    11. S là một intersection type S1 & ... & Sn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ Si sang T.  
-    12. T là một intersection type T1 & ... & Tn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang Ti.  
+    + S & T là class types, và thỏa mãn |S| <: |T| or |T| <: |S|,  
+    + S & T là interface types,  
+    + S là class type, T là interface type, và S không phải final class,  
+    + S là class type, T là interface type, và S là final class mà implement interface T,  
+    + S là interface type, T là class type, và T không phải final class,  
+    + S là interface type, T là class type, và T là final class mà implement interface S,  
+    + S là class type Object or interface type java.io.Serializable or Cloneable (interfaces duy nhất được implemented bởi arrays), and T is an array type.  
+    + S là array type SC[], tức là một array of components của type SC; T là array type TC[], tức là một array of components của type TC; và một narrowing reference conversion tồn tại từ SC sang TC.  
+    + S là type variable, và một narrowing reference conversion tồn tại từ ràng buộc trên (the upper bound) của S sang T.  
+    + T là type variable, và có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang ràng buộc trên (the upper bound) của T.  
+    + S là một intersection type S1 & ... & Sn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ Si sang T.  
+    + T là một intersection type T1 & ... & Tn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang Ti.  
 
 
 ### *1.6.2. Checked and Unchecked Narrowing Reference Conversions*
@@ -285,7 +285,6 @@ Sự phân loại của *unchecked narrowing reference conversions* như sau:
 
 - Unchecked narrowing reference conversion từ S sang *non-intersection type* T là *completely unchecked* nếu |S| <: |T|. Nếu không thì nó là *partially unchecked*.  
 - Unchecked narrowing reference conversion từ S sang *intersection type* T1 & ... & Tn là *completely unchecked* nếu với mọi i (1 ≤ i ≤ n), hoặc S <: Ti, hoặc narrowing reference conversion từ S sang Ti là *completely unchecked*. Nếu không thì nó là *partially unchecked*.  
-<br/>
 
 Kiểm tra tính hợp lệ tại runtime cho *checked or partially unchecked narrowing reference conversion* như sau:  
 
@@ -306,18 +305,18 @@ Kiểm tra tính hợp lệ tại runtime cho *checked or partially unchecked na
     + Nếu R là class đại diện cho array type RC[], tức là array of components của type RC:  
         + Nếu T là class type, thì T phải là Object, nếu không ClassCastException sẽ được ném ra.  
         + Nếu T là interface type, thì T phải là java.io.Serializable or Cloneable type (các interfaces duy nhất được implemented bởi arrays), nếu không ClassCastException sẽ được ném ra.  
-        + Nếu T là array type TC[], thì RC & TC phải là cùng một primitive type, hoặc RC & TC là các reference types đồng thời được phép áp dụng đệ quy các rules này, nếu không ClassCastException sẽ được ném ra.  
-
+        + Nếu T là array type TC[], thì RC & TC phải là cùng một primitive type, hoặc RC & TC là các reference types đồng thời được phép áp dụng đệ quy các rules này, nếu không ClassCastException sẽ được ném ra.    
+    
 Nếu conversion là chuyển sang intersection type T1 & ... & Tn, thì đối với mọi i (1 ≤ i ≤ n), bất cứ run-time check được yêu cầu cho conversion từ S sang Ti cũng được yêu cầu cho conversion sang intersection type.  
 
 ```java
 public interface Member {
-	String NAME = "Diêm";
-	void showName();
+    String NAME = "Diêm";
+    void showName();
 }
 
 public interface Colleague {
-	void study();
+    void study();
 }
 
 public class Person {
@@ -327,35 +326,35 @@ public class Person {
 }
 
 public class Employee extends Person implements Member, Colleague {
-	private String name;
-
-	public Employee() {}
-	public Employee(String name) {
-		this.name = name;
-	}
-
-	public void work() {
-		System.out.println(name + " is working...");
-	}
-
-	@Override
-	public void showName() {
-		System.out.println("I'm " + name);
-	}
-
-	@Override
-	public void study() {
-		System.out.println(name + " is studying...");
-	}
+    private String name;
+    
+    public Employee() {}
+    public Employee(String name) {
+        this.name = name;
+    }
+    
+    public void work() {
+        System.out.println(name + " is working...");
+    }
+    
+    @Override
+    public void showName() {
+        System.out.println("I'm " + name);
+    }
+    
+    @Override
+    public void study() {
+        System.out.println(name + " is studying...");
+    }
 }
 
 public class Example {
     public static void main(String[] args) {
         Member member = new Employee("Hà");
-		Colleague col = new Employee("Hùng");
-
-		col = (Colleague) m; // OK
+        Colleague col = new Employee("Hùng");
         
+        col = (Colleague) m; // OK
+
         Person person1 = new Person();
         Person person2 = new Employee();
         Employee employee = null;
@@ -363,15 +362,15 @@ public class Example {
         employee = (Employee) person2; // OK
         employee = (Employee) person1; // RUNTIME ERROR
 
-		Person[] x = { new Employee() };
-		Member[] y = { new Employee() };
-		Employee[] z = null;
-		z = (Employee[]) x; // RUNTIME ERROR
-		z = (Employee[]) y; // RUNTIME ERROR
+        Person[] x = { new Employee() };
+        Member[] y = { new Employee() };
+        Employee[] z = null;
+        z = (Employee[]) x; // RUNTIME ERROR
+        z = (Employee[]) y; // RUNTIME ERROR
 
         int[] z1 = { 1, 2 };
-		int[] z2 = z1;  // OK
-		long[] z3 = z1; // COMPILE-TIME ERROR
+        int[] z2 = z1;  // OK
+        long[] z3 = z1; // COMPILE-TIME ERROR
     }
 }
 ```
@@ -382,7 +381,7 @@ public class Example {
 Java cung cấp các Wrapper Class (Boolean, Byte, Character, Short, Integer, Long, Float hoặc Double) hỗ trợ:  
 
 - Wrap các *primitive values* bên trong object,  
-- Cung cấp các APIs để thao tác với các *primitive values*.  
+- Cung cấp các APIs để thao tác với các *primitive values*.    
 
 *Boxing Conversion* coi các expression của *primitive type* như là các expression của *reference type* tương ứng, bao gồm:  
 
@@ -410,7 +409,7 @@ Tại runtime, Boxing Conversion thực hiện:
     + double value -> reference r của class type Double, sao cho:  
         + Nếu p là NaN, thì r.isNaN() == true,  
         + Nếu p không phải NaN, thì r.doubleValue() == p.  
-
+        
 Boxing conversion có thể dẫn đến *OutOfMemoryError* nếu instance mới của Wrapper Class (Boolean, Byte, Character, Short, Integer, Long, Float hoặc Double) cần được cấp phát và không có đủ bộ nhớ.  
 
 
