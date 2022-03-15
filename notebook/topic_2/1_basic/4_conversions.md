@@ -283,8 +283,8 @@ vd: Conversion từ *ArrayList<String>* sang *Collection<T>* là *completely unc
 
 Sự phân loại của *unchecked narrowing reference conversions* như sau:  
 
-- Unchecked narrowing reference conversion từ S sang *non-intersection type* T là *completely unchecked* nếu |S| <: |T|. Nếu không thì nó là *partially unchecked*  
-- Unchecked narrowing reference conversion từ S sang *intersection type* T1 & ... & Tn là *completely unchecked* nếu với mọi i (1 ≤ i ≤ n), hoặc S <: Ti, hoặc narrowing reference conversion từ S sang Ti là *completely unchecked*. Nếu không thì nó là *partially unchecked*  
+- Unchecked narrowing reference conversion từ S sang *non-intersection type* T là *completely unchecked* nếu |S| <: |T|. Nếu không thì nó là *partially unchecked*.  
+- Unchecked narrowing reference conversion từ S sang *intersection type* T1 & ... & Tn là *completely unchecked* nếu với mọi i (1 ≤ i ≤ n), hoặc S <: Ti, hoặc narrowing reference conversion từ S sang Ti là *completely unchecked*. Nếu không thì nó là *partially unchecked*.  <br/>
 
 Kiểm tra tính hợp lệ tại runtime cho *checked or partially unchecked narrowing reference conversion* như sau:  
 
@@ -305,8 +305,8 @@ Kiểm tra tính hợp lệ tại runtime cho *checked or partially unchecked na
     + Nếu R là class đại diện cho array type RC[], tức là array of components của type RC:  
         + Nếu T là class type, thì T phải là Object, nếu không ClassCastException sẽ được ném ra.  
         + Nếu T là interface type, thì T phải là java.io.Serializable or Cloneable type (các interfaces duy nhất được implemented bởi arrays), nếu không ClassCastException sẽ được ném ra.  
-        + Nếu T là array type TC[], thì RC & TC phải là cùng một primitive type, hoặc RC & TC là các reference types đồng thời được phép áp dụng đệ quy các rules này, nếu không ClassCastException sẽ được ném ra.    
-    
+        + Nếu T là array type TC[], thì RC & TC phải là cùng một primitive type, hoặc RC & TC là các reference types đồng thời được phép áp dụng đệ quy các rules này, nếu không ClassCastException sẽ được ném ra.  
+        
 Nếu conversion là chuyển sang intersection type T1 & ... & Tn, thì đối với mọi i (1 ≤ i ≤ n), bất cứ run-time check được yêu cầu cho conversion từ S sang Ti cũng được yêu cầu cho conversion sang intersection type.  
 
 ```java
