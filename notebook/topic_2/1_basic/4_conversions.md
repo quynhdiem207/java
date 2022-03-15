@@ -232,28 +232,6 @@ Không giống như *Widening Reference Conversion*, các types không cần ph�
 Một *Narrowing Reference Conversion* có thể yêu cầu kiểm tra tại runtime để xác thực value của type S có phải là một value hợp lệ của type T, một *ClassCastException* sẽ được ném ra nếu kiểm tra fail.  
 
 
-### *1.6.1, Allowed Narrowing Reference Conversion*  
-
-Một *Narrowing Reference Conversion* tồn tại từ reference type S sang reference type T, nếu thỏa mãn tất cả các điều kiện sau:  
-
-- S không phải subtype của T,  
-- Nếu tồn tại một parameterized type (type tham số hóa) X là supertype của T, và một parameterized type Y là supertype của S, sao cho the erasures của X & Y là giống nhau, thì X & Y không khác biệt.  
-    vd: Không tồn tại narrowing reference conversion từ ArrayList<String> sang ArrayList<Object> or ngược lại, vì các type parameters String & Object khác biệt. Tương tự, không tồn tại narrowing reference conversion từ ArrayList<String> sang List<Object> & ngược lại.  
-- Đáp ứng một trong các trường hợp sau:  
-    + S & T là class types, và thỏa mãn |S| <: |T| or |T| <: |S|,  
-    + S & T là interface types,  
-    + S là class type, T là interface type, và S không phải final class,  
-    + S là class type, T là interface type, và S là final class mà implement interface T,  
-    + S là interface type, T là class type, và T không phải final class,  
-    + S là interface type, T là class type, và T là final class mà implement interface S,  
-    + S là class type Object or interface type java.io.Serializable or Cloneable (interfaces duy nhất được implemented bởi arrays), and T is an array type.  
-    + S là array type SC[], tức là một array of components của type SC; T là array type TC[], tức là một array of components của type TC; và một narrowing reference conversion tồn tại từ SC sang TC.  
-    + S là type variable, và một narrowing reference conversion tồn tại từ ràng buộc trên (the upper bound) của S sang T.  
-    + T là type variable, và có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang ràng buộc trên (the upper bound) của T.  
-    + S là một intersection type S1 & ... & Sn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ Si sang T.  
-    + T là một intersection type T1 & ... & Tn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang Ti.  
-
-
 ### *1.6.2, Checked and Unchecked Narrowing Reference Conversions*  
 
 Một *Narrowing Reference Conversion* có thể là *Checked* or *Unchecked*. Các thuật ngữ này đề cập đến JVM có thể validate type của conversion hay không.  
