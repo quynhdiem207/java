@@ -238,7 +238,6 @@ Một *Narrowing Reference Conversion* tồn tại từ reference type S sang re
 
 - S không phải subtype của T,  
 - Nếu tồn tại một parameterized type (type tham số hóa) X là supertype của T, và một parameterized type Y là supertype của S, sao cho the erasures của X & Y là giống nhau, thì X & Y không khác biệt.  
-    *ví dụ*: Không tồn tại narrowing reference conversion từ ArrayList<String> sang ArrayList<Object> or ngược lại, vì các type parameters String & Object khác biệt. Tương tự, không tồn tại narrowing reference conversion từ ArrayList<String> sang List<Object> & ngược lại.  
 - Đáp ứng một trong các trường hợp sau:  
 
     
