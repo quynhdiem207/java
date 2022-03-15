@@ -285,7 +285,7 @@ Sự phân loại của *unchecked narrowing reference conversions* như sau:
 
 - Unchecked narrowing reference conversion từ S sang *non-intersection type* T là *completely unchecked* nếu |S| <: |T|. Nếu không thì nó là *partially unchecked*.  
 - Unchecked narrowing reference conversion từ S sang *intersection type* T1 & ... & Tn là *completely unchecked* nếu với mọi i (1 ≤ i ≤ n), hoặc S <: Ti, hoặc narrowing reference conversion từ S sang Ti là *completely unchecked*. Nếu không thì nó là *partially unchecked*.  
-
+<br/>
 
 Kiểm tra tính hợp lệ tại runtime cho *checked or partially unchecked narrowing reference conversion* như sau:  
 
