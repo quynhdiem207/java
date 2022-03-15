@@ -241,6 +241,8 @@ Một *Narrowing Reference Conversion* tồn tại từ reference type S sang re
     *ví dụ*: Không tồn tại narrowing reference conversion từ ArrayList<String> sang ArrayList<Object> or ngược lại, vì các type parameters String & Object khác biệt. Tương tự, không tồn tại narrowing reference conversion từ ArrayList<String> sang List<Object> & ngược lại.  
 - Đáp ứng một trong các trường hợp sau:  
 
+    
+
 
 
 ### *1.6.2, Checked and Unchecked Narrowing Reference Conversions*  
