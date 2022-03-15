@@ -8,7 +8,6 @@
 package edu.model;
 
 public class Employee extends Person implements Member, Colleague {
-	private String name;
 
 	public Employee() {}
 
@@ -16,20 +15,20 @@ public class Employee extends Person implements Member, Colleague {
 	 * @param name
 	 */
 	public Employee(String name) {
-		this.name = name;
+		super(name);
 	}
 
 	/**
 	 * @return the name
 	 */
-	protected String getName() {
+	public String getName() {
 		return name;
 	}
 
 	/**
 	 * @param name the name to set
 	 */
-	protected void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 

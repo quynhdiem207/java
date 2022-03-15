@@ -8,15 +8,15 @@
 package edu.model;
 
 public class Student extends Person implements Member {
-	private String name;
-
-	public Student() {}
+	public Student() {
+		super();
+	}
 
 	/**
 	 * @param name
 	 */
 	public Student(String name) {
-		this.name = name;
+		super(name);
 	}
 
 	/**
@@ -41,5 +41,9 @@ public class Student extends Person implements Member {
 	@Override
 	public void showName() {
 		System.out.println("My name is " + name);
+	}
+	
+	public void run() {
+		System.out.println(name + " is running...");
 	}
 }

@@ -7,12 +7,18 @@
  */
 package edu.model;
 
-public abstract class Person {
-	String message;
+public class Person {
+	protected String name;
+	public static String firstName;
+	
+	public Person() {}
+	public Person(String name) {
+		this.name = name;
+	}
 
-    public abstract void study();
+    public void study() {};
     
     public void showMessage() {
-        System.out.println(message);
+        System.out.println("message...");
     }
 }

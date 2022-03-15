@@ -31,7 +31,7 @@ Compile-time & Runtime đề cập đến các loại lỗi khác nhau:
     - Semantic errors (lỗi ngữ nghĩa): xảy ra do type checking.  
 
 - Runtime:  
-    - Division by zero (chia cho 0): xảy ra khi chia 1 số cho 0,  
+    - Division by zero (chia cho 0): xảy ra khi chia 1 số nguyên cho 0,  
     - Dereferencing a null pointer (tham chiếu tới con trỏ null): xảy ra khi cố gắng truy cập bộ nhớ với NULL,  
     - Running out of memory (tràn bộ nhớ): xảy ra khi máy tính không có bộ nhớ cấp phát cho chương trình.  
     - Hay cố gắng mở file không tồn tại.  
@@ -61,9 +61,7 @@ JVM (Java Virtual Machine - máy ảo java):
 
 JVM phụ thuộc vào platform (HĐH), các platform khác nhau sẽ cài JVM tương ứng dành cho platform đó, chúng đều có cơ chế hoạt động tương tự nhau, nhờ đó Java code không phụ thuộc platform có thể thực thi trên các platform khác nhau.  
 
->                 (javac)                 (interpreter)
-> Source code --- Compiler ---> Byte code --- JVM ---> Machine code for platform
-> (.java file)                  (.class file)
+> Source code --- Compiler ---> Byte code 
 
 ### 4.2, Hoạt động  
 
@@ -78,30 +76,8 @@ JVM thực hiện các hoạt động sau:
 
 ### 4.3, Kiến trúc  
 
-![architectural diagram - Sơ đồ kiến trúc](jvm_model.jpg)  
+![architectural diagram - Sơ đồ kiến trúc](jvm_architure.png)  
 ![architectural diagram detail - Sơ đồ kiến trúc chi tiết](jvm_model_detail.jpg)  
-
-Sơ đồ **Java Runtime System**:  
-                                        
->  classes ----->  Class Loader Subsystem (1)  
->                       ^
->                       |
->                       v
-> --- Runtime Data Area -----------------------
-> |                                           |
-> | Method  Heap  JVM       PC         Native |
-> | Area          Language  Registers  Method |
-> |               Stacks               Stacks |
-> | (2)     (3)   (4)       (5)        (6)    |
-> ---------------------------------------------
->     ^
->     |
->     v
-> Execution         Native          Native
-> Engine     <--->  Method   <--->  Method
->                   Interface       Libraries
->  (7)               (8)             (9)  
-
 
 Kiến trúc của JVM được chia làm 3 sub-system chính:  
 
@@ -109,9 +85,10 @@ Kiến trúc của JVM được chia làm 3 sub-system chính:
 - Runtime Data Area: vùng nhớ hệ thống cấp phát cho JVM.  
 - Execution Engine: phân tích, xử lý & thực thi bytecode.  
 
+
 #### 4.3.1, Class Loader Subsystem  
 
-*Class Loader Subsystem* có nhiệm vụ loads các .class files vào JVM memory, ngoài ra nó còn chịu trách nhiệm định vị tài nguyên dựa trên đường dẫn.  
+*Class Loader Subsystem* có nhiệm vụ loads các class files vào JVM memory.  
 
 Class Loader Subsystem thực hiện 3 chức năng chính: Loading, Linking, & Initialization.  
 
@@ -129,9 +106,9 @@ Có 3 built-in class loader bao gồm:
     + Được viết bởi native code (C/C++).  
     + Không có Parent Class Loader, là Parent của Extension Class Loader.  
     + Thực hiện loads các class files của Java core nằm trong rt.jar & một số core libraries khác đặt trong thư mục $JAVA_HOME/jre/lib, (các class files của các packages: java.lang, java.util, java.io, java.sql, ...).  
-- **Extension Class Loader**:  
+- **Extension / Platform Class Loader**:  
     + Là Child Của Boostrap Class Loader & Parent của System Class Loader.  
-    + Thực hiện loads các extension class files của Java core được đặt trong các thư mục được trỏ bởi system property java.ext.dirs, mặc định bao gồm thư mục $JAVA_HOME/jre/lib/ext.  
+    + Thực hiện loads các extension class files từ extension classpath (thư mục được trỏ bởi system property java.ext.dirs, mặc định bao gồm thư mục $JAVA_HOME/jre/lib/ext).  
 - **System / Application Class Loader**:  
     + Là Child của Extension Class Loader.  
     + Thực hiện loads các class files mức ứng dụng từ system classpath được chỉ định bởi java.class.path (mặc định là thư mục hiện tại, hoặc có thể set classpath khi chạy chương trình bằng command line option -cp hay -classpath hay set biến môi trường CLASSPATH).  
@@ -148,17 +125,40 @@ Class Loader hoạt động dựa trên 3 nguyên tắc:
     + Ủy quyền yêu cầu cho Child Class Loader cuối cùng,  
     + Class loader này sẽ kiểm tra class đã được load hay chưa, nếu đã được load sẽ trả lại class, nếu chưa được load sẽ ủy quyền cho Parent, nếu Parent không tìm được thì nó mới cố gắng tìm kiếm, quá trình này diễn ra đệ quy.  
     + Nếu Child Class Loader cuối cùng vẫn không thấy class, một ngoại lệ *java.lang.ClassNotFoundException* sẽ được ném ra.  
-- Sau khi class file được load vào Method Area, JVM sẽ tạo 1 object là instance của *java.lang.Class* để đại diện cho class file này trong *heap*, các class được load sẽ tham chiếu đến class loader đã load nó.  
+- Sau khi class file được load vào Method Area, JVM sẽ tạo một object là instance của *java.lang.Class* để đại diện cho class file này trong *heap*, các class được load sẽ tham chiếu đến class loader đã load nó.  
 
-*java.lang.ClassLoader* là abstract class nằm trong package *java.lang* của Java core:  
+*java.lang.ClassLoader* là *abstract class* nằm trong package *java.lang* của Java core:  
 
-- Constructors trong *java.lang.ClassLoader* & các subclass của nó cho phép khởi tạo class loader, mặc định Parent của class loader được tạo sẽ là System Class Loader, hoặc có thể chỉ định Parent khi khởi tạo.  
-- Khi gọi method *loadClass* của *ClassLoader* để load class, theo thứ tự sẽ thực hiện:  
+- Constructors của *ClassLoader* sẽ được gọi khi khởi tạo một class loader từ subclass của nó, mặc định Parent của class loader được tạo sẽ là System Class Loader, hoặc có thể chỉ định Parent khi khởi tạo.  
+- Method *loadClass* của *ClassLoader* được sử dụng để load class, theo thứ tự sẽ thực hiện:  
     + gọi method *findLoadedClass* để kiểm tra xem class đã được load hay chưa,  
     + Nếu class đã được load, trả về class,  
     + Nếu class chưa được load, ủy quyền cho Parent Class Loader,  
     + Nếu Parent tìm không thấy class, gọi method *findClass* để tìm & load class.  
-- Class *java.net.URLClassLoader* đóng vai trò là Basic Class Loader cho các phần extension và các JAR file khác, ghi đè method *findClass* của *java.lang.ClassLoader* để tìm kiếm một hoặc nhiều URL được chỉ định cho các class và tài nguyên.  
+- Method *defineClass* của *ClassLoader* có thể được sử dụng để tạo các Class object là instance của *java.lang.Class* từ các class file.  
+
+Để lấy Class object đại diện cho class or interface:  
+
++ Gọi static method *forName* của *java.lang.Class*, truyền String name của class or interface.  
++ Gọi method *getClass* của *java.lang.Object*.  
++ Truy xuất static field *class* của class or interface type được đặt tên.  
+    eg: type of String.class is Class<String>  
+
+```java
+// forName(String className);
+// forName(String name, boolean initialize, ClassLoader loader);
+
+p1 = (Point) Class.forName("Point").getDeclaredConstructor().newInstance(); // default
+p2 = (Point) Point.class.getDeclaredConstructor(int.class, int.class).newInstance(2, 2);
+p3 = new Point(3, 3);
+p3.getClass();
+```  
+
+Ngoài ra, Class *java.net.URLClassLoader* load các class & resource từ search path của URLs tham chiếu đến cả thư mục & jar files, nó là một mở rộng của *java.lang.ClassLoader* ghi đè method *findClass* để tìm kiếm một hoặc nhiều URL được chỉ định cho các class và tài nguyên.  
+
+VD: Tomcat có class loader system phân cấp như sau: Bootstrap classloader -> Extension/Platform classloader -> App classloader -> Common classloader (a URLClassLoader) ->  WebApp classloader (a URLClassLoader).  
+
+**Note**: chạy command "Java --verbose:class App" sẽ có thể xem flow.  
 
 ##### *4.3.1.2, Linking*
 
@@ -179,6 +179,7 @@ Nó thực hiện 3 hoạt động quan trọng:
 ##### *4.3.1.3, Initialization*
 
 *Initialization*: Xử lý việc gán giá trị ban đầu cho các static variables, & thực thi các static blocks.  
+
 
 #### 4.3.2, Runtime Data Area  
 
@@ -203,11 +204,15 @@ Nó thực hiện 3 hoạt động quan trọng:
 
 Method Area được tạo khi khởi động JVM, được chia sẻ giữa tất cả các luồng.  
 
+*Method Area* là một phần của Heap, nhưng không được thu gom rác, có thể mở rộng & không cần liền kề nhau.  
+
 Nếu Method Area không có sẵn để đáp ứng yêu cầu cấp phát bộ nhớ thì ngoại lệ *java.lang.OutOfMemoryError* sẽ được ném ra.  
 
 ##### *4.3.2.2, Heap*  
 
 *Heap* lưu trữ tất cả các class instances, arrays còn các reference đến chúng sẽ được lưu trong Stack.  
+
+*Heap* có thể mở rộng.  
 
 Nếu objects được lưu trên heap không có tham chiếu, bộ nhớ cho object đó sẽ bị thu hồi bởi *garbage collector*.  
 
@@ -219,6 +224,8 @@ Nếu Heap không có sẵn để đáp ứng yêu cầu cấp phát bộ nhớ 
 
 Mỗi JVM Thread có một JVM Stack riêng được tạo cùng lúc với Thread, một thread không thể truy xuất & thay đổi dữ liệu trong Stack của thread khác.  
 
+*Stack* có kích thước cố định tùy thuộc vào hệ điều hành (window: 1MB, Linux: 8MB).  
+
 *Stack* chứa các Frames, khi luồng gọi một method thì JVM sẽ tạo một frame & đẩy vào đỉnh của Stack; khi method hoàn tất thì JVM sẽ đẩy frame ra khỏi Stack & xóa bỏ.  
 
 Stack Frame lưu trữ các tham số, biến cục bộ, các phép tính trung gian và các dữ liệu khác.  
@@ -226,7 +233,7 @@ Stack Frame lưu trữ các tham số, biến cục bộ, các phép tính trung
 Cấu trúc của Stack Frame bao gồm:  
 
 - *Local Variable Array* (mảng biến cục bộ): Chứa các local variables & parameters của method,  
-- *Operand Stack* (ngăn xếp toán hạng): Là không gian làm việc của JVM, các toán hạng sẽ được đẩy vào *Operand Stack*, sau đó các lệnh sẽ lấy các toán hạng từ ngăn xếp toán hạng, thao tác trên chúng & đẩy kết quả trở lại ngăn xếp toán hạng.  
+- *Operand Stack* (ngăn xếp toán hạng): Là không gian làm việc của JVM - nơi thực hiện các thao tác, các toán hạng sẽ được đẩy vào *Operand Stack*, sau đó các lệnh sẽ lấy các toán hạng từ ngăn xếp toán hạng, thao tác trên chúng & đẩy kết quả trở lại ngăn xếp toán hạng.  
 - *Frame data*: Chứa các thông tin hỗ trợ phân giải Constant Pool, Trả về giá trị thông thường & Điều phối ngoại lệ như:  
     + *Constant Pool Reference*: Là tham chiếu đến *Runtime Constant Pool* của class chứa method hiện tại trong *Method Area*.  
     + *Exception Table Reference*: Là tham chiếu đến bảng ngoại lệ của method.  
@@ -259,6 +266,7 @@ Mỗi JVM Thread có một Native Method Stack riêng được tạo cùng lúc 
 
 Nếu không đủ bộ nhớ để cấp Native Method Stack cho Thread được tạo, ngoại lệ *OutOfMemoryError* sẽ được ném ra.  
 
+
 #### 4.3.3, Execution Engine
 
 *Execution Engine* đọc dữ liệu từ *Runtime Data Area* để thực thi Byte code.  
@@ -269,6 +277,10 @@ Execution Engine gồm 3 components chính:
 - **JIT Compilier** (Just-In-Time Compiler): Khắc phục nhược điểm của *Interpreter*, biên dịch byte code đượi gọi lại nhiều lần sang native code giúp cải thiện hiệu suất.  
 - **Garbage Collector**: Thực hiện thu thập các object không còn được tham chiếu giúp giải phóng bộ nhớ.  
 
+*System.gc()* là method do Java cung cấp cho dọn rác.  
+Tìm hiểu thêm về *System.runtime*, & *Dump Heap*.  
+
+
 #### 4.3.4, Native Method Interface (JNI)  
 
 *Native Method Interface* đóng vai trò là giao diện tương tác với libraries & ứng dụng khác, nó thực hiện:  
@@ -276,9 +288,11 @@ Execution Engine gồm 3 components chính:
 - Cung cấp các Native Libraries cần thiết cho *Execution Engine*,  
 - Gửi output tới Console hoặc cho phép các Libraries gọi Java code đang được thực thi trong JVM.  
 
+
 #### 4.3.5, Native Method Libraries  
 
 *Native Method Libraries* là một tập các Native Libraries (C/C++) cần thiết cho *Execute Engine*.  
+
 
 ### 4.4, Cách thức hoạt động của JVM từ *main* method
 
@@ -365,6 +379,8 @@ Interpreter (trình thông dịch):
 
 ## 7. Open JDK - Oracle JDK  
 
+JDK có các tiêu chuẩn được đặt ra, các phiên bản của JDK đều phải tuân theo các tiêu chuẩn này.  
+
 Open JDK:  
 
 - Là mã nguồn mở,  
@@ -376,6 +392,7 @@ Oracle JDK:
 - Không mở mã nguồn,  
 - Được phát triển bởi Oracle,  
 - Hỗ trợ dài hạn cho các phiên bản được phát hành,  
+- Ổn định hơn so với Open JDK,  
 - Hiệu năng & khả năng đáp ứng tốt hơn so với Open JDK,  
 
 
@@ -383,7 +400,7 @@ Oracle JDK:
 
 JAVA_HOME là một biến môi trường (Environment variable) được thiết lập để hỗ trợ hệ điều hành tìm đến các công cụ của JDK sử dụng khi phát triển & thực thi ứng dụng,  
 
-Nó là một quy ước, nếu không set biến JAVA_HOME thì có thể thiết lập PATH của hệ điều hành trực tiếp trỏ đến thư mục chứa các công cụ của JDK, chính là thư mục jdk/bin.  
+Nó là một quy ước, nếu không set biến JAVA_HOME thì có thể trực tiếp trỏ đến nơi đặt các công cụ của JDK.  
 
 
 ## 9. Java SE - Java ME - Java EE  
@@ -398,7 +415,7 @@ Java SE, Java ME, Java EE đều là các Java Platforms (nền tảng Java) dà
     + Được sử dụng chủ yếu để tạo các ứng dụng chạy trên các hệ thống nhúng hạn chế về tài nguyên như thiết bị di động và các thiết bị nhỏ khác,  
 - Java EE (Java Enterprise Edition):  
     + Là phiên bản Doanh Nghiệp của Java,  
-    + Được sử dụng chủ yếu để tạo server,  
+    + Được sử dụng chủ yếu để xây dựng web service, các ứng dụng hướng dịch vụ,  
 
 Các ứng dụng của Java:  
 
@@ -414,6 +431,11 @@ Các ứng dụng của Java:
 
 Unicode là một bộ ký tự chuẩn quốc tế, nó bao gồm tất cả các ký tự từ tất cả các ngôn ngữ trên thế giới, mỗi ký tự có một giá trị số duy nhất.  
 
-Trong Unicode, kích thước của mỗi ký tự là 2 byte.  
+Java sử dụng bộ ký tự Unicode với mã hóa UTF-16, kích thước của mỗi ký tự là 2 byte.  
 
-Java sử dụng bộ ký tự Unicode.  
+Ngoại trừ comments, identifiers, & string literals, thì tất cả các input elements trong một chương trình đều được tạo thành từ các ký tự ASCII (hoặc Unicode escapes có kết quả là các ký tự ASCII).  
+
+**Note**:  
+
+- Unicode với kiểu mã hóa UTF-8 mỗi ký tự là 1 byte, UTF-16 mỗi ký tự là 2 byte, UTF-32 mỗi ký tự là 4 byte,  
+- Unicode với các kiểu mã hóa trong MySQL: UTF8-MB4 mỗi ký tự sử dụng 4 byte.  

@@ -77,10 +77,10 @@ Nếu không gán giá trị cho attributes, Java sẽ gán default value cho at
 >- byte                     0  
 >- short                    0  
 >- int                      0  
->- long                     0  
+>- long                     0L  
 >- float                    0  
 >- double                   0  
->- char                     u0000  
+>- char                     \u0000 (ký tự NULL)  
 >- boolean                  false  
 >- String (or any object)   null  
 
@@ -212,7 +212,7 @@ public class Fresher {
 
 ## 9. Getters & Setters
 
-Luôn set các attibute là *private* để bảo vệ data, Lúc này để có thể truy xuất các attributes từ bên ngoài class cần có các getters & setters.  
+Để bảo vệ data nên set các attibute là *private*, khi muốn truy xuất các attributes từ bên ngoài class cần sử dụng các getters & setters. Lúc này, có thể validate khi set value cho attribute, hay kiểm tra điều kiện để trả về value của attribute.  
 
 ### 9.1, Setters
 
@@ -221,6 +221,7 @@ Luôn set các attibute là *private* để bảo vệ data, Lúc này để có
 - Syntax:  
     ```java
     public void setAttributeName(Type newValue) {
+        /* logic */
         this.attributeName = newValue;
     }
     ```
@@ -232,6 +233,7 @@ Luôn set các attibute là *private* để bảo vệ data, Lúc này để có
 - Syntax:  
     ```java
     public Type getAttributeName() {
+        /* logic */
         return this.attributeName;
     }
     ```
