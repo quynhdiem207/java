@@ -191,9 +191,9 @@ public class Example {
 
         Object obj = null;
         obj = 1;            // OK (Boxing: primitive value 1 -> Integer)
-		obj = new Person(); // OK
-		obj = arrInt;       // OK
-		obj = arrPerson;    // OK
+        obj = new Person(); // OK
+        obj = arrInt;       // OK
+        obj = arrPerson;    // OK
     }
 }
 ```
