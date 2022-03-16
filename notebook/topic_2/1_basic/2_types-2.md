@@ -94,9 +94,13 @@ Trong đó:
 Hai *parameterized types* khác nhau rõ ràng nếu thỏa mãn một trong hai điều kiện sau:
 
 - Chúng là các tham số hóa của các *generic type declaration* riêng biệt,  
+    ```
     *vd: List<String> và ArrayList<String>*  
+    ```  
 - Bất kỳ *type arguments* nào của chúng đều khác nhau rõ ràng.  
+    ```
     *vd: List<String> và List<Object>*  
+    ``` 
 
 *Ví dụ: Seq<int> là không hợp lệ, vì primitive type không thể là type arguments.*  
 
@@ -189,16 +193,24 @@ class Test {
 
 Gọi C là một *generic class or interface declaration* với *type parameters* A1,...,An, and đặt C<T1,...,Tn> là một tham số hóa của C, sao cho với 1 ≤ i ≤ n, Ti là một type (không phải một wildcard). Thì:  
 
+```
 - Gọi m là một member or constructor được khai báo trong C, có type là T,  
-    Thì type của m trong C<T1,...,Tn> là T[A1:=T1,...,An:=Tn].  
-- Gọi m là một member or constructor được khai báo trong D, trong đó D là một class được extend bởi C or một interface được implement bởi C.  
-    Gọi D<U1,...,Uk> là supertype of C<T1,...,Tn> tương ứng với D.  
-    Thì type của m trong C<T1,...,Tn> là D<U1,...,Uk>.  
+  Thì type của m trong C<T1,...,Tn> là T[A1:=T1,...,An:=Tn].  
+
+- Gọi m là một member or constructor được khai báo trong D, 
+  trong đó D là một class được extend bởi C or một interface được implement bởi C. 
+  Gọi D<U1,...,Uk> là supertype of C<T1,...,Tn> tương ứng với D.  
+  Thì type của m trong C<T1,...,Tn> là D<U1,...,Uk>.  
+```
 
 Nếu bất kỳ type arguments trong tham số hóa của C là wildcard, thì:  
 
+```
 - Types của fields, methods, and constructors trong C<T1,...,Tn> là types của fields, methods, and constructors trong *capture conversion* của C<T1,...,Tn>.  
-- Gọi D là một class or interface declaration (có thể là generic) trong C. Khi đó type của D trong C<T1,...,Tn> là D sao cho, nếu D là generic, tất cả type arguments là unbounded wildcards.  
+- Gọi D là một class or interface declaration (có thể là generic) trong C. 
+  Khi đó type của D trong C<T1,...,Tn> là D sao cho, 
+  nếu D là generic, tất cả type arguments là unbounded wildcards.  
+```
 
 Một static member được khai báo trong generic type declaration phải được tham chiếu đến bằng cách sử dụng non-generic type tương ứng với generic type, nếu không sẽ xảy ra compile-time error. Nói cách khác, Sử dụng một parameterized type để tham chiếu đến static member được khai báo trong generic type declaration là không hợp lệ.  
 
