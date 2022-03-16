@@ -16,6 +16,6 @@ public abstract class Adult extends Child {
 	}
 	
 	public void work() {
-		System.out.println(name + " is working...");
+		System.out.println(getName() + " is working...");
 	}
 }

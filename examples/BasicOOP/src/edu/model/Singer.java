@@ -17,7 +17,7 @@ public class Singer extends Adult {
 
 	@Override
 	public void talk() {
-		System.out.println(name + " is talking...");
+		System.out.println(getName() + " is talking...");
 	}
 
 }

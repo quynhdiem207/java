@@ -118,12 +118,10 @@ Một class C có *abstract method* nếu thỏa mãn ít nhất một trong 2 �
 ```java
 // Child.java
 package edu.model;
-
 import java.util.Date;
-
 public abstract class Child {
-	public String name;
-	public Date birdthday;
+	private String name;
+	private Date birdthday;
 	public static int footCount = 2;
 	
 	public Child() {}
@@ -131,63 +129,71 @@ public abstract class Child {
 		this.name = name;
 		this.birdthday = birthday;
 	}
-	
-	public abstract void talk();
-	
-	public void run() {
-		System.out.println(name + " is running...");
+
+    protected String getName() {
+        return name;
+    }
+
+    protected void setName(String name) {
+        this.name = name;
 	}
+
+    protected Date getBirdthday() {
+        return birdthday;
+    }
+
+    protected void setBirdthday(Date birdthday) {
+        this.birdthday = birdthday;
+    }
+
+    public abstract void talk();
+
+    public void run() {
+        System.out.println(name + " is running...");
+    }
 }
 
 // Adult.java
 package edu.model;
-
 import java.util.Date;
-
 public abstract class Adult extends Child {
-	public Adult() {}
-	public Adult(String name, Date birthday) {
-		super(name, birthday);
-	}
-	
-	public void work() {
-		System.out.println(name + " is working...");
-	}
+    public Adult() {}
+    public Adult(String name, Date birthday) {
+        super(name, birthday);
+    }
+    
+    public void work() {
+        System.out.println(getName() + " is working...");
+    }
 }
 
 // Singer.java
 package edu.model;
-
 import java.util.Date;
-
 public class Singer extends Adult {
-	public Singer() {}
-	public Singer(String name, Date birthday) {
-		super(name, birthday);
-	}
+    public Singer() {}
+    public Singer(String name, Date birthday) {
+        super(name, birthday);
+    }
 
-	@Override
-	public void talk() {
-		System.out.println(name + " is talking...");
-	}
-
+    @Override
+    public void talk() {
+        System.out.println(getName() + " is talking...");
+    }
 }
 
 // Test.java
 package edu.model;
-
 import java.util.Calendar;
-
 public class Test {
 	public static void main(String[] args) {
         Singer singer = new Singer("Huy", Calendar.getInstance().getTime());
-		singer.run();  // Huy is running...
-		singer.work(); // Huy is working...
-		singer.talk(); // Huy is talking...
+        singer.run();  // Huy is running...
+        singer.work(); // Huy is working...
+        singer.talk(); // Huy is talking...
 
         Singer.footCount = 4;
-		System.out.println(Child.footCount);  // 4
-		System.out.println(singer.birdthday); // Tue Mar 15 22:17:15 ICT 2022
+        System.out.println(Child.footCount);  // 4
     }
 }
 ```

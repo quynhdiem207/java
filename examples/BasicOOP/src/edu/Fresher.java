@@ -7,6 +7,7 @@
  */
 package edu;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import edu.mngt.EmployeeManager;
@@ -25,6 +26,10 @@ import edu.model.Student;
 public class Fresher {
 	static int m(byte a, int b) { return a+b; }
     static int m(short a, short b) { return a-b; } 
+    
+    static < T extends Person & Member > void test(T t) {
+    	t.showName();
+    }
     
 	public static void main(String[] args) {
 		Manager manager = new Manager("Minh");
@@ -120,12 +125,14 @@ public class Fresher {
 		System.out.println(a2);
 		
 		Singer singer = new Singer("Huy", Calendar.getInstance().getTime());
-		System.out.println(singer.birdthday);
 		singer.run();
 		singer.work();
 		singer.talk();
 		
 		Singer.footCount = 4;
 		System.out.println(Child.footCount);
+		
+		test(student);
 	}
+	
 }

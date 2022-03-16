@@ -10,14 +10,39 @@ package edu.model;
 import java.util.Date;
 
 public abstract class Child {
-	public String name;
-	public Date birdthday;
+	private String name;
+	private Date birdthday;
 	public static int footCount = 2;
 	
 	public Child() {}
 	public Child(String name, Date birthday) {
 		this.name = name;
 		this.birdthday = birthday;
+	}
+	
+	/**
+	 * @return the name
+	 */
+	protected String getName() {
+		return name;
+	}
+	/**
+	 * @param name the name to set
+	 */
+	protected void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * @return the birdthday
+	 */
+	protected Date getBirdthday() {
+		return birdthday;
+	}
+	/**
+	 * @param birdthday the birdthday to set
+	 */
+	protected void setBirdthday(Date birdthday) {
+		this.birdthday = birdthday;
 	}
 	
 	public abstract void talk();

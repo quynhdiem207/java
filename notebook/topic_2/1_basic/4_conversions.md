@@ -239,10 +239,10 @@ Một *Narrowing Reference Conversion* tồn tại từ reference type S sang re
 - S không phải subtype của T,  
 - Nếu tồn tại một parameterized type (type tham số hóa) X là supertype của T, và một parameterized type Y là supertype của S, sao cho the erasures của X & Y là giống nhau, thì X & Y không khác biệt.  
     ```
-    *ví dụ*: 
+    ví dụ: 
     Không tồn tại narrowing reference conversion từ:
     - ArrayList<String> -> ArrayList<Object> or ngược lại, 
-    - ArrayList<String> -> List<Object> & ngược lại.  
+    - ArrayList<String> -> List<Object> or ngược lại.  
     
     (vì các type parameters String & Object khác biệt)
     ```
@@ -255,8 +255,8 @@ Một *Narrowing Reference Conversion* tồn tại từ reference type S sang re
     + S là interface type, T là class type, và T là final class mà implement interface S,  
     + S là class type Object or interface type java.io.Serializable or Cloneable (interfaces duy nhất được implemented bởi arrays), and T is an array type.  
     + S là array type SC[], tức là một array of components của type SC; T là array type TC[], tức là một array of components của type TC; và một narrowing reference conversion tồn tại từ SC sang TC.  
-    + S là type variable, và một narrowing reference conversion tồn tại từ ràng buộc trên (the upper bound) của S sang T.  
-    + T là type variable, và có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang ràng buộc trên (the upper bound) của T.  
+    + S là type variable, và một narrowing reference conversion tồn tại từ upper bound của S sang T.  
+    + T là type variable, và có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang upper bound của T.  
     + S là một intersection type S1 & ... & Sn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ Si sang T.  
     + T là một intersection type T1 & ... & Tn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang Ti.  
 
@@ -270,7 +270,7 @@ Nếu một *Narrowing Reference Conversion* là *unchecked*, thì JVM sẽ khô
 Các *Unchecked Narrowing Reference Conversion* là:  
 
 - *Narrowing reference conversion* từ type S sang một *parameterized class or interface type* T là *unchecked*, trừ khi một trong các điều kiện sau là true:  
-    + Tất cả các *type arguments* của T là *unbounded wildcards* (ký tự đại diện không bị ràng buộc).  
+    + Tất cả các *type arguments* của T là *unbounded wildcards*.  
     + T <: S, and S không có subtype X nào khác T sao cho *type arguments* của X không nằm trong *type arguments* của T.  
 - *Narrowing reference conversion* từ type S sang một *type variable* T là unchecked.  
 - *Narrowing reference conversion* từ type S sang một *intersection type* T1 & ... & Tn là unchecked nếu tồn tại Ti (1 ≤ i ≤ n) sao cho S không phải subtype của Ti và một *narrowing reference conversion* từ S sang Ti là unchecked.  
@@ -286,7 +286,7 @@ Một vài *unchecked narrowing reference conversions* yêu cầu kiểm tra xá
 
 Các thuật ngữ *completely unchecked* & *partially unchecked* đề cập đến khả năng tương thích của type trong conversion khi được xem như các *raw types*. Nếu conversion là "upcast" về mặt khái niệm thì nó là *completely unchecked*, vì conversion là hợp lệ trong non-generic system của JVM. Ngược lại, nếu conversion là "downcast" về mặt khái niệm thì nó là *partially unchecked*.  
 
-vd: Conversion từ *ArrayList<String>* sang *Collection<T>* là *completely unchecked*, bởi vì (raw) type ArrayList là một subtype của (raw) type Collection trong JVM. Ngược lại, conversion từ *Collection<T>* sang *ArrayList<String>* là *partially unchecked*, bởi vì (raw) type Collection không phải subtype của (raw) type ArrayList trong JVM.  
+*Ví dụ*: Conversion từ *ArrayList<String>* sang *Collection<T>* là *completely unchecked*, bởi vì (raw) type ArrayList là một subtype của (raw) type Collection trong JVM. Ngược lại, conversion từ *Collection<T>* sang *ArrayList<String>* là *partially unchecked*, bởi vì (raw) type Collection không phải subtype của (raw) type ArrayList trong JVM.  
 
 Sự phân loại của *unchecked narrowing reference conversions* như sau:  
 
@@ -480,7 +480,7 @@ Có một *Unchecked Conversion* từ *raw class or interface type* G sang bất
 
 Có một *Unchecked Conversion* từ *raw array type* G[]k sang bất kỳ *array type* nào có dạng G<T1, ..., Tn>[]k. (Kí hiệu []k cho biết array type có k chiều).  
 
-Việc sử dụng một *Unchecked Conversion* gây ra compile-time *unchecked warning* trừ khi tất cả các *type arguments* Ti (1 ≤ i ≤ n) là ký tự đại diện không bị ràng buộc (unbounded wildcards) hoặc warning bị chặn bởi @SuppressWarnings.  
+Việc sử dụng một *Unchecked Conversion* gây ra compile-time *unchecked warning*, trừ khi tất cả các *type arguments* Ti (1 ≤ i ≤ n) là *unbounded wildcards* hoặc warning bị chặn bởi @SuppressWarnings.  
 
 
 ## 1.10. Capture Conversion
