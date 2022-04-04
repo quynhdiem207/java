@@ -11,4 +11,5 @@ public interface Member {
 	String NAME = "Diêm";
 	
 	void showName();
+	public int getRandom();
 }

@@ -21,4 +21,20 @@ public class Person {
     public void showMessage() {
         System.out.println("message...");
     }
+    
+    public Person getPerson() {
+    	return new Person();
+    }
+    
+    public int getRandom() {
+    	return 2;
+    }
+    
+//    public long getRandom(int x) {
+//    	return 2;
+//    }
+    
+    public <T> T getRandom(T x) {
+    	return x;
+    }
 }

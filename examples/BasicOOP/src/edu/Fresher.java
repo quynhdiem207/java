@@ -9,6 +9,7 @@ package edu;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import edu.mngt.EmployeeManager;
 import edu.mngt.Management;
@@ -22,6 +23,17 @@ import edu.model.Member;
 import edu.model.Person;
 import edu.model.Singer;
 import edu.model.Student;
+
+class ExampleWildcard <E extends Person> {
+//	void test(List<E> lst) {
+//		for(E ls : lst) {
+//			ls.study();
+//		}
+//	}
+	void test(E t) {
+		t.study();
+	}
+}
 
 public class Fresher {
 	static int m(byte a, int b) { return a+b; }
@@ -133,6 +145,12 @@ public class Fresher {
 		System.out.println(Child.footCount);
 		
 		test(student);
+		
+		List<Student> perLst = new ArrayList<Student>();
+		perLst.add(student);
+		
+		ExampleWildcard<? super Student> ex = new ExampleWildcard<Student>();
+		ExampleWildcard<Student> ex2 = new ExampleWildcard<>();
+		ex.test(student);
 	}
-	
 }

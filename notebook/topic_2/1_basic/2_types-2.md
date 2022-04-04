@@ -16,7 +16,7 @@ Trong đó:
 - TypeBound:  
     + extends TypeVariable  
     + extends ClassOrInterfaceType {AdditionalBound}  
-        + AdditionalBound: & InterfaceType  
+- AdditionalBound: & InterfaceType  
 
 *Ví dụ: type variable T có ràng buộc C & I: <T extends C & I>.*  
 
@@ -127,12 +127,18 @@ Hai *parameterized types* khác nhau rõ ràng nếu thỏa mãn một trong hai
         + super ReferenceType
 ```
 
-*Wildcard* có thể được cung cấp ràng buộc một cách tường minh:  
+*Wildcard* đại diện cho *unknown* type, có 3 dạng:  
 
-- Một *upper bound* được biểu thị với syntax: **? extends B** trong đó B là upper bound,  
-- Một *lower bound* được biểu thị với syntax: **? super B** trong đó B là lower bound.  
+- *Unbound wildcard* có dạng **?**,  
+    *VD: List<?> đại diện cho một list của unknown type.*  
 
-*Wildcard* **? extends Object** tương đương với *unbound wildcard* **?**.  
+- *Upper bound wildcard* có dạng **? extends B** trong đó B là upper bound,  
+    *VD: List<? extends Number> đại diện cho một list của Number và các subtypes của nó như Integer, Float, etc.*  
+
+- *Lower bound wildcard* có dạng **? super B** trong đó B là lower bound.  
+    *VD: List<? super Integer> đại diện cho một list của Integer và các supertypes của nó như Number, Object.*  
+
+Wildcard **? extends Object** tương đương với unbound wildcard **?**.  
 
 Hai *type arguments* được cho là khác nhau rõ ràng nếu thỏa mãn một trong các điều sau:  
 
@@ -181,11 +187,11 @@ class Test {
 *Ví dụ: Bounded Wildcards*  
 
 ```java
-<E> boolean addAll(Collection<? extends E> c) { ... }
+boolean addAll(Collection<? extends E> c) { ... }
 
 <T> boolean addAll(Collection<T> c) { ... }
 
-<T> void Reference(T referent, ReferenceQueue<? super T> queue) { ... }
+void Reference(T referent, ReferenceQueue<? super T> queue) { ... }
 ```
 
 
@@ -223,21 +229,268 @@ Erasure của type T được ký hiệu: **|T|**.
 
 Erasure mapping được định nghĩa như sau:  
 
-- The erasure của một *parameterized type* G<T1,...,Tn> là |G|.  
-- The erasure của một *nested type* T.C là |T|.C.  
-- The erasure của một *array type* T[] là |T|[].  
-- The erasure của một *type variable* là the erasure của ràng buộc tận cùng bên trái (leftmost bound) của nó.  
-- The erasure của *every other type* là chính type đó.  
+```
+- Erasure của một parameterized type G<T1,...,Tn> là |G|.  
+- Erasure của một nested type T.C là |T|.C.  
+- Erasure của một array type T[] là |T|[].  
+- Erasure của một type variable là erasure của leftmost bound của nó.  
+- Erasure của every other type là chính type đó.  
+```
 
-*Type Erasure* cũng ánh xạ signature của một method hoặc constructor với một signature không có parameterized types or type variables. The erasure của một method hoặc constructor signature s là một signature bao gồm tên giống với s và erasures của tất cả các parameter types chính thức được đưa ra trong s.  
+*Type Erasure* cũng map signature của một method hoặc constructor sang một signature không có parameterized types or type variables. Erasure của một method hoặc constructor signature s là một signature bao gồm tên giống với s và erasures của tất cả các formal parameter types được đưa ra trong s.  
 
 Return type của một method và các type parameters của một generic method or constructor cũng bị xóa nếu signature của method or constructor bị xóa.  
 
-The erasure của signature của một generic method không có type parameters.
+Erasure của signature của một generic method sẽ không có type parameters.
 
 
-## 6. Subtyping 
+## 6. Reifiable Types
 
-- T là *subtype* của S          (T <: S),  
-- T là *direct subtype* của S   (T <1 S),  
-- T là *proper subtype* của S   (T < S),  
+Bởi vì một vài type information bị xóa, không phải tất cả các types đều available at runtime. Types mà hoàn toàn available at runtime được gọi là *reifiable types*.
+
+Một type là *reifiable* chỉ khi thỏa mãn một trong các điều sau:
+
+- Nó đề cập đến một *non-generic* class or interface type declaration.  
+- Nó là một *parameterized type*, trong đó tất cả các type arguments là unbounded wildcards.  
+- Nó là một *raw type*.  
+- Nó là một *primitive type*.  
+- Nó là một *array type* có element type là reifiable.  
+- Nó là một *nested type*, trong đó với mỗi type T được phân cách bởi dấu "." là reifiable.  
+    ```
+    Ví dụ: Nếu generic class X<T> có một generic member class Y<U>, thì:
+    - Type X<?>.Y<?> là reifiable, vì X<?> là reifiable và Y<?> là reifiable. 
+    - Type X<?>.Y<Object> không phải reifiable vì Y<Object> không phải reifiable.
+    ```
+
+Một *intersection type* không phải *reifiable*.
+
+
+## 7. Raw Types
+
+*Raw type* là một trong những:  
+
+- *Reference type* mà được tạo thành bởi lấy tên của *generic type declaration* mà không có *type argument list*.  
+- *Array type* có element type là raw type.  
+- *Non-static member type* của một *raw type* R mà không phải được kế thừa từ superclass or superinterface của R.  
+
+Non-generic class or interface type không phải một raw type.
+
+```java
+class Outer<T>{
+    T t;
+
+    class Inner {
+        T s;
+        T setOuterT(T t1) { t = t1; return t; }
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+		Outer.Inner x = null;         // OK
+        x = new Outer().new Inner();
+        x.s = "Hi";
+        
+		Outer<Number>.Inner y = null; // OK
+        y = new Outer().new Inner();
+        y.s = 2;
+		
+        System.out.println(x.s + " - " + y.s);
+        
+		Outer a = new Outer();
+        Outer<Double>.Inner z = a.new Inner();
+        z.setOuterT(3.0);
+        System.out.println(a.t); // 3.0
+	}
+}
+```
+
+Superclasses or superinterfaces của một raw type là erasures của superclasses or superinterfaces của bất kỳ tham số hóa nào của generic type.
+
+Type của một constructor, instance method, or non-static field của một raw type C mà không phải được thừa kế từ superclasses or superinterfaces của nó là raw type tương ứng với erasure của type của nó trong generic declaration tương ứng với C.
+
+Type của một static method or static field của một raw type C chính là type của nó trong generic declaration tương ứng với C.
+
+**Note**:  
+
+- Khi truyền type arguments cho một non-static type member của một raw type mà không phải được thừa kế từ superclasses or superinterfaces của nó, sẽ xảy ra compile-time error.  
+- Khi sử dụng một type member của một parameterized type như một raw type, sẽ xảy ra compile-time error.  
+
+```java
+class Outer<T>{
+    class Inner<S> {
+        S s;
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+		Outer.Inner x = null;                  // OK
+        x = new Outer().new Inner();
+        x.s = "Hi";
+
+		Outer<Number>.Inner<String> y = null;  // OK
+        y = new Outer().new Inner();
+        y.s = "Hello";
+        
+        System.out.println(x.s + " - " + y.s); // Hi - Hello
+
+        Outer.Inner<Double> x = null;          // ERROR
+        Outer<Double>.Inner x = null;          // ERROR
+	}
+}
+```
+
+**Note**: Supertype của một class có thể là một raw type.
+
+*Ví dụ 1: Raw Types*
+
+```java
+class Cell<E> {
+    E value;
+
+    Cell(E v)     { value = v; }
+    E get()       { return value; }
+    void set(E v) { value = v; }
+
+    public static void main(String[] args) {
+        Cell x = new Cell<String>("abc");
+        System.out.println(x.value);  // abc -> OK, has type Object
+        System.out.println(x.get());  // abc -> OK, has type Object
+        x.set("def");                 // unchecked warning
+        x.set(2);                     // unchecked warning
+
+        Cell<String> x = new Cell<String>("abc");
+        x.set(2);                     // ERROR
+    }
+}
+```
+
+*Ví dụ 2: Raw Types and Inheritance*
+
+```java
+import java.util.*;
+
+class NonGeneric {
+    Collection<Number> myNumbers() { return null; }
+}
+
+abstract class RawMembers<T> extends NonGeneric implements Collection<String> {
+    static Collection<NonGeneric> cng = new ArrayList<NonGeneric>();
+
+    public static void main(String[] args) {
+        RawMembers rw = null;
+
+        // RawMembers inherits myNumbers() from the NonGeneric class whose erasure is also NonGeneric.
+        // Return type of myNumbers() in RawMembers is not erased, 
+        // and assign rw.myNumbers() to Collection<Number> requires no unchecked conversion
+        Collection<Number> cn = rw.myNumbers();      // OK
+
+        // RawMembers<T> inherits method Iterator<String> iterator() from Collection<String> superinterface.
+        // Raw type RawMembers inherits iterator() from Collection, the erasure of Collection<String>,
+        // which means that the return type of iterator() in RawMembers is Iterator
+        // As a result, assign rw.iterator() to Iterator<String> requires an unchecked conversion
+        Iterator<String> is = rw.iterator();         // Unchecked warning
+
+        // static member cng retains its parameterized type
+        Collection<NonGeneric> cnn = RawMembers.cng; // OK, static member
+    }
+}
+```
+
+**Note**: Các member của raw type sẽ không bị xóa gồm: static member, và member được thừa kế từ non-generic supertype.  
+
+
+## 8. Intersection Types
+
+Một *intersection type* có dạng *T1 & ... & Tn* (n > 0), trong đó Ti (1 ≤ i ≤ n) là các types.
+
+Values của một intersection type là những objects mà là values của tất cả các types Ti với 1 ≤ i ≤ n.
+
+Mỗi intersection type T1 & ... & Tn tạo ra một class or interface danh nghĩa nhằm xác định các members của intersection type.  
+
+Các members của một intersection type *T1 & ... & Tn* (n > 0) trong đó Ti (1 ≤ i ≤ n) là tất cả các members của các class or interface Ti.  
+
+
+## 9. Subtyping 
+
+Các *supertypes* của một type được xác định bằng cách bắc cầu thông qua quan hệ *direct supertype*.  
+
+- **T <: S** biểu thị T là *subtype* của S,  
+- **T <1 S** biểu thị T là *direct subtype* của S,  
+- **T < S** biểu thị T là *proper subtype* của S, nếu T <: S và S ≠ T.    
+
+*Note*: Đối với parameterized type: T <: S không có nghĩa là C<T> <: C<S>.  
+
+
+### 9.1, Subtyping among Primitive Types
+
+Các quy tắc sau định nghĩa quan hệ *direct supertype* giữa các *primitive types*:  
+
+- double >1 float  
+- float >1 long  
+- long >1 int  
+- int >1 char  
+- int >1 short  
+- short >1 byte  
+
+
+### 9.2, Subtyping among Class and Interface Types
+
+Cho một *non-generic type* declaration C, *direct supertypes* của C gồm:  
+
+```
+- Direct superclass của C.
+- Direct superinterfaces của C.
+- Type Object, nếu C là interface type không có direct superinterfaces.
+```
+
+Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của the raw type C gồm:
+
+```
+- Direct superclass của the raw type C.
+- Direct superinterfaces của the raw type C.
+- Type Object, nếu C<F1,...,Fn> là một generic interface type không có direct superinterfaces.
+```
+
+Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của the *generic type* C<F1,...,Fn> gồm:
+
+```
+- Direct superclass của C<F1,...,Fn>.
+- Direct superinterfaces của C<F1,...,Fn>.
+- Type Object, nếu C<F1,...,Fn> là một generic interface type không có direct superinterfaces.
+- Raw type C.
+```
+
+Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của *parameterized type* C<T1,...,Tn>, với mọi Ti (1 ≤ i ≤ n), gồm:
+
+```
+- D<T1,...,Tn>, với generic type D<F1,...,Fn> là direct supertype của generic type C<F1,...,Fn>.
+- C<S1,...,Sn>, với Si contains Ti (1 ≤ i ≤ n).
+- Type Object, if C<F1,...,Fn> is a generic interface type with no direct superinterfaces.
+- Raw type C.
+```
+
+Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của *parameterized type* C<R1,...,Rn> với ít nhất một trong các Ri (1 ≤ i ≤ n) là *wildcard* type argument, là direct supertypes của parameterized type C<X1,...,Xn> mà là kết quả của *capture conversion* sang C<R1,...,Rn>.
+
+*Direct supertypes* của một *intersection type* T1 & ... & Tn là Ti (1 ≤ i ≤ n).
+
+*Direct supertypes* của một *type variable* là các types được liệt kê trong ràng buộc của nó.
+
+Một *type variable* là *direct supertype* của lower bound của nó.
+
+*Direct supertypes* của *null type* là tất cả các reference types khác với null.
+
+
+### 9.3, Subtyping among Array Types
+
+Các quy tắc sau định nghĩa quan hệ *direct supertype* giữa các *array types*:  
+
+- Nếu S và T đều là reference types, thì S[] >1 T[] chỉ khi S >1 T.  
+- Object >1 Object[]  
+- Cloneable >1 Object[]  
+- java.io.Serializable >1 Object[]  
+- Nếu P là primitive type, thì:  
+    + Object >1 P[]  
+    + Cloneable >1 P[]  
+    + java.io.Serializable >1 P[]  

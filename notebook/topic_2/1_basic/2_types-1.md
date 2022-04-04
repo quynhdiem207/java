@@ -302,6 +302,8 @@ class Test {
 
 The class *Object* là superclass của tất cả các classes.  
 
+Class *Object* không có direct superclass.  
+
 Tất cả các class & array types đều thừa kế các methods của class *Object*, nói cách khác tất cả các *objects* đều hỗ trợ các methods của class *Object*. Các methods này bao gồm:  
 
 - *clone* method: Tạo bản sao của object,  

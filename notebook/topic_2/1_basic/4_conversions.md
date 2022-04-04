@@ -83,7 +83,7 @@ Một số trường hợp không làm mất thông tin, bảo toàn độ chín
 - int               -> double  
 - float             -> double trong một strictfp expression  
 
-Các chuyển đổi từ *integral type* -> *floating-point type* có thể làm mất thông tin:  
+Các chuyển đổi có thể làm mất thông tin:  
 
 - int -> float,  
 - long -> float,  
@@ -314,7 +314,7 @@ Kiểm tra tính hợp lệ tại runtime cho *checked or partially unchecked na
         + Nếu T là interface type, thì T phải là java.io.Serializable or Cloneable type (các interfaces duy nhất được implemented bởi arrays), nếu không ClassCastException sẽ được ném ra.  
         + Nếu T là array type TC[], thì RC & TC phải là cùng một primitive type, hoặc RC & TC là các reference types đồng thời được phép áp dụng đệ quy các rules này, nếu không ClassCastException sẽ được ném ra.  
 
-Nếu conversion là chuyển sang intersection type T1 & ... & Tn, thì đối với mọi i (1 ≤ i ≤ n), bất cứ run-time check được yêu cầu cho conversion từ S sang Ti cũng được yêu cầu cho conversion sang intersection type.  
+Nếu conversion là chuyển sang intersection type T1 & ... & Tn, thì đối với mọi i (1 ≤ i ≤ n), bất cứ run-time check cần thiết cho conversion từ S sang Ti cũng cần thiết cho conversion sang intersection type.  
 
 ```java
 public interface Member {
@@ -476,7 +476,7 @@ public class Example {
 
 Gọi G là một *generic type* với n *type parameters*.  
 
-Có một *Unchecked Conversion* từ *raw class or interface type* G sang bất kỳ *parameterized type* nào có dạng G <T1, ..., Tn>.  
+Có một *Unchecked Conversion* từ *raw class or interface type* G sang bất kỳ *parameterized type* nào có dạng G<T1, ..., Tn>.  
 
 Có một *Unchecked Conversion* từ *raw array type* G[]k sang bất kỳ *array type* nào có dạng G<T1, ..., Tn>[]k. (Kí hiệu []k cho biết array type có k chiều).  
 
@@ -484,6 +484,97 @@ Việc sử dụng một *Unchecked Conversion* gây ra compile-time *unchecked 
 
 
 ## 1.10. Capture Conversion
+
+*Capture conversion* là type conversion của một *parameterized type*.  
+
+Capture conversion chỉ cần thiết cho type checking tại compile time, vì vậy nó không bao giờ ném một runtime exception.
+
+Gọi G là một *generic type declaration* với n type parameters A1,...,An tương ứng với các ràng buộc U1,...,Un.
+
+Tồn tại một *capture conversion* từ parameterized type G<T1, ..., Tn> sang parameterized type G<S1, ..., Sn>, sao cho, với 1 ≤ i ≤ n:
+
+- Nếu Ti là một *unbound wildcard* type argument có dạng '?', thì Si là type variable mới có upper bound là Ui [A1 := S1, ..., An := Sn] và lower bound là type null.  
+
+    ```java
+    public interface List<T> { ... }
+    public class Foo<T extends Appendable> { ... }
+
+    // List<?> ==> List<X> where X <: Object  
+    // Foo<?>  ==> Foo<X> where X <: Appendable  
+    ```  
+
+- Nếu Ti là một *upper bound wildcard* type argument có dạng '? extends Bi', thì Si là một type variable mới có upper bound là glb(Bi, Ui [A1 := S1, ..., An := Sn]) và có lower bound là type null.  
+    + *Note*: glb(V1, ..., Vm) được định nghĩa là V1 & ... & Vm.  
+    + Xảy ra compile time error nếu đối với hai class bất kỳ (không phải interface) Vi và Vj, Vi không phải là subclass của Vj hoặc ngược lại.  
+    
+    ```java
+    public interface List<T> { ... }
+    public class Foo<T extends Appendable> { ... }
+
+    // List<? extends Person>       ==> List<X> where X <: Person  
+    // Foo<? extends CharSequence>  ==> Foo<X> where X <: Appendable & CharSequence 
+    ```  
+
+- Nếu Ti là *lower bound wildcard* type argument có dạng '? super Bi', thì Si là một type variable mới có upper bound là Ui [A1 := S1, ..., An := Sn] và lower bound là Bi.  
+    
+    ```java
+    public interface List<T> { ... }
+    public class Foo<T extends Appendable> { ... }
+
+    // List<? super String>     ==> List<X> where String <: X  
+    // Foo<? super FileWriter>  ==> Foo<X> where FileWriter<: X <: Appendable  
+    ```  
+
+- Ngược lại, Si = Ti.  
+    
+    ```java
+    public interface List<T> { ... }
+
+    // List<T>  ==>  List<S> where S = X  
+    ```  
+
+Capture conversion trên bất kỳ type nào khác với parameterized type hoạt động như một identifier conversion.
+
+Capture conversion không được áp dụng đệ quy.
+
+*Ví dụ*:  
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+class Person {
+    String name;
+    void study() { ... }
+}
+
+class Student extends Person { ... }
+
+class class ExampleWildcard <E extends Person> {
+    void test(List<E> lst) {
+        for(E ls : lst) {
+            ls.study();
+        }
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Student student = new Student();
+        List<Student> lst = new ArrayList<>();
+        lst.add(student);
+        
+        ExampleWildcard<Student> ex1 = new ExampleWildcard<>();
+        ex1.test(lst); // OK
+
+        ExampleWildcard<? super Student> ex2 = new ExampleWildcard<Student>();
+        ex2.test(lst); // ERROR -> Do compiler suy luận type argument của class là unknown
+        // The method test(List<capture#1-of ? super Student>) in the type 
+        // ExampleWildcard<capture#1-of ? super Student> is not applicable for the arguments (List<Student>)
+    }
+}
+```
+
 
 ## 1.11. String Conversion
 
@@ -505,9 +596,29 @@ Sau đó, reference value sẽ được convert thành String type:
 
 **Note**: *toString* method được định nghĩa bởi class *Object*. Các Wrapper class ghi đè method này.  
 
+
 ## 1.12. Forbidden Conversions
 
 Bất kỳ conversion nào không được cho phép tường minh đều bị cấm.  
 
 
 ## 1.13. Value Set Conversion
+
+*Value Set Conversion* là quá trình ánh xạ một floating-point value từ tập giá trị này sang tập giá trị khác mà không thay đổi type của nó.
+
+Trong một expression không phải FP-strict, value set conversion cung cấp các lựa chọn để triển khai ngôn ngữ lập trình Java:
+
+- Nếu giá trị là một phần tử của tập giá trị float-extension-exponent, thì việc triển khai có thể ánh xạ giá trị tới phần tử gần nhất của tập giá trị float theo tùy chọn của nó. Việc chuyển đổi này có thể dẫn đến hiện tượng overflow (trong trường hợp giá trị được thay thế bằng một infinity cùng dấu) hoặc underflow (trong trường hợp đó, giá trị có thể mất độ chính xác vì nó được thay thế bằng một số không chuẩn hóa hoặc số 0 cùng dấu).  
+    ```java
+    float f = 5e-2f;
+    ```  
+
+- Nếu giá trị là một phần tử của tập giá trị double-extended-exponent, thì việc triển khai có thể ánh xạ giá trị tới phần tử gần nhất của tập giá trị double theo tùy chọn của nó. Việc chuyển đổi này có thể dẫn đến hiện tượng overflow (trong trường hợp giá trị được thay thế bằng một infinity cùng dấu) hoặc underflow (trong trường hợp đó, giá trị có thể mất độ chính xác vì nó được thay thế bằng một số không chuẩn hóa hoặc số 0 cùng dấu).  
+    ```java
+    double d = 5e-2;
+    ```  
+
+Trong một FP-strict expression, chuyển đổi tập giá trị không cung cấp bất kỳ lựa chọn nào; mọi triển khai phải hoạt động theo cùng một cách:  
+
+- Nếu giá trị thuộc type float và không phải là một phần tử của tập giá trị float, thì việc triển khai phải ánh xạ giá trị đến phần tử gần nhất của tập giá trị float. Việc chuyển đổi này có thể dẫn đến overflow hoặc underflow.  
+- Nếu giá trị thuộc type double và không phải là một phần tử của tập giá trị double, thì việc triển khai phải ánh xạ giá trị đến phần tử gần nhất của tập giá trị double. Việc chuyển đổi này có thể dẫn đến overflow hoặc underflow.  

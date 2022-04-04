@@ -2,7 +2,7 @@
 
 Định nghĩa:  
 
-- Biến là một nơi lưu trữ giá trị, & có một type liên kết, type có thể là *Primitive type* hoặc *Reference type*.  
+- Biến là một định danh cho vùng nhớ lưu trữ giá trị, & có một type liên kết, type có thể là *Primitive type* hoặc *Reference type*.  
 - Giá trị của biến có thể được thay đổi bởi an assignment, increment (++), or decrement(--) operator.  
 
 Cú pháp khai bao biến:  
@@ -255,16 +255,22 @@ class Point {
 }
 ```
 
-***Note***: có thể khai báo các *variables* có tên trùng nhau nếu chúng có scope (phạm vi) khác nhau.  
+***Note***: có thể khai báo các *local variables* có cùng simple name với *class variable* và *instance variable*, khái niệm này được gọi là *shadowing*.  
 
 ```java
 public class Student {
     int score;
+    static String name;
 
     public static void main(String[] args) {
         int score = 5;
-        System.out.println(score);      // 5
-        System.out.println(this.score); // 0
+        String name = "Quỳnh";
+
+        System.out.println(score);        // 5
+        System.out.println(this.score);   // 0
+
+        System.out.println(name);         // Quỳnh
+        System.out.println(Student.name); // null
     }
 }
 ```
@@ -299,6 +305,20 @@ class Point {
     static final Point origin = new Point(0, 0);
 }
 ```
+
+Một variables nhất định không được khai báo *final*, nhưng được coi là *effectively final* (có hiệu quả final) khi:  
+
+- Một *local variable* có declarator có một initializer là *effectively final* nếu tất cả điều sau đều đúng:  
+    + Nó không được khai báo final.  
+    + Nó không bao giờ nằm bên trái trong một assignment expression. (Note: local variable declarator chứa initializer không phải một assignment expression.)  
+    + Nó không bao giờ là toán hạng của prefix or postfix increment or decrement operator.  
+
+- Một *local variable* có declarator thiếu một initializer là *effectively final* nếu tất cả điều sau đều đúng:  
+    + Nó không được khai báo final.  
+    + Bất cứ khi nào nó nằm bên trái trong một assignment expression, nó chắc chắn chưa được gán.  
+    + Nó không bao giờ là toán hạng của prefix or postfix increment or decrement operator.  
+
+- Một *method, constructor, lambda, or exception parameter* được xử lý, nhằm xác định xem nó có phải *effectively final*, giống với một *local variable* có declaratorcó một initializer.  
 
 
 ### 1.5, Initial Values of Variables

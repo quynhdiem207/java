@@ -46,4 +46,16 @@ public class Student extends Person implements Member {
 	public void run() {
 		System.out.println(name + " is running...");
 	}
+	
+	public Student getPerson() {
+		return new Student();
+	}
+	
+//	public int getRandom() {
+//		return 2;
+//	}
+	
+	public long getRandom(int x) {
+    	return 2;
+    }
 }
