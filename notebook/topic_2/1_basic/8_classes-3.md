@@ -12,8 +12,10 @@ Variables của class type được giới thiệu bởi *field declarations*.
 - VariableInitializer:
     + Expression
     + ArrayInitializer
-- Dims: {Annotation} [ ] {{Annotation} [ ]}
+- Dims: {Annotation} [] {{Annotation} []}
 ```
+
+Nếu body của một class declaration khai báo 2 fields với cùng name, sẽ gây ra compile-time error.
 
 Nếu class khai báo một field với tên xác định, thì declaration của field đó được cho là che dấu (hide) bất kỳ và tất cả các declarations có thể truy cập của các fields có cùng tên trong superclasses, và superinterfaces của class đó.
 
@@ -370,6 +372,8 @@ Nếu declarator dành cho một *class variable* (hay *static field*), thì cá
 - Nếu một tham chiếu bởi một simple name đến bất kỳ *instance variable* nào xảy ra trong initializer, thì sẽ xảy ra compile-time error.  
 - Nếu *this* hoặc *super* keyword xảy ra trong initializer, thì sẽ xảy ra compile-time error.  
 - Tại runtime, initializer được đánh giá và thực hiện gán chính xác một lần, khi class được khởi tạo.  
+
+    **Note**: Các *static fields* là các *constant variables* được khởi tạo trước các static fields khác. Điều này cũng áp dụng trong các interfaces.
 
 Nếu declarator dành cho một *instance variable* (hay *non-static field*), thì các quy tắc sau được áp dụng cho initializer của nó:  
 

@@ -408,6 +408,8 @@ Một *nested enum type* được ngầm định là *static*, nhưng vẫn cho 
 
 Một *enum type* không có instances nào khác với những instances đã được định nghĩa bởi các *enum constants* của nó. Nếu cố gắng khởi tạo một *enum type* một cách tường minh, sẽ gây ra compile-time error.  
 
+**Note**: Một *enum type* không thể là *generic*, nó không thể khai báo các *type variables*.  
+
 
 ### 9.1, Enum Constants
 
@@ -443,8 +445,8 @@ Bất kỳ *constructor or member declarations* trong body của một enum decl
 Sẽ gây ra compile-time error nếu:  
 
 - Một *constructor declaration* trong một enum declaration là *public* or *protected*.  
-- Hoặc nếu một *constructor declaration* trong một enum declaration chứa một lời gọi *superclass constructor*.  
-- Hoặc tham chiếu tới một *static field* của một enum type từ các *constructors, instance initializers, or instance variable initializer expressions* của enum type đó, trừ khi field đó là một *constant variable*.  
+- Một *constructor declaration* trong một enum declaration chứa một lời gọi *superclass constructor*.  
+- Tham chiếu tới một *static field* của một enum type từ các *constructors, instance initializers, or instance variable initializer expressions* của enum type đó, trừ khi field đó là một *constant variable*.  
 
 Trong một enum declaration, một *constructor declaration* không có access modifiers sẽ là *private*.
 

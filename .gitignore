@@ -1,1 +1,4 @@
 examples/.metadata
+examples/*/.idea
+examples/*/bin/
+examples/*/out/

@@ -103,7 +103,7 @@ class Test {
 ```
 
 
-### 1.3, Narrowing Primitive Conversion
+## 1.3, Narrowing Primitive Conversion
 
 *Narrowing Primitive Conversion* là các chuyển đổi trên *primitive type* sau:  
 
@@ -118,10 +118,10 @@ class Test {
 
 *Narrowing Primitive Conversion* của *floating-point value* -> *integral type* T diễn ra theo 2 bước:  
 
-- Bước 1: floating-point value được convert thành long nếu T là long nếu T là long; hoặc được convert thành int nếu T là byte, short, char, int.  
+- Bước 1: floating-point value được convert thành long nếu T là long; hoặc được convert thành int nếu T là byte, short, char, int.  
     + Nếu floating-point value là NaN, kết quả là int or long 0,  
     + Nếu floating-point value không phải một Infinity, sẽ được làm tròn thành integer value:  
-        + Nếu T là long, & integer value có thể biểu diễn dưới dạng long, thì kết quả là long value,  
+        + Nếu T là long, và integer value có thể biểu diễn dưới dạng long, thì kết quả là long value,  
         + Ngược lại, nếu integer value có thể biểu diễn dưới dạng int, thì kết quả là int value,  
     + Nếu không sẽ xảy ra 2 trường hợp:  
         + Nếu value quá nhỏ (số âm lớn or -Infinity), kết quả sẽ là giá trị nhỏ nhất có thể biểu diễn của int or long,  
@@ -213,9 +213,15 @@ public class Example {
 
         StudentManager stuManager = new Student();
         PersonManager perManager = stuManager; // OK
+        
+        Integer x = 3;
+        Long y = (Long) x; // COMPILE-TIME ERROR
 
 		Student[] y = {new Student()};
         Person[] x = y; // OK
+
+        int[] a = {1, 2};
+        long[] b = x;   // COMPILE-TIME ERROR
     }
 }
 ```
@@ -237,18 +243,18 @@ Một *Narrowing Reference Conversion* có thể yêu cầu kiểm tra tại run
 Một *Narrowing Reference Conversion* tồn tại từ reference type S sang reference type T, nếu thỏa mãn tất cả các điều kiện sau:  
 
 - S không phải subtype của T,  
-- Nếu tồn tại một parameterized type (type tham số hóa) X là supertype của T, và một parameterized type Y là supertype của S, sao cho the erasures của X & Y là giống nhau, thì X & Y không khác biệt.  
+- Nếu tồn tại một parameterized type X là supertype của T, và một parameterized type Y là supertype của S, sao cho the erasures của X và Y là giống nhau, thì X và Y không khác biệt.  
     ```
     ví dụ: 
     Không tồn tại narrowing reference conversion từ:
     - ArrayList<String> -> ArrayList<Object> or ngược lại, 
     - ArrayList<String> -> List<Object> or ngược lại.  
     
-    (vì các type parameters String & Object khác biệt)
+    (vì các type parameters String và Object khác biệt)
     ```
 - Đáp ứng một trong các trường hợp sau:  
-    + S & T là class types, và thỏa mãn |S| <: |T| or |T| <: |S|,  
-    + S & T là interface types,  
+    + S và T là class types, và thỏa mãn |S| <: |T| or |T| <: |S|,  
+    + S và T là interface types,  
     + S là class type, T là interface type, và S không phải final class,  
     + S là class type, T là interface type, và S là final class mà implement interface T,  
     + S là interface type, T là class type, và T không phải final class,  
@@ -257,8 +263,8 @@ Một *Narrowing Reference Conversion* tồn tại từ reference type S sang re
     + S là array type SC[], tức là một array of components của type SC; T là array type TC[], tức là một array of components của type TC; và một narrowing reference conversion tồn tại từ SC sang TC.  
     + S là type variable, và một narrowing reference conversion tồn tại từ upper bound của S sang T.  
     + T là type variable, và có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang upper bound của T.  
-    + S là một intersection type S1 & ... & Sn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ Si sang T.  
-    + T là một intersection type T1 & ... & Tn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang Ti.  
+    + S là một intersection type S1 &...& Sn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ Si sang T.  
+    + T là một intersection type T1 &...& Tn, và với mọi i (1 ≤ i ≤ n), có một widening reference conversion or một narrowing reference conversion tồn tại từ S sang Ti.  
 
 
 ### *1.6.2, Checked and Unchecked Narrowing Reference Conversions*  
@@ -273,7 +279,7 @@ Các *Unchecked Narrowing Reference Conversion* là:
     + Tất cả các *type arguments* của T là *unbounded wildcards*.  
     + T <: S, and S không có subtype X nào khác T sao cho *type arguments* của X không nằm trong *type arguments* của T.  
 - *Narrowing reference conversion* từ type S sang một *type variable* T là unchecked.  
-- *Narrowing reference conversion* từ type S sang một *intersection type* T1 & ... & Tn là unchecked nếu tồn tại Ti (1 ≤ i ≤ n) sao cho S không phải subtype của Ti và một *narrowing reference conversion* từ S sang Ti là unchecked.  
+- *Narrowing reference conversion* từ type S sang một *intersection type* T1 &...& Tn là unchecked nếu tồn tại Ti (1 ≤ i ≤ n) sao cho S không phải subtype của Ti và một *narrowing reference conversion* từ S sang Ti là unchecked.  
 
 
 ### *1.6.3, Narrowing Reference Conversions at Run Time*  
@@ -284,14 +290,14 @@ Cơ bản, các conversions này đa phần là chuyển sang các class and int
 
 Một vài *unchecked narrowing reference conversions* yêu cầu kiểm tra xác thực tại runtime. Điều này phụ thuộc vào conversion là *completely unchecked* hay *partially unchecked*.  
 
-Các thuật ngữ *completely unchecked* & *partially unchecked* đề cập đến khả năng tương thích của type trong conversion khi được xem như các *raw types*. Nếu conversion là "upcast" về mặt khái niệm thì nó là *completely unchecked*, vì conversion là hợp lệ trong non-generic system của JVM. Ngược lại, nếu conversion là "downcast" về mặt khái niệm thì nó là *partially unchecked*.  
+Các thuật ngữ *completely unchecked* và *partially unchecked* đề cập đến khả năng tương thích của type trong conversion khi được xem như các *raw types*. Nếu conversion là "upcast" về mặt khái niệm thì nó là *completely unchecked*, vì conversion là hợp lệ trong non-generic system của JVM. Ngược lại, nếu conversion là "downcast" về mặt khái niệm thì nó là *partially unchecked*.  
 
 *Ví dụ*: Conversion từ *ArrayList<String>* sang *Collection<T>* là *completely unchecked*, bởi vì (raw) type ArrayList là một subtype của (raw) type Collection trong JVM. Ngược lại, conversion từ *Collection<T>* sang *ArrayList<String>* là *partially unchecked*, bởi vì (raw) type Collection không phải subtype của (raw) type ArrayList trong JVM.  
 
 Sự phân loại của *unchecked narrowing reference conversions* như sau:  
 
 - Unchecked narrowing reference conversion từ S sang *non-intersection type* T là *completely unchecked* nếu |S| <: |T|. Nếu không thì nó là *partially unchecked*.  
-- Unchecked narrowing reference conversion từ S sang *intersection type* T1 & ... & Tn là *completely unchecked* nếu với mọi i (1 ≤ i ≤ n), hoặc S <: Ti, hoặc narrowing reference conversion từ S sang Ti là *completely unchecked*. Nếu không thì nó là *partially unchecked*.  
+- Unchecked narrowing reference conversion từ S sang *intersection type* T1 &...& Tn là *completely unchecked* nếu với mọi i (1 ≤ i ≤ n), hoặc S <: Ti, hoặc narrowing reference conversion từ S sang Ti là *completely unchecked*. Nếu không thì nó là *partially unchecked*.  
 
 Kiểm tra tính hợp lệ tại runtime cho *checked or partially unchecked narrowing reference conversion* như sau:  
 
@@ -312,9 +318,9 @@ Kiểm tra tính hợp lệ tại runtime cho *checked or partially unchecked na
     + Nếu R là class đại diện cho array type RC[], tức là array of components của type RC:  
         + Nếu T là class type, thì T phải là Object, nếu không ClassCastException sẽ được ném ra.  
         + Nếu T là interface type, thì T phải là java.io.Serializable or Cloneable type (các interfaces duy nhất được implemented bởi arrays), nếu không ClassCastException sẽ được ném ra.  
-        + Nếu T là array type TC[], thì RC & TC phải là cùng một primitive type, hoặc RC & TC là các reference types đồng thời được phép áp dụng đệ quy các rules này, nếu không ClassCastException sẽ được ném ra.  
+        + Nếu T là array type TC[], thì RC và TC phải là cùng một primitive type, hoặc RC và TC là các reference types đồng thời được phép áp dụng đệ quy các rules này, nếu không ClassCastException sẽ được ném ra.  
 
-Nếu conversion là chuyển sang intersection type T1 & ... & Tn, thì đối với mọi i (1 ≤ i ≤ n), bất cứ run-time check cần thiết cho conversion từ S sang Ti cũng cần thiết cho conversion sang intersection type.  
+Nếu conversion là chuyển sang intersection type T1 &...& Tn, thì đối với mọi i (1 ≤ i ≤ n), bất cứ run-time check cần thiết cho conversion từ S sang Ti cũng cần thiết cho conversion sang intersection type.  
 
 ```java
 public interface Member {
@@ -369,15 +375,18 @@ public class Example {
         employee = (Employee) person2; // OK
         employee = (Employee) person1; // RUNTIME ERROR
 
+        Long x = 3l;
+        Integer y = (Integer) x; // COMPILE-TIME ERROR
+
         Person[] x = { new Employee() };
         Member[] y = { new Employee() };
         Employee[] z = null;
         z = (Employee[]) x; // RUNTIME ERROR
         z = (Employee[]) y; // RUNTIME ERROR
 
-        int[] z1 = { 1, 2 };
-        int[] z2 = z1;  // OK
-        long[] z3 = z1; // COMPILE-TIME ERROR
+        long[] z1 = { 1, 2 };
+        long[] z2 = z1;         // OK
+        int[] z3 = (int[]) z1;  // COMPILE-TIME ERROR
     }
 }
 ```
@@ -385,10 +394,12 @@ public class Example {
 
 ## 1.7, Boxing Conversion
 
-Java cung cấp các Wrapper Class (Boolean, Byte, Character, Short, Integer, Long, Float hoặc Double) hỗ trợ:  
+Java cung cấp các *Wrapper Class* hỗ trợ:  
 
 - Wrap các *primitive values* bên trong object,  
-- Cung cấp các APIs để thao tác với các *primitive values*.    
+- Cung cấp các APIs để thao tác với các *primitive values*.  
+
+Java cung cấp các *Wrapper Class* đã được định nghĩa bao gồm: *Boolean, Byte, Character, Short, Integer, Long, Float hoặc Double*. Tất cả các class này đều extends class *Number*.  
 
 *Boxing Conversion* coi các expression của *primitive type* như là các expression của *reference type* tương ứng, bao gồm:  
 
@@ -417,7 +428,7 @@ Tại runtime, Boxing Conversion thực hiện:
         + Nếu p là NaN, thì r.isNaN() == true,  
         + Nếu p không phải NaN, thì r.doubleValue() == p.  
         
-Boxing conversion có thể dẫn đến *OutOfMemoryError* nếu instance mới của Wrapper Class (Boolean, Byte, Character, Short, Integer, Long, Float hoặc Double) cần được cấp phát và không có đủ bộ nhớ.  
+Boxing conversion có thể dẫn đến *OutOfMemoryError* nếu instance mới của Wrapper Class cần được cấp phát và không có đủ bộ nhớ.  
 
 
 ## 1.8, Unboxing Conversion
@@ -504,7 +515,7 @@ Tồn tại một *capture conversion* từ parameterized type G<T1, ..., Tn> sa
     ```  
 
 - Nếu Ti là một *upper bound wildcard* type argument có dạng '? extends Bi', thì Si là một type variable mới có upper bound là glb(Bi, Ui [A1 := S1, ..., An := Sn]) và có lower bound là type null.  
-    + *Note*: glb(V1, ..., Vm) được định nghĩa là V1 & ... & Vm.  
+    + *Note*: glb(V1, ..., Vm) được định nghĩa là V1 &...& Vm.  
     + Xảy ra compile time error nếu đối với hai class bất kỳ (không phải interface) Vi và Vj, Vi không phải là subclass của Vj hoặc ngược lại.  
     
     ```java

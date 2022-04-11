@@ -2,7 +2,7 @@
 
 Định nghĩa:  
 
-- Biến là một định danh cho vùng nhớ lưu trữ giá trị, & có một type liên kết, type có thể là *Primitive type* hoặc *Reference type*.  
+- Biến là một định danh cho vùng nhớ lưu trữ giá trị, và có một type liên kết, type có thể là *Primitive type* hoặc *Reference type*.  
 - Giá trị của biến có thể được thay đổi bởi an assignment, increment (++), or decrement(--) operator.  
 
 Cú pháp khai bao biến:  
@@ -27,7 +27,7 @@ public class Example {
 
 Một *Variable* của một *Class Type* T có thể giữ: một *null reference*, or một *reference tới một instance của class T or của bất kỳ class nào là subclass của class T*.  
 
-*Note*: Một object được cho là instance của class của nó & của tất cả các superclass của class của nó.  
+*Note*: Một object được cho là instance của class của nó và của tất cả các superclass của class của nó.  
 
 ```java
 public abstract class Person {
@@ -205,36 +205,36 @@ Có 8 loại biến:
 
 - **Class Variable**:  
     + Là *static field* trong class declaration, or *field* trong interface declaration.  
-    + Được tạo & được khởi tạo với default value khi class or interface của nó được chuẩn bị (giai đoạn Preparation trong chức năng Linking của Class Loader Subsystem).  
+    + Được tạo và được khởi tạo với default value khi class or interface của nó được chuẩn bị (giai đoạn Preparation trong chức năng Linking của Class Loader Subsystem).  
     + Không còn tồn tại khi class or interface của nó bị unload.  
 
 - **Instance Variable**:  
     + Là *field* được khai báo không sử dụng static keyword trong class declaration.  
-    + Được tạo & được khởi tạo với default value với vai trò là một thành phần của object mới được tạo của class chứa nó or subclass của class chứa nó.  
+    + Được tạo và được khởi tạo với default value với vai trò là một thành phần của object mới được tạo của class chứa nó or subclass của class chứa nó.  
     + Không còn tồn tại khi object không còn được tham chiếu.  
 
 - **Array Components**:  
     + Là các *variables* không được đặt tên.  
-    + Được tạo & được khởi tạo với default value bất cứ khi nào một object mới là một array được tạo.  
+    + Được tạo và được khởi tạo với default value bất cứ khi nào một object mới là một array được tạo.  
     + Không còn tồn tại khi array không còn được tham chiếu.  
 
 - **Method Parameters**:  
     + Là *tên các argument values* được truyền cho một method.  
-    + Được tạo & khởi tạo với argument value tương ứng cho mỗi parameter được khai báo trong method declaration mỗi khi method được gọi.  
+    + Được tạo và khởi tạo với argument value tương ứng cho mỗi parameter được khai báo trong method declaration mỗi khi method được gọi.  
     + Không còn tồn tại khi method thực thi hoàn tất.  
 
 - **Constructor Parameters**:  
     + Là *tên các argument values* được truyền cho một constructor.  
-    + Được tạo & khởi tạo với argument value tương ứng cho mỗi parameter được khai báo trong constructor declaration mỗi khi constructor được gọi.  
+    + Được tạo và khởi tạo với argument value tương ứng cho mỗi parameter được khai báo trong constructor declaration mỗi khi constructor được gọi.  
     + Không còn tồn tại khi constructor thực thi hoàn tất.  
 
 - **Lambda Parameters**:  
     + Là *tên các argument values* được truyền cho một Lambda expression.  
-    + Được tạo & khởi tạo với argument value tương ứng cho mỗi parameter được khai báo trong lambda expression mỗi khi method được implemented bởi Lambda được gọi.  
+    + Được tạo và khởi tạo với argument value tương ứng cho mỗi parameter được khai báo trong lambda expression mỗi khi method được implemented bởi Lambda được gọi.  
     + Không còn tồn tại khi lambda expression thực thi hoàn tất.  
 
 - **Exception Parameter**:  
-    + Được tạo & khởi tạo với object được ném đại diện cho ngoại lệ mỗi khi một exception được bắt bởi mệnh đề catch của câu lệnh try.  
+    + Được tạo và khởi tạo với object được ném đại diện cho ngoại lệ mỗi khi một exception được bắt bởi mệnh đề catch của câu lệnh try.  
     + Không còn tồn tại khi block của mệnh đề catch thực thi hoàn tất.  
 
 - **Local variables**:  

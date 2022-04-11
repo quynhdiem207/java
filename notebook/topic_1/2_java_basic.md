@@ -113,19 +113,19 @@ Có 3 built-in class loader bao gồm:
     + Là Child của Extension Class Loader.  
     + Thực hiện loads các class files mức ứng dụng từ system classpath được chỉ định bởi java.class.path (mặc định là thư mục hiện tại, hoặc có thể set classpath khi chạy chương trình bằng command line option -cp hay -classpath hay set biến môi trường CLASSPATH).  
 
+**Note**: Các class được load sẽ tham chiếu đến class loader đã load nó.  
+
 Class Loader hoạt động dựa trên 3 nguyên tắc:  
 
 - **Delegation principle** (nguyên tắc ủy quyền): Trừ Bootstrap Class Loader, mọi Class Loader đều có Parent. Khi load một class, Class Loader sẽ ủy quyền tìm kiếm cho Parent Class Loader, nó chỉ cố gắng tìm kiếm nếu Parent không tìm thấy class đó.  
 - **Visibility principle** (nguyên tắc hiển thị): Child Class Loader có thể thấy tất cả các class được load bởi Parent. Nhưng Parent Class Loader không thể thấy các class được load bởi Child Class Loader.  
 - **Uniqueness principle** (nguyên tắc duy nhất): Mỗi class chỉ được load một lần duy nhất, đảm bảo rằng Child Class Loader không tải lại class đã được tải bởi Parent.  
 
-*Cách thức hoạt động*: Khi JVM yêu cầu load một class:  
+*Cách thức hoạt động*: Khi JVM yêu cầu load một class, Class Loader Subsystem thực hiện:  
 
-- Class Loader Subsystem thực hiện:  
-    + Ủy quyền yêu cầu cho Child Class Loader cuối cùng,  
-    + Class loader này sẽ kiểm tra class đã được load hay chưa, nếu đã được load sẽ trả lại class, nếu chưa được load sẽ ủy quyền cho Parent, nếu Parent không tìm được thì nó mới cố gắng tìm kiếm, quá trình này diễn ra đệ quy.  
-    + Nếu Child Class Loader cuối cùng vẫn không thấy class, một ngoại lệ *java.lang.ClassNotFoundException* sẽ được ném ra.  
-- Sau khi class file được load vào Method Area, JVM sẽ tạo một object là instance của *java.lang.Class* để đại diện cho class file này trong *heap*, các class được load sẽ tham chiếu đến class loader đã load nó.  
+- Ủy quyền yêu cầu cho Child Class Loader cuối cùng,  
+- Class loader này sẽ kiểm tra class đã được load hay chưa, nếu đã được load sẽ trả lại class, nếu chưa được load sẽ ủy quyền cho Parent, nếu Parent không tìm được thì nó mới cố gắng tìm kiếm, quá trình này diễn ra đệ quy.  
+- Nếu Child Class Loader cuối cùng vẫn không thấy class, một ngoại lệ *java.lang.ClassNotFoundException* sẽ được ném ra.  
 
 *java.lang.ClassLoader* là *abstract class* nằm trong package *java.lang* của Java core:  
 
@@ -136,23 +136,6 @@ Class Loader hoạt động dựa trên 3 nguyên tắc:
     + Nếu class chưa được load, ủy quyền cho Parent Class Loader,  
     + Nếu Parent tìm không thấy class, gọi method *findClass* để tìm & load class.  
 - Method *defineClass* của *ClassLoader* có thể được sử dụng để tạo các Class object là instance của *java.lang.Class* từ các class file.  
-
-Để lấy Class object đại diện cho class or interface:  
-
-+ Gọi static method *forName* của *java.lang.Class*, truyền String name của class or interface.  
-+ Gọi method *getClass* của *java.lang.Object*.  
-+ Truy xuất static field *class* của class or interface type được đặt tên.  
-    eg: type of String.class is Class<String>  
-
-```java
-// forName(String className);
-// forName(String name, boolean initialize, ClassLoader loader);
-
-p1 = (Point) Class.forName("Point").getDeclaredConstructor().newInstance(); // default
-p2 = (Point) Point.class.getDeclaredConstructor(int.class, int.class).newInstance(2, 2);
-p3 = new Point(3, 3);
-p3.getClass();
-```  
 
 Ngoài ra, Class *java.net.URLClassLoader* load các class & resource từ search path của URLs tham chiếu đến cả thư mục & jar files, nó là một mở rộng của *java.lang.ClassLoader* ghi đè method *findClass* để tìm kiếm một hoặc nhiều URL được chỉ định cho các class và tài nguyên.  
 
@@ -178,7 +161,35 @@ Nó thực hiện 3 hoạt động quan trọng:
 
 ##### *4.3.1.3, Initialization*
 
-*Initialization*: Xử lý việc gán giá trị ban đầu cho các static variables, & thực thi các static blocks.  
+*Initialization*: Bao gồm việc thực thi các static initializers và các variable initializers cho các static fields (các class variables) được khai báo trong class.  
+
+**Note**: JVM sẽ khởi tạo một object là instance của *java.lang.Class* để đại diện cho class hay interface T đã được load, điều này được thực hiện trước khi:  
+
+- Tạo instance của class T,  
+- Gọi các static methods được khai báo bởi T,  
+- Gán giá trị cho các static fields  được khai báo bởi T,  
+- Sử dụng các static fields được khai báo bởi T.  
+
+Khi một class được khởi tạo, các superclasses của nó được khởi tạo (nếu nó chưa được khởi tạo trước đó), cũng như bất kỳ superinterfaces nào mà khai báo bất kỳ default methods nào (nếu nó chưa được khởi tạo trước đó). Initialization của một interface không bao gồm initialization của bất kỳ superinterfaces nào của chính nó.
+
+Một tham chiếu tới một static field chỉ khởi tạo class or interface nào thực sự khai báo nó, mặc dù nó có thể được tham chiếu qua tên của một subclass, một subinterface, hoặc một class mà implements một interface.
+
+Để lấy Class object instance đại diện cho class or interface:  
+
++ Gọi static method *forName* của *java.lang.Class*, truyền String name của class or interface.  
++ Gọi method *getClass* của *java.lang.Object*.  
++ Truy xuất static field *class* của class or interface type được đặt tên.  
+    eg: type of String.class is [Class<String>]  
+
+```java
+// forName(String className);
+// forName(String name, boolean initialize, ClassLoader loader);
+
+p1 = (Point) Class.forName("Point").getDeclaredConstructor().newInstance(); // default
+p2 = (Point) Point.class.getDeclaredConstructor(int.class, int.class).newInstance(2, 2);
+p3 = new Point(3, 3);
+p3.getClass();
+```  
 
 
 #### 4.3.2, Runtime Data Area  

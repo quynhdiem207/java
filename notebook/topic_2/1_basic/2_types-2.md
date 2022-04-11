@@ -1,6 +1,6 @@
 ## 3. Type Variables
 
-*Type variable* là một identifier không đủ tiêu chuẩn được sử dụng như là một type trong class, interface, method, và constructor.  
+*Type variable* là một unqualified identifier được sử dụng như là một type trong class, interface, method, và constructor.  
 
 Một *type variable* được giới thiệu bởi khai báo của một *type parameter* của một *generic* class, interface, method, hoặc constructor.  
 
@@ -36,7 +36,7 @@ Mọi *type variable* được khai báo dưới dạng một *type parameter* �
     
     *Note*: erasures của tất cả các types của một ràng buộc phải khác nhau, neus không sẽ xảy ra compile time error.  
 
-Các members của một type variable X với ràng buộc T & I1 & ... & In là các members của intersection type T & I1 & ... & In.  
+Các members của một type variable X với ràng buộc T & I1 &...& In là các members của intersection type T & I1 &...& In.  
 
 *Ví dụ: type variable 'T' có các members giống với intersection type 'C & I', là type mà có các members giống với empty class 'CT'.*    
 
@@ -223,7 +223,7 @@ Một static member được khai báo trong generic type declaration phải đ�
 
 ## 5. Type Erasure
 
-*Type Erasure* là một mapping (ánh xạ) từ type (có thể gồm parameterized types & type variables) sang type (không bao gồm parameterized types & type variables).  
+*Type Erasure* là một mapping (ánh xạ) từ type (có thể gồm parameterized types và type variables) sang type (không bao gồm parameterized types và type variables).  
 
 Erasure của type T được ký hiệu: **|T|**.  
 
@@ -246,7 +246,7 @@ Erasure của signature của một generic method sẽ không có type paramete
 
 ## 6. Reifiable Types
 
-Bởi vì một vài type information bị xóa, không phải tất cả các types đều available at runtime. Types mà hoàn toàn available at runtime được gọi là *reifiable types*.
+Bởi vì một vài type information bị xóa (erased), không phải tất cả các types đều available at runtime. Types mà hoàn toàn available tại runtime được gọi là *reifiable types*.
 
 Một type là *reifiable* chỉ khi thỏa mãn một trong các điều sau:
 
@@ -403,13 +403,13 @@ abstract class RawMembers<T> extends NonGeneric implements Collection<String> {
 
 ## 8. Intersection Types
 
-Một *intersection type* có dạng *T1 & ... & Tn* (n > 0), trong đó Ti (1 ≤ i ≤ n) là các types.
+Một *intersection type* có dạng *T1 &...& Tn* (n > 0), trong đó Ti (1 ≤ i ≤ n) là các types.
 
 Values của một intersection type là những objects mà là values của tất cả các types Ti với 1 ≤ i ≤ n.
 
-Mỗi intersection type T1 & ... & Tn tạo ra một class or interface danh nghĩa nhằm xác định các members của intersection type.  
+Mỗi intersection type T1 &...& Tn tạo ra một class or interface danh nghĩa nhằm xác định các members của intersection type.  
 
-Các members của một intersection type *T1 & ... & Tn* (n > 0) trong đó Ti (1 ≤ i ≤ n) là tất cả các members của các class or interface Ti.  
+Các members của một intersection type *T1 &...& Tn* (n > 0) trong đó Ti (1 ≤ i ≤ n) là tất cả các members của các class or interface Ti.  
 
 
 ## 9. Subtyping 
@@ -421,6 +421,8 @@ Các *supertypes* của một type được xác định bằng cách bắc cầ
 - **T < S** biểu thị T là *proper subtype* của S, nếu T <: S và S ≠ T.    
 
 *Note*: Đối với parameterized type: T <: S không có nghĩa là C<T> <: C<S>.  
+
+**Note**: Quan hệ *subtype* khác với quan hệ *subclass*.
 
 
 ### 9.1, Subtyping among Primitive Types
@@ -445,7 +447,7 @@ Cho một *non-generic type* declaration C, *direct supertypes* của C gồm:
 - Type Object, nếu C là interface type không có direct superinterfaces.
 ```
 
-Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của the raw type C gồm:
+Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của *raw type* C gồm:
 
 ```
 - Direct superclass của the raw type C.
@@ -465,19 +467,19 @@ Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* c
 Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của *parameterized type* C<T1,...,Tn>, với mọi Ti (1 ≤ i ≤ n), gồm:
 
 ```
-- D<T1,...,Tn>, với generic type D<F1,...,Fn> là direct supertype của generic type C<F1,...,Fn>.
-- C<S1,...,Sn>, với Si contains Ti (1 ≤ i ≤ n).
-- Type Object, if C<F1,...,Fn> is a generic interface type with no direct superinterfaces.
+- D<U1 θ,...,Uk θ>, trong đó D<U1,...,Uk> là một generic type mà là direct supertype của generic type C<T1,...,Tn> và θ là phép thay thế [F1:=T1,...,Fn:=Tn].
+- C<S1,...,Sn>, trong đó Si chứa Ti (1 ≤ i ≤ n).
+- Type Object, nếu C<F1,...,Fn> là một generic interface type không có direct superinterfaces.
 - Raw type C.
 ```
 
-Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của *parameterized type* C<R1,...,Rn> với ít nhất một trong các Ri (1 ≤ i ≤ n) là *wildcard* type argument, là direct supertypes của parameterized type C<X1,...,Xn> mà là kết quả của *capture conversion* sang C<R1,...,Rn>.
+Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của *parameterized type* C<R1,...,Rn> với ít nhất một trong các Ri (1 ≤ i ≤ n) là *wildcard*, là direct supertypes của parameterized type C<X1,...,Xn> (kết quả của *capture conversion* sang C<R1,...,Rn>).
 
-*Direct supertypes* của một *intersection type* T1 & ... & Tn là Ti (1 ≤ i ≤ n).
+*Direct supertypes* của một *intersection type* T1 &...& Tn là Ti (1 ≤ i ≤ n).
 
 *Direct supertypes* của một *type variable* là các types được liệt kê trong ràng buộc của nó.
 
-Một *type variable* là *direct supertype* của lower bound của nó.
+Một *type variable* là một *direct supertype* của lower bound của nó.
 
 *Direct supertypes* của *null type* là tất cả các reference types khác với null.
 

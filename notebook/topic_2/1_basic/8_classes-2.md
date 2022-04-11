@@ -4,7 +4,7 @@
 
 Các members của class type bao gồm:  
 
-- Các members được thừa kế từ direct superclass của nó, ngoại trừ Object không có superclass.  
+- Các members được thừa kế từ direct superclass của nó, ngoại trừ class Object không có direct superclass.  
 - Các members được thừa kế từ direct superinterface của nó,  
 - Các members được khai báo trong body của class.  
 
@@ -24,6 +24,8 @@ Type của member biểu thị:
     + argument types: list các types của các arguments cho method member.  
     + return type: return type của method member.  
     + throws clause: exception types được khai báo trong throws clause của method member.  
+
+**Note**: Class không kế thừa các *static methods* từ *direct superinterface* của nó.
 
 
 *Ví dụ 1: Use of Class Members*  
@@ -86,7 +88,7 @@ class Point4d extends Point3d {
     public void move(int dx, int dy, int dz, int dw) {
         x += dx; y += dy; z += dz; w += dw; // compile-time errors
         // Because Point4d and Point3d are different package,
-        // therefore, default fields x, y, z of Point3d are not inherit by Point4d 
+        // therefore, default access fields x, y, z of Point3d are not inherit by Point4d 
     }
 }
 

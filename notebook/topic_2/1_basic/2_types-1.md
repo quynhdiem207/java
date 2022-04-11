@@ -1,6 +1,6 @@
 ## 1. Types
 
-Java là ngôn ngữ định kiểu tĩnh, tức là mọi variable & expression đều có một type được biết đến tại thời điểm compile.  
+Java là ngôn ngữ định kiểu tĩnh, tức là mọi variable và expression đều có một type được biết đến tại thời điểm compile.  
 
 Type của variable luôn được khai báo, còn type của expression có thể được suy ra tại compile-time.   
 
@@ -30,7 +30,7 @@ Trong Java *types* được chia làm 2 loại:
 
 ## 2. Values
 
-*Values* có thể được lưu trữ trong *variables*, truyền dưới dạng *arguments*, trả về bởi methods, & tính toán trên chúng.  
+*Values* có thể được lưu trữ trong *variables*, truyền dưới dạng *arguments*, trả về bởi methods, và tính toán trên chúng.  
 
 Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:  
 
@@ -44,7 +44,7 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
     + byte, short, int, long là các số nguyên có dấu.  
     + char là số nguyên không dấu (0 -> 2^16 - 1).  
 - Floating-point Values: float, double là các số thực  
-- boolean values: true & false  
+- boolean values: true và false  
 
 
 #### *2.2.1, Integral Values*
@@ -62,7 +62,7 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
 
 - Các constants, constructors, methods khác hỗ trợ cho các values này được định nghĩa trong các Wrapper Class: Byte, Short, Integer, Long, Character, và class Math.  
 - Nếu trong phép toán có ít nhất 1 toán hạng kiểu *long*, thì sẽ sử dụng độ chính xác 8 bytes, nếu toán hạng còn lại không phải kiểu long sẽ thực hiện mở rộng thành kiểu long; Nếu không có toán hạng kiểu *long* sẽ sử dụng độ chính xác 4 bytes, các toán hạng sẽ được mở rộng thành kiểu *int* nếu không phải kiểu *int*.  
-- Có thể ép kiểu bất cứ value nào của *Integral types* từ or sang bất cứ *numeric types* nào, nhưng không thể ép kiểu giữa *integral type* & *boolean type*.  
+- Có thể ép kiểu bất cứ value nào của *Integral types* từ or sang bất cứ *numeric types* nào, nhưng không thể ép kiểu giữa *integral type* và *boolean type*.  
     ```java
     public static void main(String[] args) {
         int a = 2;
@@ -109,7 +109,7 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
 
 #### *2.2.2, Floating-Point Values*
 
-- Floating-Point Values bao gồm: số dương, số âm, 0, -0, Infinity, -Infinity, & NaN.  
+- Floating-Point Values bao gồm: số dương, số âm, 0, -0, Infinity, -Infinity, và NaN.  
 - Có thể sử dụng *Extended-Exponent Values* (giá trị lũy thừa mở rộng, vd: 1e5) để biểu diễn Floating-Point Values.  
     ```java
     public static void main(String[] args) {
@@ -119,7 +119,7 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
         System.out.format("%f %f", a, b); // 100.000000 0.001000
     }
     ```
-- Hằng số NaN của Float & Double đã được định nghĩa trước: *Float.NaN*, *Double.NaN*.  
+- Hằng số NaN của Float và Double đã được định nghĩa trước: *Float.NaN*, *Double.NaN*.  
 - Các phép toán không có kết quả xác định về mặt toán học tạo ra *NaN*.  
 - Các toán tử số học với *NaN* sẽ tạo ra kết quả *NaN*.  
     ```java
@@ -170,7 +170,7 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
 - Các constants, constructors, methods khác hỗ trợ cho các values này được định nghĩa trong các Wrapper Class: Float, Double, và class Math.  
 - Nếu trong phép toán có ít nhất 1 toán hạng là Floating-Point value, thì phép toán đó là phép toán Floating-Point.  
 - Nếu trong phép toán có ít nhất 1 toán hạng kiểu Double, thì sẽ sử dụng độ chính xác 8 bytes, thực hiện mở rộng thành kiểu Double nếu toán hạng còn lại không phải kiểu Double; Nếu không sẽ sử dụng độ chính xác 4 bytes, các toán hạng sẽ được mở rộng thành kiểu Float nếu không phải kiểu Float.  
-- Có thể ép kiểu bất cứ value nào của *Floating-Point types* từ or sang bất cứ *numeric types* nào, nhưng không thể ép kiểu giữa *Floating-Point type* & *boolean type*.  
+- Có thể ép kiểu bất cứ value nào của *Floating-Point types* từ or sang bất cứ *numeric types* nào, nhưng không thể ép kiểu giữa *Floating-Point type* và *boolean type*.  
 - Khi chuyển đổi Floating-Point Values thành Integer, sẽ sử dụng "làm tròn về 0", tức là loại bỏ phần thập phân:  
     ```java
     public static void main(String[] args) {
@@ -198,14 +198,14 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
 
 #### *2.2.3, boolean values*
 
-- boolean values gồm 2 giá trị: true & false.  
+- boolean values gồm 2 giá trị: true và false.  
 - boolean operators gồm:  
     + Toán tử quan hệ: ==, !=  
     + Toán tử phủ định: !  
     + Toán tử logic: &, |, ^  
     + Toán tử điều kiện: &&, ||, ? :  
     + Toán tử nối chuỗi: +  
-- Chỉ boolean & Boolean expression có thể được sử dụng trong câu lệnh control flow (if, while, do while, for) & là toán hạng đầu của toán tử điều kiện ? :  
+- Chỉ boolean và Boolean expression có thể được sử dụng trong câu lệnh control flow (if, while, do while, for) và là toán hạng đầu của toán tử điều kiện ? :  
 - boolean value có thể được convert thành String,     
 - boolean value có thể ép kiểu thành type: boolean, Boolean, or Object. Các ép kiểu khác là không được phép.    
 
@@ -304,7 +304,7 @@ The class *Object* là superclass của tất cả các classes.
 
 Class *Object* không có direct superclass.  
 
-Tất cả các class & array types đều thừa kế các methods của class *Object*, nói cách khác tất cả các *objects* đều hỗ trợ các methods của class *Object*. Các methods này bao gồm:  
+Tất cả các class và array types đều thừa kế các methods của class *Object*, nói cách khác tất cả các *objects* đều hỗ trợ các methods của class *Object*. Các methods này bao gồm:  
 
 - *clone* method: Tạo bản sao của object,  
 - *equals* method: So sánh 2 object dựa vào value mà không dựa vào reference,  

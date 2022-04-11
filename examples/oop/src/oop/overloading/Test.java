@@ -1,5 +1,8 @@
 package oop.overloading;
 
+import java.awt.*;
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,9 +13,13 @@ class Super {
     }
     static String greeting() { return "Goodnight"; }
     String name() { return "Richard"; }
+    void sayHello() {}
+    class T {}
+    Iterable<String> m() {return new ArrayList<>();}
 }
 
 class Sub extends Super {
+    class TS {}
     String name;
     {
         name = "Diêm";
@@ -25,10 +32,11 @@ class Sub extends Super {
         this.name = name;
         System.out.println("Sub 2");
     }
-//    static String greeting() { return "Hello, " +  super.name(); }
+    Iterable m() {return new ArrayList<>();}
     String name() { return super.name() + " Dick"; }
+    static String greeting() { TS t = null; return "Hello..."; }
     String sayGoodnight() {
-        return super.greeting() + ", " + name();
+        return Super.greeting() + ", " + name();
     }
     void test(int count, String... args) {
         System.out.println(count);
@@ -40,10 +48,31 @@ class Sub extends Super {
 
 interface A {
     Super test();
+    default int getAge() {
+        return 11;
+    }
+    Object getInfo(String file) throws Exception;
 }
 
 interface B extends A {
     Sub test();
+    static int getRandom() {
+        return (int) Math.floor(Math.random() * 100);
+    }
+    default int getAge() {
+        return A.super.getAge() * 2;
+    }
+    String getInfo(String file) throws IOException;
+}
+
+class D implements B {
+    public Sub test() {
+        return new Sub();
+    }
+    public int getAge() {
+        return B.super.getAge() * 3;
+    }
+    public String getInfo(String file) throws IOException { return ""; }
 }
 
 class Outer {
@@ -103,11 +132,41 @@ public class Test {
     public static void main(String[] args) {
         Sub sub = new Sub("Hoa");
         sub.test(4, "Hello", "Hi");
+        System.out.println(((Super) sub).greeting());
+        System.out.println(sub.greeting());
         System.out.println(sub.name());
         System.out.println(sub.sayGoodnight());
+        sub.m();
+
+        Super sup = new Super();
+        System.out.println(sup.greeting() + ", " + sup.name());
+        sup.m();
+
+//        Number[] a = {new Integer(1), new Integer(2)};
+//        Integer[] b = (Integer[]) a; // RUNTIME ERROR
+
+        int[] a = null;
+        a[0] = 1;
+        int ia[][] = { {1, 2}, null };
+        System.out.println(ia[0][0]);
+
+//        int[] x = {1, 2};
+//        Integer[] y = (Integer[]) x;
+//        long[] y = new long[x.length];
+//        for (int i = 0; i < x.length; i++) {
+//            y[i] = x[i];
+//        }
+//        System.out.println(b[1] + "--------");
+
+        Sub sub2 = sub;
+        System.out.println(((Super) sub2).greeting() + ", " + sub2.name());
 
         for (Season s : Season.values())
             System.out.println(s + "\tindex: " + s.ordinal());
+
+        D d = new D();
+        System.out.println(d.getAge());
+        System.out.println(B.getRandom());
 
         Outer.classMethod();
         new Outer().foo();

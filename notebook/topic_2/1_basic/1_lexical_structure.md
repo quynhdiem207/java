@@ -18,7 +18,7 @@ Unicode là một bộ ký tự chuẩn quốc tế, nó bao gồm tất cả c�
 
 Java sử dụng bộ ký tự Unicode với kiểu mã hóa UTF-16 để biểu diễn text theo chuỗi các 16-bit code units (còn được gọi với thuật ngữ UTF-16 code unit).  
 
-Ngoại trừ comments, identifiers, & string literals, thì tất cả các input elements trong một chương trình đều được tạo thành từ các ký tự ASCII (hoặc Unicode escapes có kết quả là các ký tự ASCII).  
+Ngoại trừ comments, identifiers, và string literals, thì tất cả các input elements trong một chương trình đều được tạo thành từ các ký tự ASCII (hoặc Unicode escapes có kết quả là các ký tự ASCII).  
 
 **Note**:  
 
@@ -67,7 +67,7 @@ Identifier Rules (Quy tắc định danh):
 
 - Chỉ có thể chứa các ký tự: chữ cái, chữ số, _, $  
 - Không thể bắt đầu bằng chữ số  
-- Phân biệt chữ hoa & chữ thường  
+- Phân biệt chữ hoa và chữ thường  
 - Không thể trùng với các keyword, boolean literals, null literal trong java  
 
 Naming Conventions (Quy ước đặt tên):  
@@ -139,7 +139,7 @@ Một *integer literal* nếu có hậu tố là ký tự *L* or *l* sẽ có ty
 
 Ký tự underscore (_) được cho phép làm dấu ngăn cách giữa các chữ số biểu thị số nguyên.  
 
-- decimal: Có thể là ký tự 0 duy nhất đại diện số nguyên 0, hoặc bắt đầu bằng chữ số từ 1-9 & theo sau bởi các chữ số từ 0-9 đại diện cho số nguyên:  
+- decimal: Có thể là ký tự 0 duy nhất đại diện số nguyên 0, hoặc bắt đầu bằng chữ số từ 1-9 và theo sau bởi các chữ số từ 0-9 đại diện cho số nguyên:  
     ```text
     int:   0    2     -30     2_147_483_648  
     long:  0l   2L    -30l    2_147_483_648L  
@@ -174,7 +174,7 @@ Một *floating-point literal* có thể được biểu diễn dưới dạng d
 
 Đối với các *hexadecimal floating-point literals*, cần có ít nhất một chữ số (ở phần nguyên hoặc phần phân số), số mũ nhị phân là bắt buộc, suffix là tùy chọn. Số mũ được biểu thị bằng ký tự p hoặc P theo sau là một số nguyên có dấu tùy chọn.  
 
-Ký tự underscore (_) được phép làm dấu ngăn cách giữa các chữ số biểu diễn phần nguyên, phần phân số, & phần số mũ.  
+Ký tự underscore (_) được phép làm dấu ngăn cách giữa các chữ số biểu diễn phần nguyên, phần phân số, và phần số mũ.  
 
 *Ví dụ*:  
 - decimal floating-point literals:  
@@ -218,7 +218,7 @@ Các constant đã định nghĩa đại diện cho các giá trị Not-a-Number
 
 #### *6.3, Boolean Literals*
 
-Boolean type có 2 values, được biểu diễn bằng các *boolean literals* true & false.  
+Boolean type có 2 values, được biểu diễn bằng các *boolean literals* true và false.  
 
 Một *boolean literal* luôn có type Boolean.  
 
@@ -291,7 +291,7 @@ Ví dụ trên minh họa 6 điểm:
 
 #### *6.6, Escape Sequences for Character and String Literals*  
 
-Các *character & string escape sequences* cho phép biểu diễn một số ký tự phi đồ họa mà không sử dụng Unicode escapes, cũng như các ký tự dấu nháy đơn ('), dấu nháy kép (") và dấu gạch chéo ngược (\ backslash), trong các *character literals* và *string literals*.  
+Các *character và string escape sequences* cho phép biểu diễn một số ký tự phi đồ họa mà không sử dụng Unicode escapes, cũng như các ký tự dấu nháy đơn ('), dấu nháy kép (") và dấu gạch chéo ngược (\ backslash), trong các *character literals* và *string literals*.  
 
 - Escape Sequences:  
     + \ b (backspace BS, Unicode \u0008)  

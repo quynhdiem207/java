@@ -1,6 +1,6 @@
 # Chapter 8: Classes
 
-*Class declaration* định nghĩa reference type mới, & mô tả chúng được triển khai như thế nào.  
+*Class declaration* định nghĩa reference type mới, và mô tả chúng được triển khai như thế nào.  
 
 *Top level class* là class mà không phải *nested class* (class lồng nhau).  
 
@@ -24,7 +24,7 @@ Classes có thể được decorated với annotations giống như bất kỳ l
 
 Body của Class khai báo các:  
 
-- Member:  
+- Members:  
     + Fields  
     + Methods  
     + Nested classes  
@@ -35,21 +35,21 @@ Body của Class khai báo các:
 
 Scope của member là toàn bộ phần nội dung của khai báo của class mà member đó thuộc về.  
 
-Field, method, member class, member interface, & constructor declarations có thể bao gồm các access modifiers: public, protected, private.
+Field, method, member class, member interface, và constructor declarations có thể bao gồm các access modifiers: public, protected, private.
 
-Các members của class bao gồm cả các member được khai báo & member được thừa kế:  
+Các members của class bao gồm cả các member được khai báo và member được thừa kế:  
 
 - Các fields mới được khai báo của class có thể che dấu (hide) các fields được khai báo trong superclass or superinterface,  
-- Các class members & interface members mới được khai báo của class có thể che dấu (hide) các class & interface members được khai báo trong superclass or superinterface,  
+- Các class members và interface members mới được khai báo của class có thể che dấu (hide) các class và interface members được khai báo trong superclass or superinterface,  
 - Các methods mới được khai báo của class có thể che dấu (hide), triển khai (implement), ghi đè (override) các methods được khai báo trong superclass or superinterface.  
 
-*Field declaration* mô tả class variables & instance variables. Field có thể được khai báo là *final*, trong trường hợp đó, nó chỉ có thể được gán 1 lần. Bất kỳ Field declaration nào cũng có thể bao gồm một initializer.  
+*Field declaration* mô tả class variables và instance variables. Field có thể được khai báo là *final*, trong trường hợp đó, không thể thay đổi giá trị cho nó nếu đã được gán hoặc được khởi tạo với một giá trị. Bất kỳ Field declaration nào cũng có thể bao gồm một initializer.  
 
 *Member class declaration* mô tả *nested class* là member của class bao quanh. Các member class có thể là *static*, trong trường hợp đó chúng không có quyền truy cập các instance variables của class bao quanh; hoặc member class cũng có thể là *inner class*.  
 
 *Member interface declaration* mô tả *nested interface* là member của class bao quanh.  
 
-*Method declaration* mô tả code mà có thể được gọi bởi *method invocation expression*. Một *Class method* được gọi thông qua class type; Một *Instance method* được gọi thông qua instance của class type. Method mà declaration không chỉ ra nó được triển khai thế nào phải được khai báo là *abstract*. Method có thể được khai báo là *final*, trong trường hợp đó nó không thể bị che giấu (hidden) hay ghi đè (overriden). Method có thể được triển khai bằng platform-dependent native code. *Synchronized method* tự động lock một object trước khi thực thi phần body của nó, & tự động unlock object đó khi trở lại, như thể sử dụng một synchronized statement (câu lệnh đồng bộ hóa), do đó cho phép các activities của nó được đồng bộ với các activities của các threads khác.  
+*Method declaration* mô tả code mà có thể được gọi bởi *method invocation expression*. Một *Class method* được gọi thông qua class type; Một *Instance method* được gọi thông qua instance của class type. Method mà declaration không chỉ ra nó được triển khai thế nào phải được khai báo là *abstract*. Method có thể được khai báo là *final*, trong trường hợp đó nó không thể bị ẩn (hidden) hay ghi đè (overriden). Method có thể được triển khai bằng platform-dependent native code. *Synchronized method* tự động lock một object trước khi thực thi phần body của nó, và tự động unlock object đó khi trở lại, như thể sử dụng một synchronized statement (câu lệnh đồng bộ hóa), do đó cho phép các activities của nó được đồng bộ với các activities của các threads khác.  
 
 Method names có thể được overloaded.
 
@@ -69,9 +69,10 @@ Có 2 loại class declarations:
 - normal class declarations,  
 - enum declarations.  
 
-Syntax của *normal class declaration*:  
-
-> {ClassModifier} class TypeIdentifier [TypeParameters] [Superclass] [Superinterfaces] ClassBody
+```
+- Normal class declaration:  
+    {ClassModifier} class TypeIdentifier [TypeParameters] [Superclass] [Superinterfaces] ClassBody
+```
 
 Nếu class có cùng tên với class or interface bao quanh nó, sẽ xảy ra compile-time error.  
 
@@ -91,9 +92,9 @@ Các Class Modifiers bao gồm:
 - final,  
 - strictfp.  
 
-*public* chỉ sử dụng trong *top level class declaration* & *member class declaration*, không sử dụng trong *local class declaration* & *annonymous class declaration*.  
+*public* chỉ sử dụng trong *top level class declaration* và *member class declaration*, không sử dụng trong *local class declaration* và *annonymous class declaration*.  
 
-*protected* & *private* chỉ sử dụng trong *member class declaration* bên trong một class declaration trực tiếp bao quanh.  
+*protected* và *private* chỉ sử dụng trong *member class declaration* bên trong một class declaration trực tiếp bao quanh.  
 
 *static* chỉ sử dụng trong *member class declaration*, không sử dụng trong *top level, or local, or anonymous class declaration*.  
 
@@ -207,11 +208,11 @@ public class Test {
 
 #### *1.1.2, final Classes*
 
-Một class có thể được khai báo là *final* nếu nó hoàn chỉnh, & không mong muốn nó có subclass.  
+Một class có thể được khai báo là *final* nếu nó hoàn chỉnh, và không mong muốn nó có subclass.  
 
 Một final class không có bất cứ subclass nào, nên sẽ xảy ra compile time error nếu tên của final class xuất hiện trong mệnh đề *extends* của class declaration khác.  
 
-Sẽ xảy ra compile time error nếu một class được khai báo cả *final* & *abstract*, bởi vì việc triển khai của class như vậy có thể không bao giờ được hoàn thành.  
+Sẽ xảy ra compile time error nếu một class được khai báo cả *final* và *abstract*, bởi vì việc triển khai của class như vậy có thể không bao giờ được hoàn thành.  
 
 Các methods của *final class* không bao giờ bị override, vì nó không có bất kỳ subclass nào.  
 
@@ -222,9 +223,9 @@ final class Example { ... }
 
 #### *1.1.3, strictfp Classes*
 
-Tác dụng của *strictfp modifier* là làm cho tất cả các *float or double expression* trong class declaration (bao gồm trong variable initializers, instance initializers, static initializers, & constructors) phải là FP-strict một cách tường minh.
+Tác dụng của *strictfp* modifier là làm cho tất cả các *float or double expression* trong class declaration (bao gồm trong variable initializers, instance initializers, static initializers, và constructors) phải là FP-strict một cách tường minh.
 
-Điều này ngụ ý rằng tất cả các methods được khai báo trong class và tất cả các nested type được khai báo trong class, đều là strictfp một cách tường minh.
+Điều này ngụ ý rằng tất cả các methods được khai báo trong class và tất cả các nested type được khai báo trong class, ngầm định đều là strictfp.
 
 
 ### 1.2, Generic Classes and Type Parameters
@@ -357,7 +358,7 @@ class Test {
 - Cặp dấu ngoặc đơn () chứa danh sách các arguments cho một constructor khi extend một class, hoặc cặp ngoặc đơn trống khi implement một interface,  
 - Body, chính là một class declaration body, có thể khai báo các fields, methods, local classes, instance initializers, nhưng không thể khai báo constructors.  
 
-*Member class* của một interface được ngầm định là *static*, vì vậy nó không phải inner class. *Member interface* được ngầm định là static, vì vậy nó không phải inner. 
+*Member class* của một interface được ngầm định là *static*, vì vậy nó không phải inner class. *Member interface* được ngầm định là *static*, vì vậy nó không phải inner. 
 
 **Note**: Sẽ xảy ra compile time error nếu *inner class* khai báo một *static initializer*, hoặc khai báo ngầm định hoặc tường minh một *static member* trừ khi member là một *constant variable*.  
 
@@ -522,7 +523,7 @@ class *Object* không có direct super class.
 
 Cho một class declaration (có thể là generic) C<F1,...,Fn> (n ≥ 0, C ≠ Object), thì direct superclass của class type C<F1,...,Fn> là type đã cho trong mệnh đề extends của declaration nếu có mệnh đề extends, nếu không sẽ là Object.  
 
-Cho một generic class declaration C<F1,...,Fn> (n > 0), thì direct superclass của parameterized type C<T1,...,Tn> với Ti (1 ≤ i ≤ n) là D<T1,...,Tn>, trong đó D<F1,...,Fn> là direct superclass của C<F1,...,Fn>.  
+Cho một generic class declaration C<F1,...,Fn> (n > 0), thì direct superclass của parameterized type C<T1,...,Tn> với Ti (1 ≤ i ≤ n) là D<U1 θ,...,Uk θ>, trong đó D<U1,...,Uk> là direct superclass của C<F1,...,Fn>, và θ là phép thay thế [F1:=T1,...,Fn:=Tn].  
 
 Một class được cho là một *direct subclass* của direct superclass của nó.  
 
@@ -613,7 +614,7 @@ InterfaceTypeList:  InterfaceType {, InterfaceType}
 
 Cho một class declaration (có thể là generic) C<F1,...,Fn> (n ≥ 0, C ≠ Object), thì direct superinterfaces của class type C<F1,...,Fn> là các types đã cho trong mệnh đề implements của declaration nếu có mệnh đề implements.  
 
-Cho một generic class declaration C<F1,...,Fn> (n > 0), thì direct superinterfaces của parameterized type C<T1,...,Tn> với Ti (1 ≤ i ≤ n) là tất cả các types I<T1,...,Tn>, trong đó I<F1,...,Fn> là direct superinterface của C<F1,...,Fn>.  
+Cho một generic class declaration C<F1,...,Fn> (n > 0), thì direct superinterfaces của parameterized type C<T1,...,Tn> với Ti (1 ≤ i ≤ n) là tất cả các types I<U1 θ,...,Uk θ>, trong đó I<U1,...,Uk> là direct superinterface của C<F1,...,Fn>, và θ là phép thay thế [F1:=T1,...,Fn:=Tn].  
 
 Interface type I là superinterface của class type C nếu một trong các điều sau là đúng:  
 
@@ -638,7 +639,9 @@ Trừ khi class được khai báo là *abstract*, nếu không tất cả các 
 
 Mỗi *default method* (method được khai báo với default keyword) của một superinterface của class có thể được override bởi một method trong class, nếu không default method sẽ được kế thừa và behavior của nó được chỉ định bởi default body của nó.  
 
-Cho phép một method declaration duy nhất trong class triển khai các methods của nhiều hơn một superinterfaces khi chúng có cùng name, signature & return type.
+Cho phép một method declaration duy nhất trong class triển khai các methods của nhiều hơn một superinterfaces khi chúng có cùng name, signature và return type.
+
+**Note**: Class không kế thừa các *static methods* từ *superinterfaces* của nó. 
 
 *Ví dụ: Superinterfaces and implemment methods*
 
@@ -718,6 +721,6 @@ class Bass implements Fish, StringBass {
 
 ### 1.6, Class Body and Member Declarations
 
-Class body có thể chứa declaration của các members của class: fields, methods, classes, và interfaces.  
+Class body có thể chứa declaration của các *members* của class: *fields, methods, classes, và interfaces*.  
 
-Class body cũng có thể chứa: instance initializers, static initializers, và declarations của constructors của class.
+Class body cũng có thể chứa: *instance initializers, static initializers*, và declarations của *constructors* của class.

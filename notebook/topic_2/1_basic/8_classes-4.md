@@ -10,7 +10,7 @@ Method khai báo mã thực thi có thể được gọi, truyền một số l�
     + Result MethodDeclarator [Throws]
     + TypeParameters {Annotation} Result MethodDeclarator [Throws]
 - MethodDeclarator:  Identifier ( [FormalParameterList] ) [Dims]
-- Dims: {Annotation} [ ] {{Annotation} [ ]}
+- Dims: {Annotation} [] {{Annotation} []}
 ```
 
 
@@ -35,10 +35,10 @@ Nếu method or constructor không có formal parameters, thì chỉ một cặp
     + {VariableModifier} Type {Annotation} ... VariableDeclaratorId
     + FormalParameter
 - VariableDeclaratorId: Identifier [Dims]
-- Dims: {Annotation} [ ] {{Annotation} [ ]}
+- Dims: {Annotation} [] {{Annotation} []}
 ```
 
-*Last formal parameter* của method or constructor là đặc biệt: nó có thể là một parameter hiếm có bất định, được biểu thị bằng dấu chấm lửng (...) theo sau type, nó chỉ có thể đặt ở cuối cùng trong parameter list.
+*Last formal parameter* của method or constructor là đặc biệt: nó có thể là một variable arity parameter (tham số hiếm bất định), được biểu thị bằng dấu chấm lửng (...) theo sau type, nó chỉ có thể đặt ở cuối cùng trong parameter list.
 
 *Receiver parameter* là một vùng nhớ cú pháp tùy chọn cho một *instance method* hoặc *constructor* của một inner class, nó chỉ có thể đặt ở đầu tiên trong parameter list:
 
@@ -52,14 +52,14 @@ Các quy tắc với type và name của *receiver parameter*:
 - Đối với *instance method*, type phải là class or interface mà trong đó method được khai báo, name phải là *this*.  
 - Đối với *constructor* của inner class, type phải là class or interface bao bọc trực tiếp type declaration của inner class, name phải là *Identifier.this* trong đó Identifier là simple name của class or interface bao bọc trực tiếp type declaration của inner class.  
 
-Type được khai báo của *formal parameter* phụ thuộc vào nó có phải parameter hiếm có bất định hay không:  
+Type được khai báo của *formal parameter* phụ thuộc vào nó có phải variable arity parameter (tham số hiếm bất định) hay không:  
 
-- Nếu formal parameter không phải parameter hiếm có bất định, thì type được khai báo được chỉ ra bởi *Type* nếu không có cặp ngặc ([]) nào xuất hiện trong *Type* và *VariableDeclaratorId*.  
-- Nếu formal parameter là parameter hiếm có bất định, thì type được khai báo được xác định là *Array of Type*.  
+- Nếu formal parameter không phải variable arity parameter, thì type được khai báo được chỉ ra bởi *Type* nếu không có cặp ngặc ([]) nào xuất hiện trong *Type* và *VariableDeclaratorId*.  
+- Nếu formal parameter là variable arity parameter, thì type được khai báo được xác định là *Array of Type*.  
 
 Khi method or constructor được gọi, các values của *actual argument expressions* khởi tạo các *parameter variables* vừa mới được tạo, trước khi thực thi body của method or constructor được gọi. Identifier xuất hiện trong DeclaratorId có thể sử dụng như simple name trong body của method or constructor để tham chiếu đến formal parameter.
 
-Lời gọi của một method hiếm có bất định có thể chứa nhiều *actual argument expressions* hơn *formal parameter*. Tất cả các actual argument expressions không tương ứng với các formal parameters đứng trước parameter hiếm có bất định, sẽ được đánh giá và kết quả được lưu trữ vào một array mà sẽ được truyền cho lệnh gọi method.
+Lời gọi của một *variable arity method* có thể chứa nhiều *actual argument expressions* hơn *formal parameter*. Tất cả các actual argument expressions không tương ứng với các formal parameters đứng trước variable arity parameter, sẽ được đánh giá và kết quả được lưu trữ vào một array mà sẽ được truyền cho lệnh gọi method.
 
 *Ví dụ 1: Receiver parameter*
 
@@ -129,7 +129,7 @@ Signature của method m1 là một subsignature của signature của method m2
 
 Hai method signatures m1 và m2 là override-equivalent (tương đương) nếu m1 là subsignature của m2, hoặc m2 là subsignature của m1.  
 
-Sẽ xảy ra lỗi nếu khai báo 2 methods với override-equivalent signature trong cùng một class.  
+Sẽ xảy ra compile-time error nếu khai báo 2 methods với override-equivalent signature trong cùng một class.  
 
 *Ví dụ: Override-Equivalent Signatures*
 
@@ -142,7 +142,11 @@ abstract class Point {
 
     void list(Collection lst) {}         // compile-time error
     void list(Collection<String> lst) {}
-    // both methods 'list(Collection)' and 'list(Collection<String>)' have same erasure
+        // both methods 'list(Collection)' and 'list(Collection<String>)' have same erasure
+
+    <T>   T execute(Collection<T> a); // compile-time error
+    <S,T> S execute(Collection<S> a);
+        // because different signatures, same erasure)
 }
 ```
 
@@ -164,6 +168,8 @@ Sẽ gây ra compile-time error nếu:
 #### *4.3.1, abstract Methods*
 
 *Abstract method declaration* giới thiệu method là một member, cung cấp signature, result, và throws clause (nếu có), nhưng không cung cấp một implementation.  
+
+Một method không phải abstract được gọi là một *concrete method*.
 
 Declaration của một abstract method m phải xuất hiện trực tiếp bên trong abstract class A, trừ khi nó xuất hiện trong enum declaration, nếu không sẽ gây ra compile-time error.
 
@@ -220,9 +226,12 @@ class ColoredPoint extends Point {
 
 Method được khai báo *static* được gọi là *class method*.
 
-Nếu sử dụng name của một *type parameter* của bất kỳ declaration bao quanh nào trong header hoặc body của một *class method*, sẽ gây ra compile-time error.  
+Sẽ gây ra compile-time error nếu:  
 
-Class method luôn được gọi mà không cần tham chiếu tới một object cụ thể. Vì vậy, nếu cố sử dụng keyword *this* or *super* để tham chiếu tới current object trong method body sẽ gây ra compile-time error.
+- Sử dụng name của một *type parameter* của bất kỳ declaration bao quanh nào trong header hoặc body của một *class method*.  
+- Cố sử dụng keyword *this* or *super* để tham chiếu tới current object trong method body, vì class method luôn được gọi mà không cần tham chiếu tới một object cụ thể.  
+- Cố sử dụng tham chiếu tới các *instance variables* và *instance methods* trong method body, vì chúng cần tham chiếu thông qua current object. Tuy nhiên, vẫn có thể tham chiếu tới *member classes* và *member interfaces* trong method body.  
+
 
 Method không được khai báo static được gọi là *instance method*, hay *non-static method*.
 
@@ -235,8 +244,13 @@ class Super {
 }
 
 class Sub extends Super {
+    int age;
+    class A {}
+
     static String greeting() { 
-        return "Hello, " +  super.name();        // compile-time error
+        A a = null;                         // OK
+        System.out.println(age);            // compile-time error
+        return "Hello, " +  super.name();   // compile-time error
     }
     String name() { 
         return super.name() + "Dick";            // OK 
@@ -411,7 +425,7 @@ Gọi method declaration d1 có return type R1 là return-type-substitutable (re
 - Nếu R1 là void thì R2 is void.  
 - Nếu R1 là một primitive type thì R2 đồng nhất (giống) với R1.  
 - Nếu R1 là một reference type thì cần thỏa mãn một trong các điều sau:  
-    + R1, được điều chỉnh với type parameters của d2, sẽ là subtype của R2.  
+    + R1, được điều chỉnh phù hợp với type parameters của d2, sẽ là subtype của R2.  
     + R1 có thể được convert thành một subtype của R2 bởi unchecked conversion.  
     + d1 không có cùng signature với d2, và R1 = |R2|.  
 
@@ -420,6 +434,7 @@ class Person {
     public Person getPerson() { return new Person(); }
     public int getRandom() { return 2; }
     public double getRandom(double x) { return 2; }
+    Iterable<String> m() { return new ArrayList<>(); }
 }
 
 class Student extends Person {
@@ -428,6 +443,9 @@ class Student extends Person {
 
     public int getRandom() { return 4; }  // OK
     public long getRandom() { return 4; } // Error
+
+    Iterable m() {return new ArrayList<>();}          // OK (unchecked coversion)
+    Iterable<Integer> m() {return new ArrayList<>();} // Error
 }
 ```
 
@@ -484,9 +502,9 @@ class Test {
 
 Method body là khối mã triển khai method, hoặc đơn giản là một dấu chấm phẩy (;) để chỉ ra thiếu implementation.
 
-Method body phải là một dấu chấm phẩy nếu method là *abstract* or *native*, nếu không nó phải là một block.
+Method body phải là một dấu chấm phẩy (;) nếu method là *abstract* or *native*, nếu không nó phải là một block.
 
-Nếu một method được khai báo có một *return type*, thì nếu body của method có thể hoàn thành bình thường (không có lệnh *return* hoặc *throw* gây ra việc chuyển quyền kiểm soát dẫn đến hoàn thành đột ngột), thì sẽ gây ra compile-time error
+Nếu một method được khai báo có một *return type*, thì nếu body của method có thể hoàn thành bình thường (không được kết thúc thực thi bởi lệnh *return* hoặc *throw* gây ra việc chuyển quyền kiểm soát dẫn đến hoàn thành đột ngột), thì sẽ gây ra compile-time error.
 
 *Ví dụ: Method has a return type, but contain no return statement*
 
@@ -515,7 +533,7 @@ Class C kế thừa từ direct superclass và các direct superinterfaces của
 - Không có concrete method được kế thừa bởi C từ direct superclass của nó có một signature là subsignature của signature của m.  
 - Không tồn tại method m' là một member của direct superclass hoặc một direct superinterface, D', của C (m khác m', D khác D'), sao cho m' từ D' overrides declaration của method m.  
 
-Class không thừa kế các *static methods* từ *superinterfaces* của nó.  
+**Note**: Class không kế thừa các *static methods* từ các *superinterfaces* của nó.  
 
 
 #### *4.8.1, Overriding (by Instance Methods)*
@@ -573,13 +591,13 @@ class SlowPoint extends Point {
 
 #### *4.8.2, Hiding (by Class Methods)*
 
-Nếu class C khai báo hoặc thừa kế một static method m, thì m được gọi là che giấu (hide) bất kỳ method m' nào, trong đó signature của m là một subsignature của signature của m' trong superclasses và superinterfaces của C, nếu không có thể được truy cập trong C.
+Nếu class C khai báo hoặc thừa kế một static method m, thì m được gọi là che giấu (hide) bất kỳ method m' nào, trong đó signature của m là một subsignature của signature của m' trong superclasses và superinterfaces của C, mà nếu không có thể truy cập trong C.
 
 Nếu một static method hides một instance method, sẽ gây ra compile-time error.
 
 **Note**: *static variable* có thể che giấu *instance variable*.
 
-Method bị che giấu có thể được truy cập bằng cách sử dụng một qualified name, hoặc sử dụng một method invocation expression có chứa keyword super, hoặc ép kiểu sang superclass type.
+Method bị che giấu có thể được truy cập bằng cách sử dụng một *qualified name*, hoặc sử dụng một method invocation expression có chứa keyword *super*, hoặc *ép kiểu* sang superclass type.
 
 ```java
 class Super {
@@ -594,9 +612,12 @@ class Sub extends Super {
 
 class Test {
     public static void main(String[] args) {
-        Super s = new Sub();
-        System.out.println(s.greeting() + ", " + s.name()); // Goodnight, Dick
-        // vì static method bị hidden có thể được gọi qua tham chiếu có type chứa declaration của method
+        Super sub = new Sub();
+        System.out.println(sub.greeting() + ", " + sub.name()); // Goodnight, Dick
+        // vì static method bị hidden có thể được gọi qua tham chiếu có type chứa declaration của method.
+
+        Super sup = new Super();
+        System.out.println(sup.greeting() + ", " + sup.name()); // Goodnight, Richard
     }
 }
 ```
@@ -604,22 +625,22 @@ class Test {
 
 #### *4.8.3, Requirements in Overriding and Hiding*
 
-Nếu method declaration d1 với return type R1 *overrides* or *hides* declaration của another method d2 với return type R2, thì d1 phải là *return-type-substitutable* cho d2.
+*Return type*: Nếu method declaration d1 với return type R1 overrides or hides declaration của another method d2 với return type R2, thì d1 phải là *return-type-substitutable* cho d2.
 
-Giả sử B là một class or interface, và A là một superclass or superinterface của B, và một method declaration m2 trong B *overrides* or *hides* một method declaration m1 trong A. Thì:
+*throws clause*: Giả sử B là một class or interface, và A là một superclass or superinterface của B, và một method declaration m2 trong B overrides or hides một method declaration m1 trong A. Thì:
 
 - Nếu m2 có một throws clause đề cập đến bất kỳ checked exception types nào, thì m1 phải có một throws clause.  
 - Đối với mọi checked exception type được liệt kê trong throws clause của m2, thì cùng exception class đó hoặc một trong các supertypes của nó phải được liệt kê trong erasure của throws clause của m1.  
 - Nếu unerased throws clause của m1 không chứa một supertype của mỗi exception type trong throws clause của m2 (được chỉnh thành type parameters của m1 nếu cần), thì sẽ gây ra compile-time unchecked warning.  
 
-Nếu một type declaration T có một member method m1 và tồn tại một method m2 được khai báo trong T or một supertype của T, thì sẽ gây ra compile-time error khi tất cả các điều sau là đúng:
+*Signature*: Nếu một type declaration T có một member method m1 và tồn tại một method m2 được khai báo trong T or một supertype của T, thì sẽ gây ra compile-time error khi tất cả các điều sau là đúng:
 
 - m1 và m2 có cùng name.  
 - m2 có thể truy cập từ T.  
 - Signature của m1 không phải một subsignature của signature của m2.  
 - Signature của m1 hoặc một số method mà m1 overrides (trực tiếp hoặc gián tiếp) có cùng erasure với signature của m2 hoặc một số method mà m2 overrides (trực tiếp hoặc gián tiếp).  
 
-Access modifier của một overriding or hiding method ít nhất phải cung cấp access như overridden or hidden method, cụ thể:
+*Access modifier*: Một overriding or hiding method ít nhất phải được cung cấp access như overridden or hidden method, cụ thể:
 
 - Nếu overridden or hidden method là *public*, thì overriding or hiding method phải là *public*.  
 - Nếu overridden or hidden method là *protected*, thì overriding or hiding method phải là *protected* or *public*.  
@@ -647,11 +668,15 @@ class D extends C implements Cloneable {
 ```java
 class StringSorter {
     List<String> toList(Collection<String> c) {...}
+    Iterable<String> m(Collection x) {...}
 }
 
 class Overrider extends StringSorter {
-    // D.copy() overrides C.copy
-    List toList(Collection c) {...} // unchecked warning -> List is not subtype of List<String>
+    List toList(Collection c) {...} // unchecked warning
+        // because List is not subtype of List<String>
+
+    Iterable m(Collection<String> x) {...} // compile-time error
+        // because m(Collection<String>) is not a subsignature of m(Collection)
 }
 ```
 
@@ -730,9 +755,10 @@ class D extends C<String> implements I<Integer> {
 
 Class có thể thừa kế nhiều methods với override-equivalent signatures.
 
-Nếu class C thừa kế một concrete method có signature là override-equivalent với concrete method khác được thừa kế bởi C, thì sẽ xảy ra compile-time error.
+Sẽ xảy ra compile-time error nếu:  
 
-Nếu class C thừa kế một default method có signature là override-equivalent với một method khác được thừa kế bởi C, thì sẽ xảy ra compile-time error, trừ khi tồn tại một abstract method được khai báo trong một superclass của C và được thừa kế bởi C mà là override-equivalent với hai methods.
+- Class C thừa kế một *concrete method* có signature là override-equivalent với *concrete method* khác được thừa kế bởi C.  
+- Class C thừa kế một *default method* có signature là override-equivalent với một *abstract or default method* khác được thừa kế bởi C. Trừ khi tồn tại một non-static method được khai báo hoặc được thừa kế bởi C mà là override-equivalent với hai methods kia.  
 
 Một trong các methods được kế thừa phải là return-type-substitutable (return type có thể thay thế) cho mỗi method được thừa kế khác; nếu không sẽ xảy ra compile-time error.
 
@@ -757,7 +783,7 @@ class Bass implements Fish, StringBass {
     // tương thích với cả 2 methods được khai báo trong interface Fish and trong interface StringBass,
     // Vì một class không thể có nhiều methods với cùng signature và khác primitive return types. 
     // Vì vậy, Không thể để single class mà implement cả interface Fish and interface StringBass.
-    public ?? getNumberOfScales() { return 91; } // error
+    public ?? getNumberOfScales() { return 91; } // Error
 }
 
 // CASE 3:
@@ -765,6 +791,14 @@ interface Member() { double getRandom(); }
 class Person { double getRandom() { return Math.random(); } }
 
 class Student extends Person implements Member {} // OK
+
+// CASE 4:
+class AB { public int getAge() { return 33; } }
+interface AC { default int getAge() { return 22; } }
+interface AD { default int getAge() { return 11; } }
+
+public class Default extends AB implements AC, AD {} // OK
+public class Default2 implements AC, AD {}           // Error
 ```
 
 
@@ -804,13 +838,13 @@ class Point {
 }
 
 class RealPoint extends Point {
-    float x = 0.0f, y = 0.0f; // hides Point.x & Point.y
+    float x = 0.0f, y = 0.0f; // hides Point.x and Point.y
 
     // overloading
     void move(int dx, int dy) { move((float)dx, (float)dy); } // overrides Point.move(int, int)
     void move(float dx, float dy) { x += dx; y += dy; }
 
-    // overrides Point.getX() & Point.getY()
+    // overrides Point.getX() and Point.getY()
     int getX() { return (int)Math.floor(x); }
     int getY() { return (int)Math.floor(y); }
 }
@@ -822,10 +856,10 @@ class Test {
         rp.move(1.71828f, 4.14159f); // invokes RealPoint.move(float, float)
         p.move(1, -1);               // invokes RealPoint.move(int, int)
 
-        show(p.x, p.y);             // (0,0) -> reference to x & y of Point
-        show(rp.x, rp.y);           // (2.7182798, 3.14159) -> reference to x & y of RealPoint
-        show(p.getX(), p.getY());   // (2, 3) -> invokes RealPoint.getX() & RealPoint.getX()
-        show(rp.getX(), rp.getY()); // (2, 3) -> invokes RealPoint.getX() & RealPoint.getX()
+        show(p.x, p.y);             // (0,0) -> reference to x and y of Point
+        show(rp.x, rp.y);           // (2.7182798, 3.14159) -> reference to x and y of RealPoint
+        show(p.getX(), p.getY());   // (2, 3) -> invokes RealPoint.getX() and RealPoint.getX()
+        show(rp.getX(), rp.getY()); // (2, 3) -> invokes RealPoint.getX() and RealPoint.getX()
     }
 
     static void show(int x, int y) {
