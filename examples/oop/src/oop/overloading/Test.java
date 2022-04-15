@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 class Super {
+    int x = 2;
     Super() {
         System.out.println("Super");
     }
@@ -19,6 +20,7 @@ class Super {
 }
 
 class Sub extends Super {
+    static float x = 3.0f;
     class TS {}
     String name;
     {
@@ -128,6 +130,17 @@ public class Test {
 //    void move(int dx, int dy) { x += dx; y += dy; }          // compile-time error
 //    int move(int dx, int dy) { x += dx; y += dy; return 1; } // compile-time error
 //    void list(Collection lst) {}
+    void run() {
+        try {
+            throw new Exception();
+        } catch (IOException e) {
+
+        } catch (Exception e) {
+
+        }
+//        throw new OutOfMemoryError();
+
+    }
     void list(Collection<String> lst) {}
     public static void main(String[] args) {
         Sub sub = new Sub("Hoa");
@@ -145,8 +158,8 @@ public class Test {
 //        Number[] a = {new Integer(1), new Integer(2)};
 //        Integer[] b = (Integer[]) a; // RUNTIME ERROR
 
-        int[] a = null;
-        a[0] = 1;
+//        int[] a = null;
+//        a[0] = 1;
         int ia[][] = { {1, 2}, null };
         System.out.println(ia[0][0]);
 

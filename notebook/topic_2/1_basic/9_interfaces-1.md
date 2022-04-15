@@ -481,7 +481,7 @@ Sẽ gây ra compile-time error nếu:
 - Một interface method declaration là *abstract* (ngầm định hay tường minh) và có một *block body*.  
 - Một interface method declaration là *default* hoặc *static* và có body là dấu chấm phẩy (;).  
 - Cố tham chiếu tới current object sử dụng keyword *this* hoặc *super* trong body của một *static method*.  
-- Một method được khai báo có một *return type*, nhưng method body có thể hoàn thành bình thường (không được kết thúc thực thi bởi *return* hay *throw* statement gây ra việc chuyển quyền kiểm soát, dẫn đến việc hoàn thành đột ngột).  
+- Một method được khai báo có một *return type*, nhưng method body có thể hoàn thành bình thường (không được kết thúc thực thi bởi *return* hay *throw* statement gây ra việc chuyển quyền điều khiển dẫn đến việc hoàn thành đột ngột).  
 
 
 ## 5. Member Type Declarations

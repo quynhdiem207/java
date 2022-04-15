@@ -2,9 +2,9 @@
 
 Khi program vi phạm các ràng buộc về ngữ nghĩa của Jvava, thì JVM sẽ báo hiệu error này cho chương trình như một exception.
 
-Java xác định rằng một exception sẽ được ném ra khi các các ràng buộc ngữ nghĩa bị vị phạm, và sẽ gây ra sự chuyển giao quyền kiểm soát non-local từ điểm xảy ra ngoại lệ đến điểm được xác định bởi programmer.
+Java xác định rằng một exception sẽ được ném ra khi các các ràng buộc ngữ nghĩa bị vị phạm, và sẽ gây ra sự chuyển giao quyền điều khiển non-local từ điểm xảy ra ngoại lệ đến điểm được xác định bởi programmer.
 
-Một exception được cho là được ném từ điểm mà nó xảy ra, và được cho là bị bắt tại điểm mà quyền kiểm soát được chuyển giao.
+Một exception được cho là được ném từ điểm mà nó xảy ra, và được cho là bị bắt tại điểm mà quyền điều khiển được chuyển giao.
 
 Programs cũng có thể ném các exceptions tường minh, sử dụng *throw* statements.
 
@@ -21,25 +21,40 @@ Cơ chế exception của Java SE platform được tích hợp với mô hình 
 
 ### 1.1, The Kinds of Exceptions
 
-Một exception được đại diện bởi một instance của class *Throwable* (một direct subclass của *Object*) hoặc một trong các subclasses của nó.
+Một exception (ngoại lệ) trong Java là một vấn đề phát sinh trong quá trình thực thi chương trình. Khi xảy ra ngoại lệ, luồng xử lý (flow) bị gián đoạn, chương trình dừng bất thường.
 
-Throwable và tất cả các subclasses của nó gọi chung là các exception classes.
+Một exception được đại diện bởi một instance của class *Throwable* (một direct subclass của *Object*) hoặc một trong các subclasses của nó.
 
 Các classes *Exception* và *Error* là các direct subclasses của *Throwable*:
 
-- *Exception* là superclass của tất cả các exceptions mà các programs có thể muốn khôi phục.
+- *Exception* là superclass của tất cả các exceptions mà programs có thể mong đợi sẽ khôi phục.  
 
-    Class *RuntimeException* là một direct subclass của *Exception*. *RuntimeException* là superclass của tất cả các exceptions có thể được ném vì nhiều lý do trong quá trình đánh giá expression, nhưng vẫn có thể khôi phục.
+    Trong Java, có 2 loại exception, điểm khác biệt giữa chúng là thời điểm xác định được expcetion có thể xảy ra:  
 
-    *RuntimeException* và tất cả các subclasses của nó được gọi chung là các run-time exception classes.
+    + *unchecked exception classes* là những exceptions không được kiểm tra tại thời điểm compile, chỉ được kiểm tra tại runtime, gồm *RuntimeException* (một direct subclass của *Exception*) và tất cả các subclass của nó, được gọi chung là các *run-time exception classes*.  
 
-- *Error* là superclass của tất cả các exceptions mà các programs thường không được mong đợi khôi phục.
+        Một unchecked exception được ném ra khi chương trình bị sai về logic.  
 
-    *Error* và tất cả các subclasses của nó được gọi chung là các error classes.
+        VD: NullPointerException, ArrayIndexOutOfBoundsException, ClassCastException  
 
-Các *unchecked exception classes* là các *run-time exception classes* và các *error classes*.
+    + *checked exception classes* là những exceptions được kiểm tra tại thời điểm compile, sẽ được thông báo bởi compiler, gồm tất cả các *exception classes* khác với các *unchecked exception classes*, nghĩa là ngoại trừ *RuntimeException* và các subclasses của nó, chúng được gọi chung là các *compile-time exception classes*.  
 
-Các *checked exception classes* là tất cả các *exception classes* khác với các *unchecked exception classes*. Nghĩa là, các *checked exception classes* là *Throwable* và tất cả các subclasses ngoài *RuntimeException* và các subclasses của nó và *Error* và các subclasses của nó.
+        VD: IOException, FileNotFoundExeption  
+
+- *Error* là superclass của tất cả các errors mà programs thường không được mong đợi sẽ khôi phục.  
+
+    *Error* và tất cả các subclasses của nó được gọi chung là các *error classes*, chúng không được kiểm tra tại thời điểm compile, nên còn gọi là *unchecked error classes*.  
+
+    VD: StackOverflowError, OutOfMemoryError là các subclass của VirtualMachineError  
+
+
+```
+- Throwable
+    + Error                 (unchecked error)
+    + Exception
+        + RuntimeException  (unchecked exception)
+        + ...
+```
 
 
 ### 1.2, The Causes of Exceptions
@@ -116,12 +131,12 @@ Một *throw* statement mà có thrown expression có static type E và không p
 Một *throw* statement mà có thrown expression là một final hoặc effectively final exception parameter của một catch clause C, thì có thể ném một exception class E nếu tất cả các điều sau là đúng:
 
 - E là một exception class mà khối lệnh try của try statement khai báo C có thể ném; và  
-- E tương thích với bất kỳ exception classes nào có thể bắt được của C; và  
-- E không tương thích với bất kỳ exception classes nào có thể bắt được của các catch clauses được khai báo ở bên trái của C trong cùng try statement.  
+- E tương thích gán với bất kỳ exception classes nào có thể bắt được của C; và  
+- E không tương thích gán với bất kỳ exception classes nào có thể bắt được của các catch clauses được khai báo ở bên trái của C trong cùng try statement.  
 
 Một *try* statement có thể ném một exception class E nếu một trong các điều sau là đúng:
 
-- Khối lệnh try có thể ném E, hoặc một expression được sử dụng để khởi tạo một resource (trong một try-with-resources statement) có thể ném E, hoặc lời gọi tự động của close() method của một resource (trong một try-with-resources statement) có thể ném E, và E không tương thích với bất kỳ exception class có thể bắt được của bất kỳ catch clause nào của statement, và không có khối finally nào hoặc khối finally có thể hoàn thành bình thường; hoặc  
+- Khối lệnh try có thể ném E, hoặc một expression được sử dụng để khởi tạo một resource (trong một try-with-resources statement) có thể ném E, hoặc lời gọi tự động của close() method của một resource (trong một try-with-resources statement) có thể ném E, và E không tương thích gán với bất kỳ exception class có thể bắt được của bất kỳ catch clause nào của statement, và không có khối finally nào hoặc khối finally có thể hoàn thành bình thường; hoặc  
 - Một số khối catch của try statement có thể ném E và không có khối finally nào hoặc khối finally có thể hoàn thành bình thường; hoặc  
 - Có một khối finally có thể ném E.  
 
@@ -201,7 +216,7 @@ catch (Bar | SubclassOfFoo e) { ... } // compile-time error
 
 ## 3. Run-Time Handling of an Exception
 
-Khi một exception được ném, quyền kiểm soát được chuyển từ code gây ra exception sang catch clause động bao quanh gần nhất (nếu có) của một try statement có thể xử lý exception đó.
+Khi một exception được ném, quyền điều khiển được chuyển từ code gây ra exception sang catch clause động bao quanh gần nhất (nếu có) của một try statement có thể xử lý exception đó.
 
 Một statement hoặc expression được bao bọc động bởi một catch clause nếu nó xuất hiện bên trong try block của try statement mà catch clause đó là một thành phần, hoặc nếu caller của statement hoặc expression được bao bọc động bởi catch clause đó.
 

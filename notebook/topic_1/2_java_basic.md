@@ -117,7 +117,7 @@ Có 3 built-in class loader bao gồm:
 
 Class Loader hoạt động dựa trên 3 nguyên tắc:  
 
-- **Delegation principle** (nguyên tắc ủy quyền): Trừ Bootstrap Class Loader, mọi Class Loader đều có Parent. Khi load một class, Class Loader sẽ ủy quyền tìm kiếm cho Parent Class Loader, nó chỉ cố gắng tìm kiếm nếu Parent không tìm thấy class đó.  
+- **Delegation principle** (nguyên tắc ủy quyền): Trừ Bootstrap Class Loader, mọi Class Loader đều có Parent. Khi load một class, Class Loader sẽ ủy quyền cho Parent Class Loader, nó chỉ cố gắng tìm và load nếu Parent không tìm thấy class đó.  
 - **Visibility principle** (nguyên tắc hiển thị): Child Class Loader có thể thấy tất cả các class được load bởi Parent. Nhưng Parent Class Loader không thể thấy các class được load bởi Child Class Loader.  
 - **Uniqueness principle** (nguyên tắc duy nhất): Mỗi class chỉ được load một lần duy nhất, đảm bảo rằng Child Class Loader không tải lại class đã được tải bởi Parent.  
 
@@ -161,7 +161,7 @@ Nó thực hiện 3 hoạt động quan trọng:
 
 ##### *4.3.1.3, Initialization*
 
-*Initialization*: Bao gồm việc thực thi các static initializers và các variable initializers cho các static fields (các class variables) được khai báo trong class.  
+*Initialization*: Bao gồm việc thực thi các static initializers và các variable initializers cho các static fields (các class variables) được khai báo trong class hay interface.  
 
 **Note**: JVM sẽ khởi tạo một object là instance của *java.lang.Class* để đại diện cho class hay interface T đã được load, điều này được thực hiện trước khi:  
 
@@ -169,6 +169,7 @@ Nó thực hiện 3 hoạt động quan trọng:
 - Gọi các static methods được khai báo bởi T,  
 - Gán giá trị cho các static fields  được khai báo bởi T,  
 - Sử dụng các static fields được khai báo bởi T.  
+- T là một top level class và một assert statement được lồng trong T được thực thi.  
 
 Khi một class được khởi tạo, các superclasses của nó được khởi tạo (nếu nó chưa được khởi tạo trước đó), cũng như bất kỳ superinterfaces nào mà khai báo bất kỳ default methods nào (nếu nó chưa được khởi tạo trước đó). Initialization của một interface không bao gồm initialization của bất kỳ superinterfaces nào của chính nó.
 
@@ -275,6 +276,8 @@ Mỗi JVM Thread có một Native Method Stack riêng được tạo cùng lúc 
 
 *Native Method Stack* tương tự với Stack, nó chứa các data element để hỗ trợ thực thi các native methods.  
 
+Nếu quá trình xử lý Thread yêu cầu bộ nhớ quá giới hạn cho phép, ngoại lệ *StackOverFlowError* sẽ được ném ra.  
+
 Nếu không đủ bộ nhớ để cấp Native Method Stack cho Thread được tạo, ngoại lệ *OutOfMemoryError* sẽ được ném ra.  
 
 
@@ -285,7 +288,7 @@ Nếu không đủ bộ nhớ để cấp Native Method Stack cho Thread đượ
 Execution Engine gồm 3 components chính:  
 
 - **Interpreter**: Đọc, diễn giải byte code, & thực thi chúng một cách tuần tự. Nhược điểm là khi 1 method được gọi nhiều lần, mỗi lần gọi method đó sẽ lại được thông dịch lại.  
-- **JIT Compilier** (Just-In-Time Compiler): Khắc phục nhược điểm của *Interpreter*, biên dịch byte code đượi gọi lại nhiều lần sang native code giúp cải thiện hiệu suất.  
+- **JIT Compilier** (Just-In-Time Compiler): Khắc phục nhược điểm của *Interpreter*, biên dịch byte code được gọi lại nhiều lần giúp cải thiện hiệu suất.  
 - **Garbage Collector**: Thực hiện thu thập các object không còn được tham chiếu giúp giải phóng bộ nhớ.  
 
 *System.gc()* là method do Java cung cấp cho dọn rác.  

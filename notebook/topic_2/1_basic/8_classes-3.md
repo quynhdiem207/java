@@ -149,12 +149,14 @@ class Point {
 class Test extends Point {
     static double x = 4.7;
 
-    public static void main(String[] args) {
-        new Test().printX();
+    void printX() {
+        System.out.println(x + " - " + super.x);
     }
 
-    void printX() {
-        System.out.println(x + " - " + super.x); // 4.7 - 2
+    public static void main(String[] args) {
+        Test test = new Test();
+        test.printX();                                         // 4.7 - 2
+        System.out.println(test.x + " - " + ((Point) test).x); // 4.7 - 2
     }
 }
 ```
@@ -171,12 +173,12 @@ class Point {
 // Do đó, simple name x tham chiếu đến field Point.x.
 // Code trong class Test vẫn có thể tham chiếu đến field đó dưới dạng super.x.
 class Test extends Point {
-    public static void main(String[] args) {
-        new Test().printX();
+    void printX() {
+        System.out.println(x + " - " + super.x);
     }
 
-    void printX() {
-        System.out.println(x + " - " + super.x); // 2 - 2
+    public static void main(String[] args) {
+        new Test().printX(); // 2 - 2
     }
 }
 ```
@@ -203,7 +205,7 @@ class Test extends Point {
     // Trong declaration của class Test, simple name x luôn tham chiếu đên field được khai báo trong class Test.
     // Code trong instance methods của class Test có thể tham chiếu đến instance variable x của class Point dưới dạng super.x.
     void printBoth() {
-        System.out.println(x + " - " + super.x);                  // 5.0 - 2
+        System.out.println(x + " - " + super.x);                  
     }
 
     // Khi sử dụng field access expression để truy cập field x, 
@@ -214,7 +216,7 @@ class Test extends Point {
     // vì ép kiểu sang type Point.
     public static void main(String[] args) {
         Test sample = new Test(5.0);
-        sample.printBoth();
+        sample.printBoth();                                       // 5.0 - 2
         System.out.println(sample.x + " - " + ((Point)sample).x); // 5.0 - 2
     }
 }
@@ -242,6 +244,31 @@ class Test extends Point {
         Test sample = new Test();
         sample.printBoth();                                         // 2 - 2
         System.out.println(sample.x + " - " +	((Point)sample).x); // 2 - 2
+    }
+}
+```
+
+**Note**: Một *class variable* có thể ẩn một *instance variable* và một *instance variable* cũng có thể ẩn một *class variable*, điều này KHÔNG gây lỗi.
+
+```java
+class Point {
+    static int x = 2;
+    int y = 3;
+}
+
+class Test extends Point {
+    float x = 4.1f;
+    static float y = 5.5f;
+
+    void printBoth() {
+        System.out.println(x + " - " + super.x + ", " + y + " - " + super.y);
+    }
+
+    public static void main(String[] args) {
+        Test sample = new Test();
+        sample.printBoth();  // 4.1 - 2, 5.5 - 3
+        System.out.println(sample.x + " - " +	((Point)sample).x); // 4.1 - 2
+        System.out.println(sample.y + " - " +	((Point)sample).y); // 5.5 - 3
     }
 }
 ```

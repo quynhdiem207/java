@@ -118,7 +118,7 @@ int @B [] @A [] g;
 
 Khi một array object được tạo, độ dài (length) của nó không bao giờ thay đổi.
 
-Nếu một array variable v có type A[], trong đó A là một *reference type*, thì v có thể giữ một reference tới một instance của bất kỳ array type B[] nào, nếu B có thể được gán cho A. Nếu type của giá trị được gán không tương thích với component type, một *ArrayStoreException* sẽ được ném ra.
+Nếu một array variable v có type A[], trong đó A là một *reference type*, thì v có thể giữ một reference tới một instance của bất kỳ array type B[] nào, nếu B có thể được gán cho A. Nếu type của giá trị được gán không tương thích gán với component type, một *ArrayStoreException* sẽ được ném ra.
 
 ```java
 Number[] nums = new Integer[] {2, 3};
@@ -201,7 +201,7 @@ class Test {
 
 Đối với một array có type là A[], trong đó A là một *reference type*, một phép gán cho một component của array sẽ được kiểm tra tại runtime để đảm bảo rằng value được gán có thể gán cho component đó.
 
-Nếu type của value được gán không tương thích với component type, thì một *ArrayStoreException* sẽ được ném ra.
+Nếu type của value được gán không tương thích gán với component type, thì một *ArrayStoreException* sẽ được ném ra.
 
 *Ví dụ 1. ArrayStoreException*
 
@@ -255,7 +255,7 @@ Một *array initializer* được viết dưới dạng một list các express
 
 Sẽ gây ra compile-time error nếu:  
 
-- Bất kỳ *variable initializer* nào không tương thích với component type của array.  
+- Bất kỳ *variable initializer* nào không tương thích gán với component type của array.  
 - Component type của array đang được khởi tạo là non-reifiable.  
 
 Độ dài (length) của array được tạo sẽ bằng với số lượng *variable initializers* được bao trực tiếp bởi cặp ngoặc {} của *array initializer*. Không gian được phân bổ cho một array mới với độ dài đó. Nếu không đủ không gian để phân bổ array, việc đánh giá của array initializer sẽ hoàn thành đột ngột bởi ném ra một *OutOfMemoryError*. Nếu không, một *one-dimensional array* sẽ được tạo với độ dài length đã xác định, và mỗi component của array được khởi tạo thành default value của nó.

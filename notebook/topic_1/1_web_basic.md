@@ -30,9 +30,11 @@ Sơ đồ làm việc khi truyền tải dữ liệu giữa client & server:
 - Gửi Response message;  
 - Đóng kết nối hoặc sử dụng lại cho truy vấn khác.  
 
->        ---- request --->
-> Client                    Server
->        <--- response --- 
+```
+        ---- request --->
+ Client                    Server
+        <--- response --- 
+```
 
 
 ## 2. Domain - HTTP    
@@ -60,30 +62,38 @@ Sơ đồ làm việc khi truyền tải dữ liệu giữa client & server:
 
 ### 2.2, HTTP  
 
-*HTTP* là một giao thức giao tiếp, được sử dụng để truyền tải thông tin trên mạng internet.  
+*HTTP* là một giao thức truyền tải siêu văn bản, nó định nghĩa các chuẩn để các máy tính có thể giao tiếp và truyền tải thông tin cho nhau bằng các thông điệp.  
 
-- Request  
-- Response  
-- Header  
-- Payload  
-- Status code  
+HTTP được sử dụng cho giao tiếp giữa client và server.
+
+Một HTTP transaction là một phiên giao tiếp giữa Client và Server thông qua một HTTP Request và một HTTP Response.
+
+Quy trình giao tiếp giữa client và server:
+
+- Client thiết lập một kết nối, gửi yêu cầu kết nối đến Server,  
+- Server chấp nhận yêu cầu kết nối, một kết nối được hình thành giữa Client và Server.
+- Client gửi một HTTP request đến Server,  
+- Server tiếp nhận HTTP request, tiến hành xử lý,  
+- Server phản hồi HTTP response lại cho Client,  
+- Client nhận được HTTP response, tiến hành xử lý,  
+- Client đóng kết nối tới Server.  
 
 #### 2.2.1, HTTP Request  
 
-HTTP Request: là gói tin chứa thông tin yêu cầu gửi từ client tới server.  
+HTTP Request: là thông điệp chứa yêu cầu được gửi từ client tới server.  
 
 HTTP Request gồm 3 thành phần chính:  
 
 + Request Line: gổm các thành phần:  
-    + Request Method: chỉ ra hành động được thực hiện với tài nguyên.     
-    + Request URI: sử dụng để tìm tài nguyên trên server;  
+    + Request Method: xác định hành động được thực hiện với tài nguyên.     
+    + Request URI: được sử dụng để tìm tài nguyên trên server.  
     + HTTP Version: Phiên bản giao thức HTTP.  
-+ Request Header: Cho phép client truyền thông tin bổ sung về Request.  
++ Request Header: Chứa các thông tin bổ sung về Request để Server phản hồi nội dung thích hợp như: Accept-* (cho biết các định dạng response được phép), Authorization (cung cấp thông tin xác thực), ...  
 + Request Body: Chứa data được đính kèm request gửi đến server.  
 
 HTTP Request Methods bao gồm:  
 
-- GET: yêu cầu lấy tài nguyên xác định.  
+- GET: yêu cầu server trả về tài nguyên xác định.  
 - POST: yêu cầu server tạo mới một tài nguyên.  
 - PUT: yêu cầu server ghi đè hoặc tạo mới 1 tài nguyên.  
 - PATCH: yêu cầu server cập nhật 1 phần của tài nguyên.  
@@ -92,16 +102,16 @@ HTTP Request Methods bao gồm:
 
 #### 2.2.2, HTTP Response  
 
-HTTP Response: là gói tin được gửi bởi server đến client để phản hồi request trước đó của client.  
+HTTP Response: là thông điệp được gửi bởi server đến client để phản hồi request trước đó của client.  
 
 HTTP Response gồm 3 thành phần chính:  
 
 + Status Line: bao gồm 3 thành phần:  
     + HTTP Version: Phiên bản giao thức HTTP;  
-    + Status Code: Mã trạng thái;  
-    + Status Text (còn gọi là Reason Phrase): Mô tả trạng thái.  
-+ Response Header: Cho phép server truyền thông tin bổ sung về response,  
-+ Response Body: Chứa tài nguyên mà server phản hồi lại yêu cầu của client.  
+    + Status Code: Mã trạng thái biểu thị kết quả của việc xử lý request;  
+    + Status Text (còn gọi là Reason Phrase): Mô tả ngắn gọn về trạng thái.  
++ Response Header: Chứa các thông tin bổ sung về response để Client có thể xử lý nội dung nhận được thích hợp như: Content-Type (định dạng nội dung), ...  
++ Response Body: Chứa tài nguyên mà server phản hồi lại cho client.  
 
 ### 2.2.3, HTTP Headers  
 

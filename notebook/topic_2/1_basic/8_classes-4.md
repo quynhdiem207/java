@@ -504,7 +504,7 @@ Method body là khối mã triển khai method, hoặc đơn giản là một d�
 
 Method body phải là một dấu chấm phẩy (;) nếu method là *abstract* or *native*, nếu không nó phải là một block.
 
-Nếu một method được khai báo có một *return type*, thì nếu body của method có thể hoàn thành bình thường (không được kết thúc thực thi bởi lệnh *return* hoặc *throw* gây ra việc chuyển quyền kiểm soát dẫn đến hoàn thành đột ngột), thì sẽ gây ra compile-time error.
+Nếu một method được khai báo có một *return type*, thì nếu body của method có thể hoàn thành bình thường (không được kết thúc thực thi bởi lệnh *return* hoặc *throw* gây ra việc chuyển quyền điều khiển dẫn đến hoàn thành đột ngột), thì sẽ gây ra compile-time error.
 
 *Ví dụ: Method has a return type, but contain no return statement*
 

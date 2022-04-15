@@ -345,6 +345,8 @@ Một *annotation* là một *marker* liên kết thông tin với một cấu t
 - ElementValuePair:     Identifier = ElementValue
 ```
 
+Một normal annotation phải chứa một cặp element-value cho mỗi element của annotation type tương ứng, ngoại trừ những elements có default values, nếu không sẽ gây ra compile-time error.
+
 *Ví dụ: Normal Annotations* 
 
 ```java
