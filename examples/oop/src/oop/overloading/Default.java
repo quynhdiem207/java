@@ -5,15 +5,20 @@ import java.lang.annotation.Target;
 import java.util.Collection;
 
 interface AB extends AC, AD {
-    default int getAge() {return 2;};
+    default int getAge() {
+        System.out.println(((AD)AB.this).x);
+        return 2;
+    }
 }
 
 interface AC {
+    int x = 5;
     int getAge();
     String getName();
 }
 
 interface AD {
+    int x = 5;
     default int getAge() { return 11; }
     String getName();
 }
@@ -42,4 +47,12 @@ interface J<S> { S m(Class<?> c); }
 interface K<T> { T m(Class<?> c); }
 interface Functional<S,T> extends I, J<S>, K<T> {
     Object m(Class c);
+}
+
+abstract class AF {
+    private int x;
+    {
+        x = 5;
+    }
+    private final void y() {};
 }

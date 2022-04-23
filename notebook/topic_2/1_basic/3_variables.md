@@ -286,7 +286,7 @@ Nếu một final variable giữ một tham chiếu đến một object, thì st
 
 Một *blank final variable* (final variable trống) là final variable được khai báo mà thiếu một initializer (bộ khởi tạo).  
 
-Một *constant variable* là một final variable của *primitive type* or *String type* được khởi tạo với một *constant expression* (biểu thức hằng).  
+Một *constant variable* là một final variable của *primitive type* or *String type* được khởi tạo với một *constant expression* (biểu thức hằng là biểu thức có giá trị có thể được xác định tại thời điểm compile, nó biểu thị một primitive value hoặc String).  
 
 Có 3 loại variable được khai báo ngầm định là *final* gồm:  
 

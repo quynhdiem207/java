@@ -7,19 +7,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+interface X { int x = 4; }
+
 class Super {
     int x = 2;
     Super() {
         System.out.println("Super");
     }
     static String greeting() { return "Goodnight"; }
-    String name() { return "Richard"; }
+    public String name() { return "Richard"; }
     void sayHello() {}
     class T {}
-    Iterable<String> m() {return new ArrayList<>();}
+//    Iterable m(Collection<String> s) {return new ArrayList<>();}
+//    Iterable m(Collection<Integer> s) {return new ArrayList<>();}
+    Iterable m() {return new ArrayList<>();}
 }
 
-class Sub extends Super {
+class Sub extends Super implements X {
     static float x = 3.0f;
     class TS {}
     String name;
@@ -34,8 +38,8 @@ class Sub extends Super {
         this.name = name;
         System.out.println("Sub 2");
     }
-    Iterable m() {return new ArrayList<>();}
-    String name() { return super.name() + " Dick"; }
+    Iterable<String> m() {return new ArrayList<>();}
+    public String name() { return super.name() + " Dick"; }
     static String greeting() { TS t = null; return "Hello..."; }
     String sayGoodnight() {
         return Super.greeting() + ", " + name();
@@ -53,6 +57,7 @@ interface A {
     default int getAge() {
         return 11;
     }
+    default String name() {return "Diem";}
     Object getInfo(String file) throws Exception;
 }
 
@@ -67,7 +72,8 @@ interface B extends A {
     String getInfo(String file) throws IOException;
 }
 
-class D implements B {
+class D extends Super implements B {
+//    public String name() {return "Hi";}
     public Sub test() {
         return new Sub();
     }
@@ -77,8 +83,22 @@ class D implements B {
     public String getInfo(String file) throws IOException { return ""; }
 }
 
-class Outer {
+class Outer extends Super {
     int i = 100;
+    int x = 6;
+
+    class Inner {
+        Inner(Outer Outer.this) {
+            System.out.println(Outer.this.x + "***");
+            System.out.println(Outer.super.x + "***");
+        }
+
+        class InnerMem {
+            void test(InnerMem this) {
+                System.out.println(Inner.this.getClass() + "***");
+            }
+        }
+    }
 
     static void classMethod() {
         int l = 200;
@@ -98,17 +118,39 @@ class Outer {
     }
 
     void foo() {
+        System.out.println(Outer.this.getClass() + " &&& " + this.getClass());
         int l = 400;
         // A local class
         // class declaration của Local không xảy ra trong static context vì nằm trong non-static method foo.
         // class Local có một enclosing instance của class Outer.
         class Local {
+            Local(Outer Outer.this) {}
+
             // Instance variables của class Outer là available trong body của non-static method.
             int j = i;
             int m = l;
+
+            void test(Local this) {
+                System.out.println(Outer.this.getClass() + " ---- ");
+            }
         }
 
         System.out.println(new Local().m);
+        new Local().test();
+    }
+}
+class Point { int x, y; }
+class ColoredPoint extends Point { int color; }
+class Test1 {
+//    static int test(ColoredPoint p) {
+//        return p.color;
+//    }
+    static String test(Point p) {
+        return "Point";
+    }
+    public static void main1() {
+        ColoredPoint cp = new ColoredPoint();
+        String s = test(cp);  // compile-time error
     }
 }
 
@@ -155,6 +197,15 @@ public class Test {
         System.out.println(sup.greeting() + ", " + sup.name());
         sup.m();
 
+        float x = 10f - 0.1f;
+        float y = 10f - 0.1f - 0.1f;
+        System.out.println(x + " - " + y);
+        System.out.println(Math.abs(9.8f - y) <= 1e-6);
+
+        String[] x1 = new String[] {"Hello"};
+        System.out.println((x1[0] == "Hello") + "%%%");
+
+
 //        Number[] a = {new Integer(1), new Integer(2)};
 //        Integer[] b = (Integer[]) a; // RUNTIME ERROR
 
@@ -162,6 +213,8 @@ public class Test {
 //        a[0] = 1;
         int ia[][] = { {1, 2}, null };
         System.out.println(ia[0][0]);
+
+        Class<int[]> cl = null;
 
 //        int[] x = {1, 2};
 //        Integer[] y = (Integer[]) x;
@@ -183,6 +236,7 @@ public class Test {
 
         Outer.classMethod();
         new Outer().foo();
+        new Outer().new Inner().new InnerMem().test();
 
         // 1. A class is created, but its name is decided by the compiler,
         //    which extends the Person class and provides the implementation of the eat() method.
@@ -208,5 +262,7 @@ public class Test {
             public void eat(){ System.out.println("nice fruits"); }
         };
         e.eat();
+
+        Test1.main1();
     }
 }

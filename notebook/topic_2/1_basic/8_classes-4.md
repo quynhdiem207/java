@@ -120,7 +120,7 @@ class Test {
 
 ### 4.2, Method Signature
 
-Hai methods or constructors là M và N có cùng signature nếu chúng có cùng *name*, cùng *type parameters* (nếu có), và khi chỉnh formal parameter types của N thành parameter types của M sẽ có cùng *formal parameter types*.
+Hai methods or constructors là M và N có cùng signature nếu chúng có cùng *name*, cùng *type parameters* (nếu có), và cùng số lượng, types và thứ tự các *formal parameter*.
 
 Signature của method m1 là một subsignature của signature của method m2 nếu:  
 
@@ -129,13 +129,14 @@ Signature của method m1 là một subsignature của signature của method m2
 
 Hai method signatures m1 và m2 là override-equivalent (tương đương) nếu m1 là subsignature của m2, hoặc m2 là subsignature của m1.  
 
-Sẽ xảy ra compile-time error nếu khai báo 2 methods với override-equivalent signature trong cùng một class.  
+Sẽ xảy ra compile-time error nếu khai báo 2 methods với override-equivalent signature trong cùng một class, hay chúng có cùng erasure của method signature.  
 
 *Ví dụ: Override-Equivalent Signatures*
 
 ```java
 abstract class Point {
     int x, y;
+
     abstract void move(int dx, int dy);                      
     void move(int dx, int dy) { x += dx; y += dy; }          // compile-time error
     int move(int dx, int dy) { x += dx; y += dy; return 1; } // compile-time error
@@ -147,6 +148,13 @@ abstract class Point {
     <T>   T execute(Collection<T> a); // compile-time error
     <S,T> S execute(Collection<S> a);
         // because different signatures, same erasure)
+}
+
+class Point2D { int x, y; }
+class ColoredPoint extends Point2D { int color; }
+class Test {
+    static int test(ColoredPoint p) { return p.color; } // OK
+    static String test(Point2D p) { return "Point"; }
 }
 ```
 
@@ -806,9 +814,9 @@ public class Default2 implements AC, AD {}           // Error
 
 Nếu 2 methods của một class (dù cả hai được khai báo trong cùng class, hay cả hai được thừa kế bởi một class, hay một được khai báo và một được thừa kế) có cùng name, nhưng signatures không phải override-equivalent, thì method name được gọi là *overloaded*.
 
-Không có mối quan hệ bắt buộc nào giữa *return types* hay giữa *throws* clauses của hai methods với cùng name, trừ khi signatures của chúng là override-equivalent.
+Không có mối quan hệ bắt buộc nào giữa *modifier*, *return types* hay *throws* clauses của hai methods với cùng name, trừ khi signatures của chúng là override-equivalent.
 
-Khi method được gọi, số lượng actual arguments (và bất kỳ type arguments tường minh nào) và compile-time types của arguments sẽ được sử dụng, tại compile time, để xác định signature của method được gọi.
+Tại compile time, căn cứ vào số lượng actual arguments (và bất kỳ type arguments tường minh nào), compile-time types và thứ tự của arguments được truyền cho method invocation để xác định signature của method được gọi.
 
 *Ví dụ 1: Overloading*
 
@@ -823,6 +831,27 @@ class Point {
     // Point does not inherit the toString method of class Object,
     // because that method is overridden by the declaration of the toString method in class Point
     public String toString() { return "(" + x + "," + y +")"; }
+}
+
+class Point2D { int x, y; }
+class ColoredPoint extends Point2D { int color; }
+class Test {
+    static int test(ColoredPoint p) {
+        return p.color;
+    }
+    static String test(Point2D p) {
+        return "Point";
+    }
+    public static void main(String[] args) {
+        ColoredPoint cp = new ColoredPoint();
+        Point2D p = cp;
+
+        int i1 = test(cp);     // OK
+        String s1 = test(cp);  // compile-time error
+
+        int i2 = test(p);      // compile-time error
+        String s2 = test(p);   // OK
+    }
 }
 ```
 

@@ -6,7 +6,7 @@ Khi một expression xuất hiện trong hầu hết context, nó phải *compat
 
 Khả năng tương thích của một expression với context xung quanh được tạo điều kiện theo 2 cách:  
 
-- Đối với một số expression được gọi là *poly expression*, *deduced type* (type suy luận) có thể bị ảnh hưởng bởi *target type*. Vì vậy, cùng một expression có thể có type khác nhau trong các context khác nhau.  
+- Đối với một số expression được gọi là *poly expression* (expression chứa expression khác), *deduced type* (type suy luận) có thể bị ảnh hưởng bởi *target type*. Vì vậy, cùng một expression có thể có type khác nhau trong các context khác nhau.  
 - Sau khi type được suy luận, đôi khi có thể thực hiện *implicit conversion* (chuyển đổi ngầm) từ type của expression sang target type.  
 
 Nếu cả 2 cách đều không thể tạo ra type thích hợp, sẽ xảy ra *compile-time error*.  
@@ -30,12 +30,27 @@ Các loại *conversion context* mà trong đó *poly expression* có thể bị
         ```  
     + null reference có thể được gán cho bất cứ reference type nào.  
     + Các exception có thể xảy ra:  
-        + ClassCastException: kết quả của reference conversion khi class của object được tham chiếu không phải subclass của class type của variable or không implement subinterface type của variable,  
+        + ClassCastException: là kết quả của reference conversion khi class thực tế của object được tham chiếu bởi giá trị của biểu thức toán hạng không tương thích với target type được xác định bởi cast operator,  
         + OutOfMemoryError: kết quả của boxing conversion khi không đủ bộ nhớ cấp phát cho instance mới của wrapper class,  
         + NullPointerException: kết quả của unboxing conversion với null reference,  
-        + ArrayStoreException: xảy ra trong các trường hợp đặc biệt liên quan đến truy cập các array elements or field.  
+        + ArrayStoreException: xảy ra trong các trường hợp gán cho array elements của reference type một reference value của một object có type thực tế không tương thích với component type thực tế của mảng.  
 
 - **Invocation contexts**: cho phép một argument value trong lệnh gọi method or constructor được gán cho formal parameter (tham số hình thức) tương ứng.  
+
+    Strict invocation contexts cho phép:  
+
+    + identity conversion,  
+    + widening primitive conversion,  
+    + widening reference conversion.  
+
+    Loose invocation contexts cho phép:  
+
+    + identity conversion,  
+    + widening primitive conversion,  
+    + widening reference conversion,  
+    + boxing conversion có thể theo sau bởi widening reference conversion,  
+    + unboxing conversion có thể theo sau bởi widening primitive conversion.  
+
     ```java
     class Test {
         static int m(byte a, int b) { return a+b; }

@@ -2,7 +2,7 @@
 
 Trong Java, *arrays* là các *objects*, được tạo động, và có thể được gán cho các variables của type *Object*. Tất cả các methods của class Object đều có thể được gọi trên một array.
 
-Một array object chứa một số *variables*. Số lượng variables có thể là 0, trong trường hợp này array được gọi là *empty*. Các variables được chứa trong một array không có tên, thay vào đó chúng được tham chiếu bởi các *array access expressions* sử dụng các giá trị *index* (non-negative integer values). Những variables này được gọi là các *components* của array. Nếu một array có n components, thì n là *length* của array; Các components của array được tham chiếu sử dụng các chỉ số nguyên từ 0 đến n-1.
+Một array object chứa một số *variables*. Số lượng variables có thể là 0, trong trường hợp này array được gọi là *empty*. Các variables được chứa trong một array sẽ không có tên, thay vào đó chúng được tham chiếu bởi các *array access expressions* sử dụng các giá trị *index* (non-negative integer values). Những variables này được gọi là các *components* của array. Nếu một array có n components, thì n là *length* của array; Các components của array được tham chiếu sử dụng các chỉ số nguyên từ 0 đến n-1.
 
 Tất cả các components của một array đều có cùng type, được gọi là *component type* của array. Nếu component type của một array là T, thì type của array đó được viết là T[].
 
@@ -129,20 +129,32 @@ Number[] nums = new Integer[] {2, 3};
 
 Một array được tạo bởi một *array creation expression* hoặc một *array initializer*.
 
-Một *array creation expression* xác định *element type*, số cấp của mảng lồng nhau (dimensions), và độ dài (length) của array cho ít nhất một trong các cấp lồng nhau. Độ dài của array có sẵn dưới dạng một *final instance variable*: **length**.  
+Một *array creation expression* tạo ra một array tương ứng với element type, số cấp của mảng lồng nhau (dimensions), và độ dài (length) cho ít nhất một cấp đã được cung cấp. Các components của array mới được tạo sẽ có giá trị mặc định.
 
 Một *array initializer* tạo ra một array và cung cấp các initial values cho tất cả các components của nó.
 
+Nếu *dimension expression* có *value < 0* thì ngoại lệ *NegativeArraySizeException* sẽ được ném ra.
+
+Độ dài của array có sẵn dưới dạng một *final instance variable*: **length**.  
+
 ```java
 // array creation expression
-int[][] x = new int[2][];
-x[0] = new int[1];
-x[1] = new int[] { 5, 2 };
+int a = new int[2];
+System.out.println(a[0]); // 0
+
+String b = new String[2];
+System.out.println(b[0]); // null
+
+int[][] c = new int[2][];
+c[0] = new int[1];
+c[1] = new int[] { 5, 2 };
+System.out.println(c[1][0]); // 5
 
 // array initializer
-int[] y = { 3, 5 }; 
-int[][] z = { y };
-int[][] w = { {1, 2}, null };
+int[] x = { 3, 5 }; 
+int[][] y = { x };
+int[][] z = { {1, 2}, null };
+System.out.println(x[0]); // 3
 ```
 
 
@@ -162,10 +174,6 @@ class Gauss {
         int sum = 0;
         for (int e : x) sum += e;
         System.out.println(sum); // 5050
-
-        int y = new int[1];
-        System.out.println(y[0]); // null
-
     }
 }
 ```
@@ -176,8 +184,8 @@ Nếu cố gắng truy cập một array component với một *long index value
 
 Tất cả các truy cập array đều được kiểm tra tại runtime:  
 
-- Nếu sử dụng 'index < 0' hoặc 'index >= length' của array thì *ArrayIndexOutOfBoundsException* sẽ được ném ra.  
-- Nếu sử dụng 'null reference' thì *NullPointerException* sẽ được ném ra.  
+- Nếu *array index expression* có *value < 0* hoặc *value >= lengthOfArray* thì *ArrayIndexOutOfBoundsException* sẽ được ném ra.  
+- Nếu giá trị của *array reference expression* là *null* thì *NullPointerException* sẽ được ném ra.  
 
 ```java
 class Test {

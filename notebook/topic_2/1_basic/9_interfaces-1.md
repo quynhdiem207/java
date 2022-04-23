@@ -184,13 +184,15 @@ Các Fields, methods, và member types của một interface type có thể có 
     + ArrayInitializer
 ```
 
-Mọi *field declaration* trong body của một interface ngầm định là *public, static, và final*. DDuocj phép chỉ định một cách dư thừa bất kỳ hoặc tất cả các modifiers này cho các fields.
+Mọi *field declaration* trong body của một interface ngầm định là *public, static, và final*. Được phép chỉ định một cách dư thừa bất kỳ hoặc tất cả các modifiers này cho các fields.
 
 Nếu body của một interface declaration khai báo 2 fields với cùng name, sẽ gây ra compile-time error.
 
 Nếu interface khai báo một field với một tên nhất định, thì declaration của field đó được coi là ẩn (hide) bất kỳ và tất cả các declarations có thể truy cập của các fields với cùng tên trong các superinterfaces của interface đó.
 
-Interface có thể kế thừa nhiều hơn một field với cùng tên, sẽ không gây ra compile-time error. Tuy nhiên, trong body của interface này nếu tham chiếu tới bất kỳ field nào như vậy bằng simple name của nó sẽ gây ra compile-time error, bởi vì tham chiếu không rõ ràng, cần sử dụng qualified name.
+Interface có thể kế thừa nhiều hơn một field với cùng tên, sẽ không gây ra compile-time error. Tuy nhiên, trong body của interface này nếu tham chiếu tới bất kỳ field nào như vậy bằng simple name của nó sẽ gây ra compile-time error, bởi vì tham chiếu không rõ ràng, cần sử dụng qualified name hoặc ép kiểu.
+
+**Note**: KHÔNG thể sử dụng field access expression có chứa super keyword được xác định tường minh bởi superinterface name để truy xuất field bị ấn (hidden) giống như truy xuất default method bị overriden.
 
 Nếu cùng một field declaration được kế thừa từ một interface bằng nhiều paths, thì field đó chỉ được coi là kế thừa một lần duy nhất. Nó có thể được tham chiếu bằng simple name.
 
@@ -214,6 +216,12 @@ interface PrintColors extends BaseColors {
 //    nhưng kết quả thực tế các fields này chỉ được kế thừa một lần duy nhất.
 interface LotsOfColors extends RainbowColors, PrintColors {
     int FUCHSIA = 17, VERMILION = 43, CHARTREUSE = RED + 90; // OK
+    
+    default void printYELLOW() {
+        System.out.println(RainbowColors.YELLOW);        // 3
+        System.out.println(((PrintColors) this).YELLOW); // 8
+        System.out.println(PrintColors.super.YELLOW);    // Compile-time error
+    }
 }
 ```
 
@@ -351,7 +359,7 @@ Một *instance method* m1, được khai báo hoặc được kế thừa bởi
 - I là một subinterface của J.  
 - Signature của m1 là một subsignature của signature của m2.  
 
-**Note**: Một *default method* bị overridden có thể được truy cập bằng cách sử dụng một *method invocation expression* có chứa keyword **super**  mà qualified bởi một *superinterface name*.
+**Note**: Một *default method* bị overridden có thể được truy cập bằng cách sử dụng một *method invocation expression* có chứa keyword **super**  được xác định tường minh bởi một *superinterface name*.
 
 ```java
 class Super {}

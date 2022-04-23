@@ -156,6 +156,21 @@ Tương ứng với 2 loại *types*, trong Java có 2 loại *values*:
         System.out.format("%b %b %f %f", a, b, c, d); // true false Infinity -Infinity
     }
     ```
+- Không thể sử dụng toán tử == so sánh bằng giá trị 2 số thực (type float hoặc double), vì cách Java lưu trữ giá trị kiểu số thực, so sánh như vậy kết quả sẽ không chính xác. Để kiểm tra 2 số thực có bằng nhau hay không, cần kiểm tra giá trị của 2 số có hơn kém nhau với khoảng cách quá nhỏ hay không, khoảng cách này là bao nhiêu tùy thuộc vào độ chính xác mong muốn (double <= 1e-9, float <= 1e-6):  
+    ```java
+    double x = 0.3 * 3 + 0.1;
+    double y = 1.0;
+    System.out.println(x == y);          // false
+    System.out.println(x + " - " + y);   // 0.9999999999999999 - 1
+    System.out.println(Math.abs(x - y) <= 1e-9); // true => kết luận x == y
+
+    float a = 10f - 0.1f;
+    float b = 10f - 0.1f - 0.1f;
+    System.out.println(a == 9.9f);       // true
+    System.out.println(b == 9.8f);       // false
+    System.out.println(a + " - " + b);   // 9.9 - 9.799999
+    System.out.println(Math.abs(9.8f - b) <= 1e-6); // true => kết luận 9.8f == b
+    ```
 
 - Hỗ trợ các operators (toán tử):  
     + Toán tử so sánh: <, <=, >, >=, ==, !=  

@@ -336,6 +336,8 @@ Annotation type *java.lang.annotation.FunctionalInterface* được sử dụng 
 
 Một *annotation* là một *marker* liên kết thông tin với một cấu trúc chương trình, nhưng không có hiệu lực tại runtime. Một annotation biểu thị một *invocation* cụ thể của một *annotation type* và thường cung cấp các values cho các elements của type đó.
 
+Annotations là một dạng metadata (siêu dữ liệu), cung cấp dữ liệu về một chương trình mà không phải là một phần của chính chương trình đó. Annotations không có ảnh hưởng trực tiếp đến hoạt động của code mà chúng chú thích.
+
 
 ### 7.1, Normal Annotations
 

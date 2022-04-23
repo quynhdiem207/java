@@ -351,7 +351,7 @@ class Test {
 
 *Inner class* có thể là *non-static member class*, *local class*, hoặc *anonymous class*. 
 
-**Note**: Trong khi member và local class đều là một class declaration, thì anonymous class là một expression. Cấu trúc của anonymous class expression bao gồm:
+**Note**: Trong khi member và local class đều là một class declaration, thì anonymous class là một expression. Một anonymous class được ngầm định là *final*, nó không bao giờ là *abstract*, cũng không bao giờ là *static*. Cấu trúc của anonymous class expression bao gồm:
 
 - new operator,  
 - Name của một class để extend, hoặc một interface để implement,  
@@ -359,6 +359,8 @@ class Test {
 - Body, chính là một class declaration body, có thể khai báo các fields, methods, local classes, instance initializers, nhưng không thể khai báo constructors.  
 
 *Member class* của một interface được ngầm định là *static*, vì vậy nó không phải inner class. *Member interface* được ngầm định là *static*, vì vậy nó không phải inner. 
+
+*Anonymous class* luôn là một inner class, nó không bao giờ là **static.  
 
 **Note**: Sẽ xảy ra compile time error nếu *inner class* khai báo một *static initializer*, hoặc khai báo ngầm định hoặc tường minh một *static member* trừ khi member là một *constant variable*.  
 

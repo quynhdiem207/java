@@ -220,7 +220,7 @@ Các constant đã định nghĩa đại diện cho các giá trị Not-a-Number
 
 Boolean type có 2 values, được biểu diễn bằng các *boolean literals* true và false.  
 
-Một *boolean literal* luôn có type Boolean.  
+Một *boolean literal* luôn có type boolean.  
 
 
 #### *6.4, Character Literals*
