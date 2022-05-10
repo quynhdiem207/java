@@ -289,7 +289,7 @@ Execution Engine gồm 3 components chính:
 
 - **Interpreter**: Đọc, diễn giải byte code, & thực thi chúng một cách tuần tự. Nhược điểm là khi 1 method được gọi nhiều lần, mỗi lần gọi method đó sẽ lại được thông dịch lại.  
 - **JIT Compilier** (Just-In-Time Compiler): Khắc phục nhược điểm của *Interpreter*, biên dịch byte code được gọi lại nhiều lần giúp cải thiện hiệu suất.  
-- **Garbage Collector**: Thực hiện thu thập các object không còn được tham chiếu giúp giải phóng bộ nhớ.  
+- **Garbage Collector**: Thực hiện thu gom các object không còn được tham chiếu giúp giải phóng bộ nhớ, việc gom rác được thực hiện định kỳ.  
 
 *System.gc()* là method do Java cung cấp cho dọn rác.  
 Tìm hiểu thêm về *System.runtime*, & *Dump Heap*.  
