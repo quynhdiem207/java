@@ -138,6 +138,8 @@ Flag |             Explanation
 10.3 | Chiều rộng 10 ký tự, căn phải, với 3 ký tự sau dấu thập phân.
 ```
 
+Ngoài ra, một format specifier có thể chứa một argument index chỉ định vị trí của argument cho nó, một argument có thể được tham chiếu nhiều hơn 1 lần, argument đầu tiên là 1$. Hoặc có thể sử dụng ký tự < để sử dụng lại argument cho format specifier trước đó.  
+
 **Note**: In các numbers trong French system, trong đó dấu phẩy được sử dụng thay cho vị trí thập phân trong cách biểu diễn các floating point numbers của English system.
 
 *Ví dụ*:
@@ -167,6 +169,10 @@ public class TestFormat {
         System.out.format("%tB %te, %tY%n", c, c, c); //  "May 29, 2006"
         System.out.format("%tl:%tM %tp%n", c, c, c);  //  "2:34 am"
         System.out.format("%tD%n", c);                //  "05/29/06"
+
+        // "3.141593, +00000003.1415926536"
+        System.out.format("%f, %1$+020.10f %n", Math.PI);
+        System.out.format("%f, %<+020.10f %n", Math.PI);
     }
 }
 ```
