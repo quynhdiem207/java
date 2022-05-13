@@ -21,6 +21,84 @@ Ngược lại, *System.in* được định nghĩa là một *InputStream* byte
 InputStreamReader cin = new InputStreamReader(System.in);
 ```
 
+*Ví dụ 1: Nhập dữ liệu từ bàn phím sử dụng Scanner:*
+
+```java
+package v1study;
+
+import java.io.IOException;
+import java.util.Scanner;
+
+public class Bai5 {
+    public static void main(String[] args) throws IOException {
+        // Sử dụng lớp Scanner để nhập liệu cho các loại dữ liệu khác nhau.
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Nhập 1 số nguyên: ");
+        int i = input.nextInt();
+        System.out.println("Sau khi nhập, i = " + i);
+
+        System.out.print("Nhập 1 số nguyên short: ");
+        short s = input.nextShort();
+        System.out.println("Sau khi nhập, s = " + s);
+
+        System.out.print("Nhập 1 số nguyên byte: ");
+        byte b = input.nextByte();
+        System.out.println("Sau khi nhập, b = " + b);
+
+        System.out.print("Nhập 1 số nguyên long: ");
+        long l = input.nextLong();
+        System.out.println("Sau khi nhập, l = " + l);
+
+        System.out.println("Nhập 1 số thực float: ");
+        float f = input.nextFloat();
+        System.out.println("Sau khi nhập, f = " + f);
+
+        System.out.print("Nhập 1 số thực double: ");
+        double d = input.nextDouble();
+        System.out.println("Sau khi nhập, d = " + d);
+
+        System.out.print("Nhập 1 giá trị boolean: ");
+        boolean bo = input.nextBoolean();
+        System.out.println("Sau khi nhập, bo = " + bo);
+
+        System.out.print("Nhập 1 chuỗi: ");
+        input.nextLine();
+        String str = input.nextLine();
+        System.out.println("Sau khi nhập, str = " + str);
+
+        System.out.print("Nhập 1 ký tự: ");
+        char c = (char) System.in.read();
+        System.out.println("Sau khi nhập, c = " + c);
+    }
+}
+```
+
+*Ví dụ 2: Nhập dữ liệu từ bàn phím sử dụng BufferReader:*
+
+```java
+import java.io.*;
+public class Addition {
+    public static void main (String[] args) throws IOException {
+        String inputData;
+        BufferedReader br = new BufferedReader(
+            new InputStreamReader(System.in)
+        );
+        
+        System.out.print("Enter the 1st number:");
+        inputData = br.readLine();
+        int number1 = Integer.parseInt(inputData);
+
+        System.out.print("Enter the 2nd number:");
+        inputData = br.readLine();
+        int number2 = Integer.parseInt(inputData);
+
+        int sum = number1 + number2;
+        System.out.println("The sum of two numbers: " + sum);
+    }
+}
+```
+
 
 ### *The Console*
 
@@ -30,7 +108,7 @@ Trước khi một chương trình có thể sử dụng Console, nó phải c�
 
 Console object hỗ trợ nhập mật khẩu an toàn thông qua *readPassword* method của nó. Method này giúp nhập mật khẩu an toàn theo 2 cách: Đầu tiên, nó ngăn chặn echo, vì vậy mật khẩu không hiển thị trên màn hình của người dùng. Thứ hai, readPassword trả về một character array, không phải một String, vì vậy mật khẩu có thể được ghi đè, xóa nó khỏi bộ nhớ ngay khi không còn cần thiết.
 
-*Ví dụ: Thay đổi password của nười dùng, sử dụng các Console methods:*
+*Ví dụ 3: Thay đổi password của nười dùng, sử dụng các Console methods:*
 
 ```java
 import java.io.Console;

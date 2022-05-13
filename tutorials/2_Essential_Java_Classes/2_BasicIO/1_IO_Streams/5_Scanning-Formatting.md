@@ -108,9 +108,9 @@ public class ScanSum {
 
 ### 2.1.4.2, Formatting
 
-Các Stream objects mà thực hiện định dạng là các instances của *PrintWriter*, một *character stream class*, hoặc *PrintStream*, một *byte stream class*.
+Các Stream objects mà thực hiện định dạng là các instances của *PrintWriter* - một *character stream class*, hoặc *PrintStream* - một *byte stream class*.
 
-**Note**: Các *PrintStream* objects duy nhất mà bạn có thể cần là *System.out* và *System.err*. Khi bạn cần tạo một formatted output stream, hãy khởi tạo *PrintWriter*, KHÔNG phải PrintStream.
+**Note**: Các *PrintStream* objects duy nhất mà bạn có thể cần là *System.out* và *System.err*. Khi bạn cần tạo một formatted output stream, hãy khởi tạo *PrintWriter* (một output character stream), KHÔNG phải PrintStream (một output byte stream).
 
 Giống như tất cả các byte và character stream objects, các instances của *PrintStream* và *PrintWriter* triển khai một bộ các *write* methods tiêu chuẩn cho byte và character output đơn giản. Ngoài ra, cả PrintStream và PrintWriter đều triển khai cùng một bộ các methods cho việc chuyển đổi dữ liệu nội bộ thành output được định dạng. Có 2 cấp độ định dạng được cung cấp:
 
