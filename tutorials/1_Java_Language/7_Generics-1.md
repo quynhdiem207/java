@@ -163,7 +163,7 @@ OrderedPair<String, Box<Integer>> p = new OrderedPair<>("primes", new Box<Intege
 
 Một *raw type* là một generic type không được cung cấp bất kỳ type arguments nào.
 
-*Ví dụ: Với generic class Box<T>, có thể tạo một parameterized type Box<Integer> của Box<T>, nhưng nếu bỏ qua type argument sẽ tạo ra một raw type Box của Box<T>, như sau:*
+*Ví dụ: Với generic class `Box<T>`, có thể tạo một parameterized type `Box<Integer>` của `Box<T>`, nhưng nếu bỏ qua type argument sẽ tạo ra một raw type Box của `Box<T>`, như sau:*
 
 ```java
 public class Box<T> {              // generic type Box<T>
@@ -219,9 +219,9 @@ public class WarningDemo {
 }
 ```
 
-Thuật ngữ "unchecked" có nghĩa là compiler không có đủ thông tin về type để thực hiện tất cả các type checks cần thiết để đảm bảo type safety. Theo mặc định, "unchecked" warning bị tắt, mặc dù compiler đưa ra gợi ý. Để xem tất cả các "unchecked" warning, hãy compile lại với -Xlint:unchecked flag.
+Thuật ngữ "unchecked" có nghĩa là compiler không có đủ thông tin về type để thực hiện tất cả các type checks cần thiết để đảm bảo type safety. Theo mặc định, "unchecked" warning bị tắt, mặc dù compiler đưa ra gợi ý. Để xem tất cả các "unchecked" warning, hãy compile lại với *-Xlint:unchecked* flag.
 
-Khi compile lại với -Xlint:unchecked sẽ thấy các thông tin bổ sung sau:
+Khi compile lại với *-Xlint:unchecked* sẽ thấy các thông tin bổ sung sau:
 
 ```
 WarningDemo.java:4: warning: [unchecked] unchecked conversion
@@ -366,7 +366,7 @@ public static <T> int countGreaterThan(T[] anArray, T elem) {
 }
 ```
 
-*Trong ví dụ trên bạn sẽ nhận được một compile-time error vì > operator chỉ áp dụng cho các primitive numbers, không sử dụng để so sánh các object. Để giải quyết vấn đề này, cần giới hạn type parameter T bởi interface Comparable<T>:*
+*Trong ví dụ trên bạn sẽ nhận được một compile-time error vì > operator chỉ áp dụng cho các primitive numbers, không sử dụng để so sánh các object. Để giải quyết vấn đề này, cần giới hạn type parameter T bởi interface `Comparable<T>`:*
 
 ```java
 public interface Comparable<T> {
@@ -399,7 +399,7 @@ someMethod(new Integer(10));   // OK
 someMethod(new Double(10.1));  // OK
 ```
 
-*Ví dụ: parameterized type Box<Number> của generic type Box<T>, một box sẽ chứa một Number, bạn có thể add một Integer vào box, vì Integer cũng là một loại Number:*
+*Ví dụ: parameterized type `Box<Number>` của generic type `Box<T>`, một box sẽ chứa một Number, bạn có thể add một Integer vào box, vì Integer cũng là một loại Number:*
 
 ```java
 Box<Number> box = new Box<Number>();
@@ -407,9 +407,9 @@ box.add(new Integer(10));   // OK
 box.add(new Double(10.1));  // OK
 ```
 
-**Note**: Đối với 2 types A và B cụ thể (*vd: Number và Integer*), MyClass<A> không có mối quan hệ nào với MyClass<B>, bất kể A và B có liên quan với nhau hay không. Superclass chung của MyClass<A> và MyClass<B> là Object. Hay, A <: B không có nghĩa MyClass<A> <: MyClass<B>.  
+**Note**: Đối với 2 types A và B cụ thể (*vd: Number và Integer*), `MyClass<A>` không có mối quan hệ nào với `MyClass<B>`, bất kể A và B có liên quan với nhau hay không. Superclass chung của `MyClass<A>` và `MyClass<B>` là Object. Hay, `A <: B` không có nghĩa `MyClass<A> <: MyClass<B>`.  
 
-*Ví dụ: Xét method sau, boxTest() chỉ nhận Box<Number>, bạn không thể truyền Box<Integer> hay Box<Double> cho method này, vì Box<Integer> và Box<Double> không phải các subtypes của Box<Number>:*
+*Ví dụ: Xét method sau, boxTest() chỉ nhận `Box<Number>`, bạn không thể truyền `Box<Integer>` hay `Box<Double>` cho method này, vì `Box<Integer>` và `Box<Double>` không phải các subtypes của `Box<Number>`:*
 
 ```java
 public void boxTest(Box<Number> n) { ... }
@@ -420,7 +420,7 @@ public void boxTest(Box<Number> n) { ... }
 
 Các subtypes của một generic type là các type mà extends hay implements nó. Mối quan hệ giữa các parameterized type của các generic types này cũng được xác định thông qua extends và implements clause.
 
-*Ví dụ: ArrayList<E> implements List<E>, và List<E> extends Collection<E>. Vì vậy, ArrayList<String> là một subtype của List<String>, cái mà là một subtype của Collection<String>, miễn là type argument của các parameterized type của các generic types này giống nhau, thì mối quan hệ subtype giữa các parameterized types vẫn giữ nguyên như giữa các generic types.*
+*Ví dụ: `ArrayList<E>` implements `List<E>`, và `List<E>` extends `Collection<E>`. Vì vậy, `ArrayList<String>` là một subtype của `List<String>`, cái mà là một subtype của `Collection<String>`, miễn là type argument của các parameterized type của các generic types này giống nhau, thì mối quan hệ subtype giữa các parameterized types vẫn giữ nguyên như giữa các generic types.*
 
 ```java
 ArrayList<E>        ------>   List<E>        ---->   Collection<E>

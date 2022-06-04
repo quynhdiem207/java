@@ -50,7 +50,7 @@ Map<String, List<String>> myMap = new HashMap<>(); // OK
 
 **Note**: Sử dụng diamond (<>) để tận dụng lợi ích của type inference trong khi khởi tạo generic class, không nên sử dụng raw type. 
 
-*Ví dụ: Compiler tạo một unchecked conversion warning vì HashMap() constructor tham chiếu đến HashMap raw type, không phải Map<String, List<String>> type:*
+*Ví dụ: Compiler tạo một unchecked conversion warning vì HashMap() constructor tham chiếu đến HashMap raw type, không phải `Map<String, List<String>>` type:*
 
 ```java
 Map<String, List<String>> myMap = new HashMap(); // unchecked conversion warning
@@ -69,7 +69,7 @@ class MyClass<X> {
 }
 ```
 
-*Class instance creation expression dưới đây sẽ tạo ra một instance của parameterized type MyClass<Integer>, nó chỉ định tường minh type Integer cho formal type parameter X của generic class MyClass<X>. Lưu ý rằng constructor của generic class này chứa một formal type parameter T. Compiler suy ra type String cho formal type parameter T của constructor của generic class này (vì argument thực của constructor này là một String object).*
+*Class instance creation expression dưới đây sẽ tạo ra một instance của parameterized type `MyClass<Integer>`, nó chỉ định tường minh type Integer cho formal type parameter X của generic class `MyClass<X>`. Lưu ý rằng constructor của generic class này chứa một formal type parameter T. Compiler suy ra type String cho formal type parameter T của constructor của generic class này (vì argument thực của constructor này là một String object).*
 
 ```java
 new MyClass<Integer>("");
@@ -77,7 +77,7 @@ new MyClass<Integer>("");
 
 **Note**: Các compiler từ trước Java SE 7 có thể suy ra các type argument thực tế của các generic constructor invocations tương tự như các generic method invocations. Tuy nhiên, các compiler từ Java SE 7 trở đi có thể suy ra các type argument thực của generic class đang được khởi tạo nếu bạn sử dụng diamond (<>). 
 
-*Ví dụ: Compiler suy ra type Integer cho formal type parameter X của generic class MyClass<X>. Nó suy ra type String cho formal type parameter T của constructor của generic class này:*
+*Ví dụ: Compiler suy ra type Integer cho formal type parameter X của generic class `MyClass<X>`. Nó suy ra type String cho formal type parameter T của constructor của generic class này:*
 
 ```java
 MyClass<Integer> myObject = new MyClass<>("");
@@ -96,7 +96,7 @@ Java compiler tận dụng target type để suy ra các type argument của gen
 static <T> List<T> emptyList();
 ```
 
-*Câu lệnh gán sau mong đợi một instance của List<String>, đây là target type. Bởi vì emptyList() method trả về một giá trị của List<T>, compiler suy ra type argument T phải là String. Điều này hoạt động trong cả Java SE 7 và 8.*
+*Câu lệnh gán sau mong đợi một instance của `List<String>`, đây là target type. Bởi vì emptyList() method trả về một giá trị của `List<T>`, compiler suy ra type argument T phải là String. Điều này hoạt động trong cả Java SE 7 và 8.*
 
 ```java
 List<String> listOne = Collections.emptyList();
@@ -116,7 +116,7 @@ List<String> listOne = Collections.<String>emptyList();
 void processStringList(List<String> stringList) { ... }
 ```
 
-*Xét method invocation sau, Java compiler SE 7 sẽ tạo ra một error: "List<Object> cannot be converted to List<String>", Java compiler SE 7 yêu cầu một giá trị cho type argument của method invocation emptyList(), do không có thông tin về target type trong context này, nên nó suy ra type argument là Object, emptyList() sẽ trả về một giá trị của List<Object> không tương thích với processStringList() mong đợi, do đó trong Java SE 7 phải chỉ định tường minh type argument là String. Trong khi đó điều này không cần thiết trong Java SE 8, processStringList() yêu cầu một argument của List<String>, đây là target type, mà emptyList() trả về một giá trị của List<T>, nên compiler suy ra type argument là String.*
+*Xét method invocation sau, Java compiler SE 7 sẽ tạo ra một error: "`List<Object>` cannot be converted to `List<String>`", Java compiler SE 7 yêu cầu một giá trị cho type argument của method invocation emptyList(), do không có thông tin về target type trong context này, nên nó suy ra type argument là Object, emptyList() sẽ trả về một giá trị của `List<Object>` không tương thích với processStringList() mong đợi, do đó trong Java SE 7 phải chỉ định tường minh type argument là String. Trong khi đó điều này không cần thiết trong Java SE 8, processStringList() yêu cầu một argument của `List<String>`, đây là target type, mà emptyList() trả về một giá trị của `List<T>`, nên compiler suy ra type argument là String.*
 
 ```java
 processStringList(Collections.emptyList());
@@ -134,11 +134,11 @@ Upper bounded wildcard hạn chế unknown type thành một type cụ thể ho�
 
 Có thể sử dụng upper bounded wildcard để nới lỏng các hạn chế đối với một variable. 
 
-*Ví dụ: giả sử bạn muốn viết một method hoạt động trên List<Integer>, List<Double> và List<Number>; bạn có thể đạt được điều này bằng cách sử dụng upper bounded wildcard.*
+*Ví dụ: giả sử bạn muốn viết một method hoạt động trên `List<Integer>`, `List<Double>` và `List<Number>`; bạn có thể đạt được điều này bằng cách sử dụng upper bounded wildcard.*
 
-Để khai báo một upper bounded wildcard, sử dụng ký tự wildcard ('?') theo sau là từ khóa **extends**, tiếp theo là *upper bound* của nó, VD: <? extends A>. (*Note: trong ngữ cảnh này, extends có ý nghĩa tương tự với "extends" một class và "implements" các interface.*)
+Để khai báo một upper bounded wildcard, sử dụng ký tự wildcard ('?') theo sau là từ khóa **extends**, tiếp theo là *upper bound* của nó, VD: `<? extends A>`. (*Note: trong ngữ cảnh này, extends có ý nghĩa tương tự với "extends" một class và "implements" các interface.*)
 
-*Ví dụ: Để viết một method hoạt động trên danh sách của Number và các subtypes của Number, chẳng hạn như Integer, Double và Float, bạn cần chỉ định List<? extends Number>. Type List<Number> hạn chế hơn List<? extends Number> vì cái trước chỉ khớp với danh sách kiểu Number, trong khi cái sau khớp với danh sách kiểu Number hoặc bất kỳ subtypes nào của nó.*
+*Ví dụ: Để viết một method hoạt động trên danh sách của Number và các subtypes của Number, chẳng hạn như Integer, Double và Float, bạn cần chỉ định `List<? extends Number>`. Type `List<Number>` hạn chế hơn `List<? extends Number>` vì cái trước chỉ khớp với danh sách kiểu Number, trong khi cái sau khớp với danh sách kiểu Number hoặc bất kỳ subtypes nào của nó.*
 
 Ngoài ra, upper bounded wildcard cho truy cập các members được định nghĩa trong upper bound.
 
@@ -167,14 +167,14 @@ class Test {
 
 ### 7.2, Unbounded Wildcards
 
-Unbounded wildcard được chỉ định bằng cách sử dụng ký tự wildcard (?), *VD: List<?>, đây được gọi là list of unknown type (danh sách kiểu không xác định)*. 
+Unbounded wildcard được chỉ định bằng cách sử dụng ký tự wildcard (?), *VD: `List<?>`, đây được gọi là list of unknown type (danh sách kiểu không xác định)*. 
 
 Có 2 trường hợp trong đó ký tự unbounded wildcard rất hữu ích:
 
 - Nếu bạn đang viết một method có thể được triển khai bằng các methods được cung cấp trong Object class.  
-- Khi code đang sử dụng các methods trong một generic class mà không phụ thuộc vào type parameter. *VD: List.size hoặc List.clear*. Trên thực tế, Class<?> Thường được sử dụng vì hầu hết các methods trong Class<T> không phụ thuộc vào T.  
+- Khi code đang sử dụng các methods trong một generic class mà không phụ thuộc vào type parameter. *VD: List.size hoặc List.clear*. Trên thực tế, `Class<?>` Thường được sử dụng vì hầu hết các methods trong `Class<T>` không phụ thuộc vào T.  
 
-*Ví dụ: Mục tiêu của printList() in một danh sách của bất cứ type nào, nhưng nó không đạt được mục tiêu đó - nó chỉ in một danh sách các Object instances; nó không thể in List<Integer>, List<String>, List<Double>, ..., vì chúng không phải là subtypes của List<Object>:*
+*Ví dụ: Mục tiêu của printList() in một danh sách của bất cứ type nào, nhưng nó không đạt được mục tiêu đó - nó chỉ in một danh sách các Object instances; nó không thể in `List<Integer>`, `List<String>`, `List<Double>`, ..., vì chúng không phải là subtypes của `List<Object>`:*
 
 ```java
 public static void printList(List<Object> list) {
@@ -184,7 +184,7 @@ public static void printList(List<Object> list) {
 }
 ```
 
-*Trong ví dụ trên, để đạt được mục tiêu, cần viết một generic method printList, hãy sử dụng List<?>:*
+*Trong ví dụ trên, để đạt được mục tiêu, cần viết một generic method printList, hãy sử dụng `List<?>`:*
 
 ```java
 public static void printList(List<?> list) {
@@ -194,7 +194,7 @@ public static void printList(List<?> list) {
 }
 ```
 
-*Bởi vì đối với bất kỳ reference type A cụ thể nào, List<A> đều là một subtype của List<?>, nên có thể sử dụng printList để in một danh sách của type bất kỳ:*
+*Bởi vì đối với bất kỳ reference type A cụ thể nào, `List<A>` đều là một subtype của `List<?>`, nên có thể sử dụng printList để in một danh sách của type bất kỳ:*
 
 ```java
 List<Integer> li = Arrays.asList(1, 2, 3);
@@ -203,18 +203,18 @@ printList(li);
 printList(ls);
 ```
 
-**Note**: List<Object> và List<?> không giống nhau, bạn có thể chèn một Object hoặc bất kỳ subtypes nào của Object vào List<Object>, nhưng bạn chỉ có thể chèn null vào một List<?>.
+**Note**: `List<Object>` và `List<?>` không giống nhau, bạn có thể chèn một Object hoặc bất kỳ subtypes nào của Object vào `List<Object>`, nhưng bạn chỉ có thể chèn null vào một `List<?>`.
 
 
 ### 7.3, Lower Bounded Wildcards
 
 Lower bounded wildcard hạn chế unknown type thành một type cụ thể hoặc một supertype của type đó.
 
-Để khai báo một lower bounded wildcard, sử dụng ký tự wildcard ('?') theo sau là từ khóa **super**, tiếp theo là *lower bound* của nó, *VD: <? super A>*.
+Để khai báo một lower bounded wildcard, sử dụng ký tự wildcard ('?') theo sau là từ khóa **super**, tiếp theo là *lower bound* của nó, *VD: `<? super A>`*.
 
 **Note**: Bạn có thể chỉ định upper bound cho một wildcard, hoặc bạn có thể chỉ định lower bound, nhưng bạn không thể chỉ định cả hai.
 
-*Ví dụ: Giả sử bạn muốn viết một method đặt các Integer objects vào một danh sách. Để tối đa hóa tính linh hoạt, bạn muốn method hoạt động trên List<Integer>, List<Number> và List<Object> - bất kỳ thứ gì có thể chứa giá trị Integer. Để đạt mục đích này, bạn cần chỉ định List<? super Integer>. Type List<Integer> hạn chế hơn List<? super Integer> bởi vì cái trước chỉ khớp với danh sách kiểu Integer, trong khi cái sau khớp với danh sách bất kỳ kiểu nào là supertype của Integer:*
+*Ví dụ: Giả sử bạn muốn viết một method đặt các Integer objects vào một danh sách. Để tối đa hóa tính linh hoạt, bạn muốn method hoạt động trên `List<Integer>`, `List<Number>` và `List<Object>` - bất kỳ thứ gì có thể chứa giá trị Integer. Để đạt mục đích này, bạn cần chỉ định `List<? super Integer>`. Type `List<Integer>` hạn chế hơn `List<? super Integer>` bởi vì cái trước chỉ khớp với danh sách kiểu Integer, trong khi cái sau khớp với danh sách bất kỳ kiểu nào là supertype của Integer:*
 
 ```java
 public static void addNumbers(List<? super Integer> list) {
@@ -229,7 +229,7 @@ public static void addNumbers(List<? super Integer> list) {
 
 Có thể sử dụng wildcard để tạo ra mối quan hệ giữa các parameterized types của một generic type.
 
-*Ví dụ: Mặc dù Integer là một subtype của Number, nhưng trên thực tế List<Integer> KHÔNG phải một subtype của List<Number>, chúng không có quan hệ với nhau. Tuy nhiên, List<?> là supertype của cả List<Integer> và List<Number>:*
+*Ví dụ: Mặc dù Integer là một subtype của Number, nhưng trên thực tế `List<Integer>` KHÔNG phải một subtype của `List<Number>`, chúng không có quan hệ với nhau. Tuy nhiên, `List<?>` là supertype của cả `List<Integer>` và `List<Number>`:*
 
 ```java
 // List<Integer>   --X-->   List<Number>
@@ -270,7 +270,7 @@ List<? extends Integer>  |   |     List<? super Number>
 
 Trong một số trường hợp, compiler sẽ suy luận type của một wildcard. Điều này được gọi là *wildcard capture*.
 
-*Ví dụ, một danh sách có thể được định nghĩa là List<?>, nhưng khi đánh giá một expression, compiler suy ra một type cụ thể từ mã.*
+*Ví dụ, một danh sách có thể được định nghĩa là `List<?>`, nhưng khi đánh giá một expression, compiler suy ra một type cụ thể từ mã.*
 
 Phần lớn, bạn không cần phải lo lắng về wildcard capture, ngoại trừ khi bạn thấy thông báo lỗi có chứa cụm từ "capture of".
 
@@ -323,7 +323,7 @@ Nên sử dụng wildcard khi:
 
 Các nguyên tắc trên KHÔNG áp dụng cho "return type" của một method. Nên tránh sử dụng wildcard làm return type vì nó buộc các programmer mà sử dụng code sẽ phải xử lý wildcard.
 
-*Ví dụ: Vì List<EvenNumber> là một subtype của List<? extends NaturalNumber>, bạn có thể gán le cho ln, nhưng không thể sử dụng ln để add một natural number vào một list của các even numbers.*
+*Ví dụ: Vì `List<EvenNumber>` là một subtype của `List<? extends NaturalNumber>`, bạn có thể gán le cho ln, nhưng không thể sử dụng ln để add một natural number vào một list của các even numbers.*
 
 ```java
 class NaturalNumber {
@@ -369,7 +369,7 @@ Type erasure đảm bảo rằng không có class mới nào được tạo cho 
 
 Trong quá trình type erasure, Java compiler sẽ xóa tất cả các type parameters và thay thế từng parameter bằng bound đầu tiên của nó nếu type parameters có các bounds hoặc Object nếu các type parameters không có bound.
 
-*Ví dụ 1: generic class Note<T> sử dụng một unbounded type parameter, đại diện cho một node trong một linked list.*
+*Ví dụ 1: generic class `Note<T>` sử dụng một unbounded type parameter, đại diện cho một node trong một linked list.*
 
 ```java
 public class Node<T> {
@@ -403,7 +403,7 @@ public class Node {
 }
 ```
 
-*Ví dụ 2: generic class Node<T extends Comparable<T>> sử dụng một bounded type parameter:*
+*Ví dụ 2: generic class `Node<T extends Comparable<T>>` sử dụng một bounded type parameter:*
 
 ```java
 public class Node<T extends Comparable<T>> {
@@ -597,7 +597,7 @@ Một *reifiable type* là một type có đầy đủ type information tại ru
 
 Các *non-reifiable types* là các types có information đã bị xóa tại compile-time bởi type erasure — các parameterized types có ít nhất một trong các type arguments là unbound wildcards. Một non-reifiable type không có sẵn information của nó tại runtime.
 
-*Ví dụ: List<String> và List<Number> là các non-reifiable types; JVM không thể phân biệt sự khác biệt giữa các types này tại runtime.*
+*Ví dụ: `List<String>` và `List<Number>` là các non-reifiable types; JVM không thể phân biệt sự khác biệt giữa các types này tại runtime.*
 
 there are certain situations where  cannot be used: in an , for example, or as an element in an array.
 
@@ -664,7 +664,7 @@ warning: [varargs] Possible heap pollution from parameterized vararg type T
 Object[] objectArray = l;
 ```
 
-*Statement này có thể gây heap pollution. Một giá trị phù hợp với parameterized type của varargs formal parameter l có thể được gán cho biến objectArray, và do đó có thể được gán cho l. Tuy nhiên, compiler không tạo ra unchecked warning tại câu lệnh này. Compiler đã tạo ra một cảnh báo khi nó dịch formal parameter varargs List<String>... l sang formal parameter List[] l. Statement này là hợp lệ; biến l có kiểu List[], là một subtype của Object[].*
+*Statement này có thể gây heap pollution. Một giá trị phù hợp với parameterized type của varargs formal parameter l có thể được gán cho biến objectArray, và do đó có thể được gán cho l. Tuy nhiên, compiler không tạo ra unchecked warning tại câu lệnh này. Compiler đã tạo ra một cảnh báo khi nó dịch formal parameter varargs `List<String>...` l sang formal parameter List[] l. Statement này là hợp lệ; biến l có kiểu List[], là một subtype của Object[].*
 
 *Do đó, compiler không đưa ra cảnh báo hoặc lỗi nếu bạn gán một List object của bất kỳ type nào cho bất kỳ array component nào của mảng objectArray, như được thể hiên qua câu lệnh sau, gán cho array component đầu tiên của mảng objectArray một List object có chứa một Integer object:*
 
@@ -678,7 +678,7 @@ objectArray[0] = Arrays.asList(42);
 ArrayBuilder.faultyMethod(Arrays.asList("Hello!"), Arrays.asList("World!"));
 ```
 
-*Tại runtime, JVM ném một ClassCastException tại statement sau, bởi vì object được lưu trữ trong array component đầu tiên của biến l có type List<Integer>, nhưng câu lệnh này đang mong đợi một object của List<String> type:*
+*Tại runtime, JVM ném một ClassCastException tại statement sau, bởi vì object được lưu trữ trong array component đầu tiên của biến l có type `List<Integer>`, nhưng câu lệnh này đang mong đợi một object của `List<String>` type:*
 
 ```java
 String s = l[0].get(0); // ClassCastException thrown here

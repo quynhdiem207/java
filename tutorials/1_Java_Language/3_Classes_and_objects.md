@@ -411,4 +411,11 @@ public enum Day {
 }
 ```
 
+Tất cả các enums đều extends `Enum<E>` nên chúng đều implements *Comparable* và *Serializable*:
+
+```java
+public abstract class Enum<E extends Enum<E>> extends Object
+    implements Comparable<E>, Serializable {}
+```
+
 Chi tiết xem tại [Java specifications about enum](../../specifications/8_classes-5.md#9-enum-types).

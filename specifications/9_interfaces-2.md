@@ -683,7 +683,7 @@ class A {}
 
 ## 8. Retrieving Annotations
 
-Có một số methods có sẵn trong *Reflection API* có thể được sử dụng để truy xuất các annotations, ví dụ như `AnnotatedElement.getAnnotation(Class<T>`) chỉ return một annotation duy nhất nếu có annotation của type được yêu cầu. Nếu có nhiều hơn một annotation của type được yêu cầu, trước tiên có thể lấy container annotation của chúng. Các methods khác được giới thiệu trong Java SE 8 quét qua container annotation để return nhiều annotations cùng một lúc, ví dụ như `AnnotatedElement.getAnnotationsByType(Class<T>`).
+Có một số methods có sẵn trong *Reflection API* có thể được sử dụng để truy xuất các annotations, ví dụ như `AnnotatedElement.getAnnotation(Class<T>)` chỉ return một annotation duy nhất nếu có annotation của type được yêu cầu. Nếu có nhiều hơn một annotation của type được yêu cầu, trước tiên có thể lấy container annotation của chúng. Các methods khác được giới thiệu trong Java SE 8 quét qua container annotation để return nhiều annotations cùng một lúc, ví dụ như `AnnotatedElement.getAnnotationsByType(Class<T>)`.
 
 ```java
 import java.lang.annotation.*;

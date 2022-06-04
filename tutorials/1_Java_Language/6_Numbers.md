@@ -6,9 +6,18 @@
 
 Khi làm việc với numbers, đa phần chúng ta sẽ thường sử dụng primitive types. Tuy nhiên, đôi khi có những lý do để sử dụng các objects thay cho các primitive values. Java cung cấp các wrapper classes cho mỗi primitive data types, các class này "wrap" (bọc) các primitive value trong một object. Thông thường, việc bao bọc được thực hiện bởi compiler — nếu bạn sử dụng một primitive value ở nơi mong đợi một object, thì compiler sẽ *box* (đóng hộp) primitive value trong một object của wrapper class tương ứng của nó cho bạn. Tương tự, nếu bạn sử dụng một number object khi mong đợi một primitive value, thì compiler sẽ unbox (mở hộp) object đó cho bạn.
 
+```java
+public abstract class Number extends Object implements Serializable {}
+```
+
 Tất cả các numeric wrapper classes đều là các subclasses của abstract class *Number*: Byte, Short, Integer, Long, Float, Double.  
 
-**Note**: Ngoài ra còn có 4 subclass khác của Number: BigDecimal và BigInteger được sử dụng cho phép tính có độ chính xác cao, AtomicInteger và AtomicLong được sử dụng cho các ứng dụng đa luồng.  
+```java
+public final class Integer extends Number
+    implements Comparable<Integer> {}
+```
+
+**Note**: Ngoài ra còn có 4 subclass khác của *Number*: BigDecimal và BigInteger được sử dụng cho phép tính có độ chính xác cao, AtomicInteger và AtomicLong được sử dụng cho các ứng dụng đa luồng.  
 
 Có 3 lý do mà có thể sử dụng *Number object* thay vì một primitive value:
 
@@ -58,16 +67,24 @@ Mỗi Number subclass chứa các methods khác hữu ích cho việc chuyển �
 static Integer decode(String s)             | - Decodes một string thành một integer.
                                             | - Có thể chấp nhận một string biểu diễn của decimal,
                                             |   octal, hay hexadecimal numbers làm input.
+--------------------------------------------|------------------------------------------------------
 static int parseInt(String s)               | - Return một integer (chỉ decimal).
+--------------------------------------------|------------------------------------------------------
 static int parseInt(String s, int radix)    | - Return một integer, cho trước một string biểu diễn
                                             |   của decimal, octal, binary hay hexadecimal numbers
                                             |   làm input với cơ số tương ứng 10, 8, 2, 16.
+--------------------------------------------|------------------------------------------------------
 String toString()                           | - Return String object đại diện cho value của Integer này.
+--------------------------------------------|------------------------------------------------------
 static String toString(int i)               | - Return String object đại diện cho integer xác định.
+--------------------------------------------|------------------------------------------------------
 static Integer valueOf(int i)               | - Return Integer object giữ primitive value xác định.
-static Integer valueOf(String s)            | - Return Integer object giữ value của string biểu diễn xác định.
-static Integer valueOf(String s, int radix) | - Return Integer object giữ value của string biểu diễn xác định,
-                                            |   với cơ số xác định.
+--------------------------------------------|------------------------------------------------------
+static Integer valueOf(String s)            | - Return Integer object giữ value của string biểu diễn
+                                            |   xác định.
+--------------------------------------------|------------------------------------------------------
+static Integer valueOf(String s, int radix) | - Return Integer object giữ value của string biểu diễn
+                                            |   xác định, với cơ số xác định.
 ```
 
 
@@ -470,7 +487,7 @@ for (int i = 1; i < 50; i += 2)
     li.add(i);
 ```
 
-*Trong ví dụ trên, mặc dù thêm các int values dưới dạng các primitive types, không phải các Integer objects, vào List<Integer> li, nhưng compiler không đưa ra compile-time error, vì nó tạo một Integer object từ primitive value i và thêm object đó vào li. Do đó, tại runtime, compiler chuyển đổi code trước đó thành như sau:*
+*Trong ví dụ trên, mặc dù thêm các int values dưới dạng các primitive types, không phải các Integer objects, vào `List<Integer>` li, nhưng compiler không đưa ra compile-time error, vì nó tạo một Integer object từ primitive value i và thêm object đó vào li. Do đó, tại runtime, compiler chuyển đổi code trước đó thành như sau:*
 
 ```java
 List<Integer> li = new ArrayList<>();

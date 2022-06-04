@@ -112,7 +112,7 @@ Tập các parameterized types được truyền cho rtti method là:
 S = { ArrayList<Integer>, ArrayList<String> LinkedList<Character>, ... }
 ```
 
-*Runtime không theo dõi các type parameter, vì vậy nó không thể phân biệt được sự khác biệt giữa ArrayList<Integer> và ArrayList<String>. Bạn có thể làm nhiều nhất là sử dụng unbounded wildcard để xác minh rằng danh sách là một ArrayList:*
+*Runtime không theo dõi các type parameter, vì vậy nó không thể phân biệt được sự khác biệt giữa `ArrayList<Integer>` và `ArrayList<String>`. Bạn có thể làm nhiều nhất là sử dụng unbounded wildcard để xác minh rằng danh sách là một ArrayList:*
 
 ```java
 public static void rtti(List<?> list) {

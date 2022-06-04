@@ -445,7 +445,7 @@ Nên sử dụng abstract class hay interface?
 
 *Ví dụ: AbstractMap là một abstract class trong JDK, là một bộ phận của Collections Framework. Các subclass của nó (bao gồm HashMap, TreeMap, và ConcurrentHashMap) chia sẻ các methods (bao gồm get, put, isEmpty, containsKey, và containsValue) mà AbstractMap định nghĩa.*
 
-*Ví dụ: HashMap là một class trong JDK, implements một số interfaces Serializable, Cloneable, và Map<K, V>. Một instance của HashMap có thể được clone, serializable (nghĩa là có thể được chuyển đổi thành một byte stream), và có chức năng của một map. Ngoài ra, Map<K, V> interface đã được thêm nhiều default methods như merge và forEach mà các class cũ đã triển khai interface này không phải định nghĩa.*
+*Ví dụ: HashMap là một class trong JDK, implements một số interfaces Serializable, Cloneable, và `Map<K, V>`. Một instance của HashMap có thể được clone, serializable (nghĩa là có thể được chuyển đổi thành một byte stream), và có chức năng của một map. Ngoài ra, `Map<K, V>` interface đã được thêm nhiều default methods như merge và forEach mà các class cũ đã triển khai interface này không phải định nghĩa.*
 
 Note: Nhiều software libraries sử dụng cả các abstract classes và các interfaces, *ví dụ như HashMap class implements một vài interfaces và cũng extends abstract class AbstractMap*.  
 

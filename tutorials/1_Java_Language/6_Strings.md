@@ -8,6 +8,11 @@ Trong Java, các strings là các objects.
 
 Java cung cấp **String** class để tạo và thao tác với các strings.  
 
+```java
+public final class String extends Object 
+    implements Serializable, Comparable<String>, CharSequence {}
+```
+
 
 ### Creating Strings
 
@@ -456,6 +461,11 @@ public class RegionMatchesDemo {
 ### 3.4, The StringBuilder Class
 
 *StringBuilder objects* tương tự như các *String objects*, ngoại trừ việc chúng có thể bị sửa đổi.
+
+```java
+public final class StringBuilder extends Object
+    implements Serializable, CharSequence {}
+```
 
 Nên sử dụng các String objects, trừ khi các StringBuilder objects làm code đơn giản hơn hay hiệu suất tốt hơn. *Ví dụ, nếu cần nối một số lượng lớn các strings, việc append vào một StringBuilder object sẽ hiệu quả hơn.*
 
