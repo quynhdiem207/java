@@ -18,7 +18,7 @@ Trong đó:
     + extends ClassOrInterfaceType {AdditionalBound}  
 - AdditionalBound: & InterfaceType  
 
-*Ví dụ: type variable T có ràng buộc C & I: <T extends C & I>.*  
+*Ví dụ: type variable T có ràng buộc C & I: `<T extends C & I>`.*  
 
 ```java
 <T extends C & I> void test(T t) {}
@@ -79,34 +79,23 @@ class Test {
 
 Một *class or interface declaration* là *generic* định nghĩa một tập các *parameterized types*.
 
-*Ví dụ: List<T> là một generic type, định nghĩa một tập các parameterized types gồm: List<String>, List<Object>, ect.* 
+*Ví dụ: `List<T>` là một generic type, định nghĩa một tập các parameterized types gồm: `List<String>`, `List<Object>`, ect.* 
 
-Một *parameterized type* là một class or interface type có dạng:  
+Một *parameterized type* là một class or interface type có dạng: `C<T1,...,Tn>`. Trong đó:
 
-```
-C<T1,...,Tn> 
+- C là tên của generic type,  
+- `<T1,...,Tn>` là danh sách các type arguments biểu thị một tham số hóa cụ thể của generic type.  
 
-Trong đó:
-    - C là tên của generic type,  
-    - <T1,...,Tn> là danh sách các type arguments biểu thị một tham số hóa cụ thể của generic type.  
-```
+Hai *parameterized types* khác nhau rõ ràng nếu thỏa mãn một trong 2 điều kiện sau:
 
-Hai *parameterized types* khác nhau rõ ràng nếu thỏa mãn một trong hai điều kiện sau:
+- Chúng là các tham số hóa của các *generic type declaration* riêng biệt, vd: `List<String>` và `ArrayList<String>`.  
+- Bất kỳ *type arguments* nào của chúng đều khác nhau rõ ràng, vd: `List<String>` và `List<Object>`.  
 
-- Chúng là các tham số hóa của các *generic type declaration* riêng biệt,  
-    ```
-    *vd: List<String> và ArrayList<String>*  
-    ```  
-- Bất kỳ *type arguments* nào của chúng đều khác nhau rõ ràng.  
-    ```
-    *vd: List<String> và List<Object>*  
-    ``` 
-
-*Ví dụ: Seq<int> là không hợp lệ, vì primitive type không thể là type arguments.*  
+*Ví dụ: `Seq<int>` là không hợp lệ, vì primitive type không thể là type arguments.*  
 
 **Note**: Một *parameterized type* có thể là một tham số hóa của *nested generic class or interface*.  
 
-*Ví dụ: nếu một non-generic class C có một generic class member D<T>, thì 'C.D<Object>' là một parameterized type. Và nếu một generic class C<T> có một non-generic class member D, thì member type 'C<String>.D' là một parameterized type.*  
+*Ví dụ: nếu một non-generic class C có một generic class member `D<T>`, thì `C.D<Object>` là một parameterized type. Và nếu một generic class `C<T>` có một non-generic class member D, thì member type `C<String>.D` là một parameterized type.*  
 
 
 ### 4.1, Type Arguments of Parameterized Types  
@@ -130,13 +119,13 @@ Hai *parameterized types* khác nhau rõ ràng nếu thỏa mãn một trong hai
 *Wildcard* đại diện cho *unknown* type, có 3 dạng:  
 
 - *Unbound wildcard* có dạng **?**,  
-    *VD: List<?> đại diện cho một list của unknown type.*  
+    *VD: `List<?>` đại diện cho một list của unknown type.*  
 
 - *Upper bound wildcard* có dạng **? extends B** trong đó B là upper bound,  
-    *VD: List<? extends Number> đại diện cho một list của Number và các subtypes của nó như Integer, Float, etc.*  
+    *VD: `List<? extends Number>` đại diện cho một list của Number và các subtypes của nó như Integer, Float, etc.*  
 
 - *Lower bound wildcard* có dạng **? super B** trong đó B là lower bound.  
-    *VD: List<? super Integer> đại diện cho một list của Integer và các supertypes của nó như Number, Object.*  
+    *VD: `List<? super Integer>` đại diện cho một list của Integer và các supertypes của nó như Number, Object.*  
 
 Wildcard **? extends Object** tương đương với unbound wildcard **?**.  
 
@@ -197,26 +186,15 @@ void Reference(T referent, ReferenceQueue<? super T> queue) { ... }
 
 ### 4.2, Members and Constructors of Parameterized Types
 
-Gọi C là một *generic class or interface declaration* với *type parameters* A1,...,An, and đặt C<T1,...,Tn> là một tham số hóa của C, sao cho với 1 ≤ i ≤ n, Ti là một type (không phải một wildcard). Thì:  
+Gọi C là một *generic class or interface declaration* với *type parameters* A1,...,An, and đặt `C<T1,...,Tn>` là một tham số hóa của C, sao cho với 1 ≤ i ≤ n, Ti là một type (không phải một wildcard). Thì:  
 
-```
-- Gọi m là một member or constructor được khai báo trong C, có type là T,  
-  Thì type của m trong C<T1,...,Tn> là T[A1:=T1,...,An:=Tn].  
-
-- Gọi m là một member or constructor được khai báo trong D, 
-  trong đó D là một class được extend bởi C or một interface được implement bởi C. 
-  Gọi D<U1,...,Uk> là supertype of C<T1,...,Tn> tương ứng với D.  
-  Thì type của m trong C<T1,...,Tn> là D<U1,...,Uk>.  
-```
++ Gọi m là một member or constructor được khai báo trong C, có type là T, Thì type của m trong `C<T1,...,Tn>` là `T[A1:=T1,...,An:=Tn]`.  
++ Gọi m là một member or constructor được khai báo trong D, trong đó D là một class được extend bởi C or một interface được implement bởi C. Gọi `D<U1,...,Uk>` là supertype of `C<T1,...,Tn>` tương ứng với D. Thì type của m trong `C<T1,...,Tn>` là type của m trong `D<U1,...,Uk>`.  
 
 Nếu bất kỳ type arguments trong tham số hóa của C là wildcard, thì:  
 
-```
-- Types của fields, methods, and constructors trong C<T1,...,Tn> là types của fields, methods, and constructors trong *capture conversion* của C<T1,...,Tn>.  
-- Gọi D là một class or interface declaration (có thể là generic) trong C. 
-  Khi đó type của D trong C<T1,...,Tn> là D sao cho, 
-  nếu D là generic, tất cả type arguments là unbounded wildcards.  
-```
++ Types của fields, methods, and constructors trong `C<T1,...,Tn>` là types của fields, methods, and constructors trong *capture conversion* của `C<T1,...,Tn>`.  
++ Gọi D là một class or interface declaration (có thể là generic) trong C.  Khi đó type của D trong `C<T1,...,Tn>` là D sao cho, nếu D là generic, tất cả type arguments là unbounded wildcards.  
 
 Một static member được khai báo trong generic type declaration phải được tham chiếu đến bằng cách sử dụng non-generic type tương ứng với generic type, nếu không sẽ xảy ra compile-time error. Nói cách khác, Sử dụng một parameterized type để tham chiếu đến static member được khai báo trong generic type declaration là không hợp lệ.  
 
@@ -229,13 +207,11 @@ Erasure của type T được ký hiệu: **|T|**.
 
 Erasure mapping được định nghĩa như sau:  
 
-```
-- Erasure của một parameterized type G<T1,...,Tn> là |G|.  
+- Erasure của một parameterized type `G<T1,...,Tn>` là |G|.  
 - Erasure của một nested type T.C là |T|.C.  
 - Erasure của một array type T[] là |T|[].  
 - Erasure của một type variable là erasure của leftmost bound của nó.  
 - Erasure của every other type là chính type đó.  
-```
 
 *Type Erasure* cũng map signature của một method hoặc constructor sang một signature không có parameterized types or type variables. Erasure của một method hoặc constructor signature s là một signature bao gồm tên giống với s và erasures của tất cả các formal parameter types được đưa ra trong s.  
 
@@ -256,13 +232,13 @@ Một type là *reifiable* chỉ khi thỏa mãn một trong các điều sau:
 - Nó là một *primitive type*.  
 - Nó là một *array type* có element type là reifiable.  
 - Nó là một *nested type*, trong đó với mỗi type T được phân cách bởi dấu "." là reifiable.  
-    ```
-    Ví dụ: Nếu generic class X<T> có một generic member class Y<U>, thì:
-    - Type X<?>.Y<?> là reifiable, vì X<?> là reifiable và Y<?> là reifiable. 
-    - Type X<?>.Y<Object> không phải reifiable vì Y<Object> không phải reifiable.
-    ```
 
-Một *intersection type* không phải *reifiable*.
+    *Ví dụ: Nếu generic class `X<T>` có một generic member class `Y<U>`, thì:*  
+
+    - Type `X<?>.Y<?>` là reifiable, vì `X<?>` là reifiable và `Y<?>` là reifiable.  
+    - Type `X<?>.Y<Object>` không phải reifiable vì `Y<Object>` không phải reifiable.  
+
+Một *intersection type* không phải *reifiable*.  
 
 
 ## 7. Raw Types
@@ -441,39 +417,31 @@ Các quy tắc sau định nghĩa quan hệ *direct supertype* giữa các *prim
 
 Cho một *non-generic type* declaration C, *direct supertypes* của C gồm:  
 
-```
-- Direct superclass của C.
-- Direct superinterfaces của C.
-- Type Object, nếu C là interface type không có direct superinterfaces.
-```
+- Direct superclass của C.  
+- Direct superinterfaces của C.  
+- Type Object, nếu C là interface type không có direct superinterfaces.  
 
-Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của *raw type* C gồm:
+Cho một *generic type* declaration `C<F1,...,Fn>` (n > 0), *direct supertypes* của *raw type* C gồm:  
 
-```
-- Direct superclass của the raw type C.
-- Direct superinterfaces của the raw type C.
-- Type Object, nếu C<F1,...,Fn> là một generic interface type không có direct superinterfaces.
-```
+- Direct superclass của the raw type C.  
+- Direct superinterfaces của the raw type C.  
+- Type Object, nếu `C<F1,...,Fn>` là một generic interface type không có direct superinterfaces.  
 
-Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của the *generic type* C<F1,...,Fn> gồm:
+Cho một *generic type* declaration `C<F1,...,Fn>` (n > 0), *direct supertypes* của the *generic type* `C<F1,...,Fn>` gồm:  
 
-```
-- Direct superclass của C<F1,...,Fn>.
-- Direct superinterfaces của C<F1,...,Fn>.
-- Type Object, nếu C<F1,...,Fn> là một generic interface type không có direct superinterfaces.
-- Raw type C.
-```
+- Direct superclass của `C<F1,...,Fn>`.  
+- Direct superinterfaces của `C<F1,...,Fn>`.  
+- Type Object, nếu `C<F1,...,Fn>` là một generic interface type không có direct superinterfaces.  
+- Raw type C.  
 
-Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của *parameterized type* C<T1,...,Tn>, với mọi Ti (1 ≤ i ≤ n), gồm:
+Cho một *generic type* declaration `C<F1,...,Fn>` (n > 0), *direct supertypes* của *parameterized type* `C<T1,...,Tn>`, với mọi Ti (1 ≤ i ≤ n), gồm:  
 
-```
-- D<U1 θ,...,Uk θ>, trong đó D<U1,...,Uk> là một generic type mà là direct supertype của generic type C<T1,...,Tn> và θ là phép thay thế [F1:=T1,...,Fn:=Tn].
-- C<S1,...,Sn>, trong đó Si chứa Ti (1 ≤ i ≤ n).
-- Type Object, nếu C<F1,...,Fn> là một generic interface type không có direct superinterfaces.
-- Raw type C.
-```
+- `D<U1 θ,...,Uk θ>`, trong đó `D<U1,...,Uk>` là một generic type mà là direct supertype của generic type `C<T1,...,Tn>` và θ là phép thay thế `[F1:=T1,...,Fn:=Tn]`.  
+- `C<S1,...,Sn>`, trong đó Si chứa Ti (1 ≤ i ≤ n).  
+- Type Object, nếu `C<F1,...,Fn>` là một generic interface type không có direct superinterfaces.  
+- Raw type C.  
 
-Cho một *generic type* declaration C<F1,...,Fn> (n > 0), *direct supertypes* của *parameterized type* C<R1,...,Rn> với ít nhất một trong các Ri (1 ≤ i ≤ n) là *wildcard*, là direct supertypes của parameterized type C<X1,...,Xn> (kết quả của *capture conversion* sang C<R1,...,Rn>).
+Cho một *generic type* declaration `C<F1,...,Fn>` (n > 0), *direct supertypes* của *parameterized type* `C<R1,...,Rn>` với ít nhất một trong các Ri (1 ≤ i ≤ n) là *wildcard*, là direct supertypes của parameterized type `C<X1,...,Xn>` (kết quả của *capture conversion* sang `C<R1,...,Rn>`).
 
 *Direct supertypes* của một *intersection type* T1 &...& Tn là Ti (1 ≤ i ≤ n).
 

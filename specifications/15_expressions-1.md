@@ -201,7 +201,7 @@ Chúng được phân loại như sau:
 
 Một class literal là một tham chiếu tới Class object đại diện cho một type được đặt tên (hoặc type void), như thể được định nghĩa bởi class loader xác định của class của instance hiện tại.
 
-*Ví dụ: int[].class có giá trị là một tham chiếu tới một instance của java.lang.Class đại diện cho class int[]. Hay type của int[].class là Class<int[]>.*
+*Ví dụ: int[].class có giá trị là một tham chiếu tới một instance của java.lang.Class đại diện cho class int[]. Hay type của int[].class là `Class<int[]>`.*  
 
 Các class literal bao gồm:
 
@@ -210,13 +210,13 @@ Các class literal bao gồm:
 - boolean {[]}.class  
 - void.class  
 
-Type của C.class, trong đó C là tên của một class, interface, hoặc array type, là Class<C>.
+Type của C.class, trong đó C là tên của một class, interface, hoặc array type, là `Class<C>`.
 
-Type của p.class, trong đó p là tên của một primitive type, là Class<B>, trong đó B là type của một expression của type p sau boxing conversion.
+Type của p.class, trong đó p là tên của một primitive type, là `Class<B>`, trong đó B là type của một expression của type p sau boxing conversion.
 
-Type của void.class là Class<Void>.
+Type của void.class là `Class<Void>`.
 
-*Note: private constructor Class<T>() nhận một argument là một class loader.*
+*Note: private constructor `Class<T>`() nhận một argument là một class loader.*
 
 
 ### 4.3, this

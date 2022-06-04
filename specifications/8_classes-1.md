@@ -519,9 +519,9 @@ extends ClassType
 
 class *Object* không có direct super class.  
 
-Cho một class declaration (có thể là generic) C<F1,...,Fn> (n ≥ 0, C ≠ Object), thì direct superclass của class type C<F1,...,Fn> là type đã cho trong mệnh đề extends của declaration nếu có mệnh đề extends, nếu không sẽ là Object.  
+Cho một class declaration (có thể là generic) `C<F1,...,Fn>` (n ≥ 0, C ≠ Object), thì direct superclass của class type `C<F1,...,Fn>` là type đã cho trong mệnh đề extends của declaration nếu có mệnh đề extends, nếu không sẽ là Object.  
 
-Cho một generic class declaration C<F1,...,Fn> (n > 0), thì direct superclass của parameterized type C<T1,...,Tn> với Ti (1 ≤ i ≤ n) là D<U1 θ,...,Uk θ>, trong đó D<U1,...,Uk> là direct superclass của C<F1,...,Fn>, và θ là phép thay thế [F1:=T1,...,Fn:=Tn].  
+Cho một generic class declaration `C<F1,...,Fn>` (n > 0), thì direct superclass của parameterized type `C<T1,...,Tn>` với Ti (1 ≤ i ≤ n) là `D<U1 θ,...,Uk θ>`, trong đó `D<U1,...,Uk>` là direct superclass của `C<F1,...,Fn>`, và θ là phép thay thế [F1:=T1,...,Fn:=Tn].  
 
 Một class được cho là một *direct subclass* của direct superclass của nó.  
 
@@ -610,9 +610,9 @@ InterfaceTypeList:  InterfaceType {, InterfaceType}
 - InterfaceType nếu có type arguments, nó phải là một well-formed parameterized type, không có type argument nào là wildcard, nếu không sẽ xảy ra compile time error.  
 - Nếu cùng InterfaceType xuất hiện nhiều hơn một lần trong một mệnh đề implements, sẽ xảy ra compile time error.  
 
-Cho một class declaration (có thể là generic) C<F1,...,Fn> (n ≥ 0, C ≠ Object), thì direct superinterfaces của class type C<F1,...,Fn> là các types đã cho trong mệnh đề implements của declaration nếu có mệnh đề implements.  
+Cho một class declaration (có thể là generic) `C<F1,...,Fn>` (n ≥ 0, C ≠ Object), thì direct superinterfaces của class type `C<F1,...,Fn>` là các types đã cho trong mệnh đề implements của declaration nếu có mệnh đề implements.  
 
-Cho một generic class declaration C<F1,...,Fn> (n > 0), thì direct superinterfaces của parameterized type C<T1,...,Tn> với Ti (1 ≤ i ≤ n) là tất cả các types I<U1 θ,...,Uk θ>, trong đó I<U1,...,Uk> là direct superinterface của C<F1,...,Fn>, và θ là phép thay thế [F1:=T1,...,Fn:=Tn].  
+Cho một generic class declaration `C<F1,...,Fn>` (n > 0), thì direct superinterfaces của parameterized type `C<T1,...,Tn>` với Ti (1 ≤ i ≤ n) là tất cả các types `I<U1 θ,...,Uk θ>`, trong đó `I<U1,...,Uk>` là direct superinterface của `C<F1,...,Fn>`, và θ là phép thay thế `[F1:=T1,...,Fn:=Tn]`.  
 
 Interface type I là superinterface của class type C nếu một trong các điều sau là đúng:  
 

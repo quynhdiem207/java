@@ -244,14 +244,9 @@ Một *Narrowing Reference Conversion* tồn tại từ reference type S sang re
 
 - S không phải subtype của T,  
 - Nếu tồn tại một parameterized type X là supertype của T, và một parameterized type Y là supertype của S, sao cho the erasures của X và Y là giống nhau, thì X và Y không khác biệt.  
-    ```
-    ví dụ: 
-    Không tồn tại narrowing reference conversion từ:
-    - ArrayList<String> -> ArrayList<Object> or ngược lại, 
-    - ArrayList<String> -> List<Object> or ngược lại.  
     
-    (vì các type parameters String và Object khác biệt)
-    ```
+    *ví dụ: Không tồn tại narrowing reference conversion từ: `ArrayList<String>` -> `ArrayList<Object>` or ngược lại, `ArrayList<String>` -> `List<Object>` or ngược lại. (vì các type parameters String và Object khác biệt)*  
+    
 - Đáp ứng một trong các trường hợp sau:  
     + S và T là class types, và thỏa mãn |S| <: |T| or |T| <: |S|,  
     + S và T là interface types,  
@@ -292,7 +287,7 @@ Một vài *unchecked narrowing reference conversions* yêu cầu kiểm tra xá
 
 Các thuật ngữ *completely unchecked* và *partially unchecked* đề cập đến khả năng tương thích của type trong conversion khi được xem như các *raw types*. Nếu conversion là "upcast" về mặt khái niệm thì nó là *completely unchecked*, vì conversion là hợp lệ trong non-generic system của JVM. Ngược lại, nếu conversion là "downcast" về mặt khái niệm thì nó là *partially unchecked*.  
 
-*Ví dụ*: Conversion từ *ArrayList<String>* sang *Collection<T>* là *completely unchecked*, bởi vì (raw) type ArrayList là một subtype của (raw) type Collection trong JVM. Ngược lại, conversion từ *Collection<T>* sang *ArrayList<String>* là *partially unchecked*, bởi vì (raw) type Collection không phải subtype của (raw) type ArrayList trong JVM.  
+*Ví dụ: Conversion từ `ArrayList<String>` sang `Collection<T>` là completely unchecked, bởi vì (raw) type ArrayList là một subtype của (raw) type Collection trong JVM. Ngược lại, conversion từ `Collection<T>` sang `ArrayList<String>` là partially unchecked, bởi vì (raw) type Collection không phải subtype của (raw) type ArrayList trong JVM.*  
 
 Sự phân loại của *unchecked narrowing reference conversions* như sau:  
 
@@ -487,9 +482,9 @@ public class Example {
 
 Gọi G là một *generic type* với n *type parameters*.  
 
-Có một *Unchecked Conversion* từ *raw class or interface type* G sang bất kỳ *parameterized type* nào có dạng G<T1, ..., Tn>.  
+Có một *Unchecked Conversion* từ *raw class or interface type* G sang bất kỳ *parameterized type* nào có dạng `G<T1, ..., Tn>`.  
 
-Có một *Unchecked Conversion* từ *raw array type* G[]k sang bất kỳ *array type* nào có dạng G<T1, ..., Tn>[]k. (Kí hiệu []k cho biết array type có k chiều).  
+Có một *Unchecked Conversion* từ *raw array type* G[]k sang bất kỳ *array type* nào có dạng `G<T1, ..., Tn>`[]k. (Kí hiệu []k cho biết array type có k chiều).  
 
 Việc sử dụng một *Unchecked Conversion* gây ra compile-time *unchecked warning*, trừ khi tất cả các *type arguments* Ti (1 ≤ i ≤ n) là *unbounded wildcards* hoặc warning bị chặn bởi @SuppressWarnings.  
 
@@ -502,7 +497,7 @@ Capture conversion chỉ cần thiết cho type checking tại compile time, vì
 
 Gọi G là một *generic type declaration* với n type parameters A1,...,An tương ứng với các ràng buộc U1,...,Un.
 
-Tồn tại một *capture conversion* từ parameterized type G<T1, ..., Tn> sang parameterized type G<S1, ..., Sn>, sao cho, với 1 ≤ i ≤ n:
+Tồn tại một *capture conversion* từ parameterized type `G<T1, ..., Tn>` sang parameterized type `G<S1, ..., Sn>`, sao cho, với 1 ≤ i ≤ n:
 
 - Nếu Ti là một *unbound wildcard* type argument có dạng '?', thì Si là type variable mới có upper bound là Ui [A1 := S1, ..., An := Sn] và lower bound là type null.  
 
@@ -515,7 +510,7 @@ Tồn tại một *capture conversion* từ parameterized type G<T1, ..., Tn> sa
     ```  
 
 - Nếu Ti là một *upper bound wildcard* type argument có dạng '? extends Bi', thì Si là một type variable mới có upper bound là glb(Bi, Ui [A1 := S1, ..., An := Sn]) và có lower bound là type null.  
-    + *Note*: glb(V1, ..., Vm) được định nghĩa là V1 &...& Vm.  
+    + **Note**: glb(V1, ..., Vm) được định nghĩa là V1 &...& Vm.  
     + Xảy ra compile time error nếu đối với hai class bất kỳ (không phải interface) Vi và Vj, Vi không phải là subclass của Vj hoặc ngược lại.  
     
     ```java

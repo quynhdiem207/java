@@ -110,9 +110,9 @@ Bất kỳ class nào implements interface được khai báo thì cũng đượ
 
 Nếu InterfaceType trong extends clause có các type arguments, thì nó phải là parameterized type đã định dạng tốt, và không có type arguments nào là wildcard, nếu không sẽ gây ra compile-time error.
 
-Cho interface declaration (có thể là generic) I<F1,...,Fn> (n ≥ 0), thì *direct superinterfaces* của interface type I<F1,...,Fn> là các types được đưa ra trong *extends* clause của declaration của I, nếu có extends clause.
+Cho interface declaration (có thể là generic) `I<F1,...,Fn>` (n ≥ 0), thì *direct superinterfaces* của interface type `I<F1,...,Fn>` là các types được đưa ra trong *extends* clause của declaration của I, nếu có extends clause.
 
-Cho *generic* interface declaration I<F1,...,Fn> (n > 0), thì *direct superinterfaces* của *parameterized interface type* I<T1,...,Tn>, với Ti (1 ≤ i ≤ n), là tất cả các types J<U1 θ,...,Uk θ>, trong đó J<U1,...,Uk> là một direct superinterface của I<F1,...,Fn> và θ là phép thay thế [F1:=T1,...,Fn:=Tn].
+Cho *generic* interface declaration `I<F1,...,Fn>` (n > 0), thì *direct superinterfaces* của *parameterized interface type* `I<T1,...,Tn>`, với Ti (1 ≤ i ≤ n), là tất cả các types `J<U1 θ,...,Uk θ>`, trong đó `J<U1,...,Uk>` là một direct superinterface của `I<F1,...,Fn>` và θ là phép thay thế `[F1:=T1,...,Fn:=Tn]`.
 
 Mối quan hệ superinterface là mối quan hệ bắc cầu qua direct superinterface. Một interface K là một superinterface của interface I nếu thỏa mãn một trong các điều sau:
 

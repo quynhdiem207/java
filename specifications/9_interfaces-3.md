@@ -171,8 +171,8 @@ Gọi M là tập các *abstract methods* được định nghĩa cho I. *Functi
 *Function type* của một *functional interface type* được xác định như sau:  
 
 - Function type của một *non-generic* functional interface type I đơn giản chính là function type của functional interface I, như đã định nghĩa ở trên.  
-- Function type của một *parameterized* functional interface type [I<A1...An>], trong đó A1...An là các types và các type parameters tương ứng của I là P1...Pn, được suy ra bằng cách áp dụng phép thay thế [P1:=A1, ..., Pn:=An] cho function type của generic functional interface [I<P1...Pn>].  
-- Function type của một *parameterized* functional interface type [I<A1...An>], sao cho một hoặc nhiều A1...An là wildcard, là function type của non-wildcard parameterization của I, [I<T1...Tn>]. Non-wildcard parameterization được xác định như sau:  
+- Function type của một *parameterized* functional interface type `I<A1...An>`, trong đó A1...An là các types và các type parameters tương ứng của I là P1...Pn, được suy ra bằng cách áp dụng phép thay thế [P1:=A1, ..., Pn:=An] cho function type của generic functional interface `I<P1...Pn>`.  
+- Function type của một *parameterized* functional interface type `I<A1...An>`, sao cho một hoặc nhiều A1...An là wildcard, là function type của non-wildcard parameterization của I, `I<T1...Tn>`. Non-wildcard parameterization được xác định như sau:  
     Gọi P1...Pn là các type parameters của I với các ràng buộc tương ứng B1...Bn. Với mọi i (1 ≤ i ≤ n), Ti được suy ra theo form của Ai:  
 
     + Nếu Ai là một type, thì Ti = Ai.  

@@ -432,7 +432,7 @@ Một *nested enum type* được ngầm định là *static*, nhưng vẫn cho 
 
 *Note: Không thể khai báo một enum type trong body của một inner class, vì một inner class không thể có các static members ngoại trừ các constant variables.*
 
-*Direct superclass* ngầm định của một enum type E là *java.lang.Enum<E>*, nên nó không thể extends bất cứ class nào khác.
+*Direct superclass* ngầm định của một enum type E là `java.lang.Enum<E>`, nên nó không thể extends bất cứ class nào khác.
 
 **Note**: Một *enum type* không thể là *generic*, nó không thể khai báo các *type variables*.  
 
