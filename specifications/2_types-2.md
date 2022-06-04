@@ -420,7 +420,7 @@ Các *supertypes* của một type được xác định bằng cách bắc cầ
 - **T <1 S** biểu thị T là *direct subtype* của S,  
 - **T < S** biểu thị T là *proper subtype* của S, nếu T <: S và S ≠ T.    
 
-*Note*: Đối với parameterized type: T <: S không có nghĩa là C<T> <: C<S>.  
+*Note*: Đối với parameterized type: T <: S không có nghĩa là `C<T> <: C<S>`.  
 
 **Note**: Quan hệ *subtype* khác với quan hệ *subclass*.
 
