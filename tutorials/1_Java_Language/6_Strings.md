@@ -506,8 +506,7 @@ StringBuilder class có một số methods liên quan đến độ dài và dung
 ------------------------------------|--------------------------------------------------------------
 void setLength(int newLength)       | Đặt độ dài của chuỗi ký tự. Nếu newLength nhỏ hơn length(),
                                     | các ký tự cuối cùng trong chuỗi ký tự sẽ bị cắt bớt.
-                                    | các ký tự cuối cùng trong chuỗi ký tự sẽ bị cắt bớt.
-                                    | Nếu newLength lớn hơn length (), các ký tự null sẽ được thêm
+                                    | Nếu newLength lớn hơn length(), các ký tự null sẽ được thêm
                                     | vào cuối chuỗi ký tự.
 ------------------------------------|--------------------------------------------------------------
 void ensureCapacity(int minCapacity)| Đảm bảo rằng dung lượng ít nhất phải bằng mức tối thiểu 

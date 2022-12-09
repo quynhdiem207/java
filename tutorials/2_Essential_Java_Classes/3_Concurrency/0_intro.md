@@ -1,0 +1,7 @@
+# Lession 3. Concurrency
+
+Người dùng máy tính coi rằng hệ thống của họ có thể làm nhiều việc cùng một lúc là điều hiển nhiên. Họ giả định rằng họ có thể tiếp tục làm việc trong trình xử lý văn bản, trong khi các ứng dụng khác tải xuống tệp, quản lý hàng đợi in và phát âm thanh trực tuyến. Ngay cả một ứng dụng duy nhất cũng thường được mong đợi làm nhiều việc cùng một lúc. Ví dụ: ứng dụng âm thanh phát trực tuyến đó phải đồng thời đọc âm thanh kỹ thuật số ngoài mạng, giải nén nó, quản lý phát lại và cập nhật màn hình của nó. Ngay cả trình xử lý văn bản cũng phải luôn sẵn sàng phản hồi các sự kiện bàn phím và chuột, cho dù nó có bận định dạng lại văn bản hay cập nhật màn hình hay không. Phần mềm có thể làm những việc như vậy được gọi là phần mềm đồng thời (concurrent software).
+
+Java platform được thiết kế ngay từ đầu để hỗ trợ lập trình đồng thời (concurrent programming), với sự hỗ trợ đồng thời cơ bản (basic concurrency) trong Java và các Java class libraries. Kể từ version 5.0, Java platform cũng đã bao gồm các API đồng thời cấp cao (high-level concurrency APIs).
+
+Bài học này giới thiệu về hỗ trợ basic concurrency của nền tảng và tóm tắt một số high-level APIs trong các *java.util.concurrent* packages.  
